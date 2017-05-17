@@ -1,0 +1,220 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex: { synctex: true }
+% \listfiles
+\pdfminorversion=7
+\documentclass[a4paper,welsh,british,twocolumn]{article}
+\input{config/handouts-da.cfg}
+\svnidlong
+  {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/handouts/latex-gweithdy-packages.tex $}
+  {$LastChangedBy: cfrees $}
+  {$LastChangedRevision: 5802 $}
+  {$LastChangedDate: 2017-01-31 04:26:20 +0000 (Maw, 31 Ion 2017) $}
+  % best not to mix \svnid and \svnidlong (or to always typeset time-zone with time? see documentation)
+  %	\svnid{$Id: latex-gweithdy-packages.tex 5802 2017-01-31 04:26:20Z cfrees $}
+\title{\LaTeX{} Package Recommendations}
+\fancyhf[cf]{%
+  Find packages in the Comprehensive \TeX{} Archive Network (CTAN) at \url{ctan.org}.
+  Browse by topic at \url{ctan.org/topic}.}
+\begin{document}
+\pdfinfo{%
+  /Title	(LaTeX Package Recommendations)
+  /Keywords	(LaTeX, package)}
+\maketitle\thispagestyle{fancy}
+\newlist{pkgdescription}{description}{1}
+\setlist[pkgdescription]{font=\bfseries\ttfamily}
+\newcommand*\lpack[1]{\texttt{\bfseries #1}}
+\section{General}
+You should almost always use:
+\begin{pkgdescription}
+  \item[babel] Pass \verb|welsh,british| to your class.
+  \item[inputenc] Load with option \verb|utf8|.
+  \item[fontenc] Load with option \verb|T1|.
+  \item[textcomp]
+  \item[microtype]
+\end{pkgdescription}
+\section{Document Layout}
+If you are using a standard class (e.g.\ \lpack{article}, \lpack{book} or \lpack{report}):
+\begin{pkgdescription}
+  \item[geometry] to change page dimensions.
+  \item[fancyhdr] for custom headers/footers.
+  \item[footmisc] for customised footnotes.
+  \item[titling] to customise title and use document metadata after \verb|\maketitle|.
+  \item[titlesec] for custom sectioning and \lpack{titleps} for headers/footers.
+\end{pkgdescription}
+\section{Mathematics}
+\begin{pkgdescription}
+  \item[mathtools] for enhanced \lpack{amsmath}.
+  \item[amssymb] for more symbols, scripts.
+  \item[ntheorem] for enhanced theorem environments.
+\end{pkgdescription}
+\section{Quotes \& Quoting}
+\begin{pkgdescription}
+  \item[csquotes] for context- and language-sensitive quotations and quotation marks. Recommended if using \lpack{biblatex}.
+\end{pkgdescription}
+\section{Citations \& Bibliographies}
+\begin{pkgdescription}
+  \item[biblatex] Load with option \verb|backend=biber|.
+\end{pkgdescription}
+\section{Cross-Referencing}
+\begin{pkgdescription}
+  \item[fancyref] for enhanced cross-references.
+  \item[cleverref] for enhanced cross-references.
+\end{pkgdescription}
+\section{Lists}
+\begin{pkgdescription}
+  \item[enumitem] for custom lists.
+  \item[glossaries] for glossaries and lists of acronyms.
+\end{pkgdescription}
+\section{Tables}
+\begin{pkgdescription}
+  \item[array] for enhanced tabular environments.
+  \item[booktabs] for professional quality tables.
+  \item[longtable] for multi-page tables.
+  \item[tabularx] for tables with specified width.
+  \item[threeparttablex] for tables with notes.
+  \item[multirow] for cells spanning multiple rows.
+\end{pkgdescription}
+\section{Floats}
+\begin{pkgdescription}
+  \item[caption] to customise captions.
+  \item[float] more options for floats.
+  \item[placeins] to control float placement.
+  \item[subcaption] for sub-figures, sub-tables and sub-captions.
+  \item[floatrow] for aligned sub-figures.
+  \item[rotating] to rotate floats.
+\end{pkgdescription}
+\section{Hyperlinks}
+\begin{pkgdescription}
+  \item[hyperref] for hyperlinks.
+  \item[bookmark] for enhanced bookmarks.
+\end{pkgdescription}
+\section{Images \& Colour}
+\begin{pkgdescription}
+  \item[graphicx] to load external images.
+  \item[xcolor] for colour.
+\end{pkgdescription}
+\section{Diagrams}
+\begin{pkgdescription}
+  \item[tikz] for diagrams.
+  \emph{Many} specialised extensions available.
+  \item[pgfplots] for plots.
+  Includes \lpack{pgfplotstable} for data tables.
+\end{pkgdescription}
+\section{External Data}
+\begin{pkgdescription}
+  \item[datatool] for data manipulation.
+  \item[textmerg] for merging text.
+\end{pkgdescription}
+\section{Version Control}
+\begin{pkgdescription}
+  \item[svn-multi] for use with \verb|subversion|.
+  \item[gitinfo2] for use with \verb|git|.
+\end{pkgdescription}
+\appendix
+\newcommand*\seesci{\emph{See also \fref{sec:sci}.}}
+\section{Biology}
+\seesci
+\begin{pkgdescription}
+  \item[bracketkey] for bracketed identification keys.
+  \item[dichokey] for dichotomous identification keys.
+  \item[shipunov] for identification keys, classification lists and more.
+  \item[texshade] for nucleotide and peptide alignments.
+  Can process alignments in \textsc{msf}, \textsc{aln} and \textsc{fasta} formats.
+  \item[textopo] for shaded membrane protein topology plots.
+\end{pkgdescription}
+\section{Chemistry}
+\seesci
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[chemfig] for reaction schemes and \lpack{tikz}-based molecules.
+  \lpack{chemformula} and \lpack{mhchem} are alternatives.
+  \item[chemformula] for formulae and reactions.
+  \item[mhchem] for formulae and equations.
+  Includes \lpack{hpstatement} (H and P Statements) and \lpack{rsphrase} (R and S Phrases).
+  \item[modiagram] for \lpack{tikz}-based molecular orbital diagrams.
+  \item[tikzorbital] for \lpack{tikz}-based molecular orbitals, inc.\ s, p and d.
+\end{pkgdescription}
+\section{Computer Science}
+\emph{See also sections \ref{sec:logic} and \ref{sec:sci}.}
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[algorithms] for pseudo-code.
+  \item[algorithm2e] for floating pseudo-code.
+  \item[listings] for source code.
+  \item[minted] for highlighted source code.
+  \item[pgf-umlcd] and \lpack{pgf-umlsd} for \lpack{tikz}-based UML diagrams.
+  \item[sa-tikz] for \lpack{tikz}-based switching architectures.
+\end{pkgdescription}
+\section{Engineering}\label{sec:eng}
+\emph{See also sections \ref{sec:phys} and \ref{sec:sci}.}
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[bloques] for simple \lpack{tikz}-based control diagrams.
+  \item[circuitikz] for \lpack{tikz}-based electrical and electronic circuits.
+\end{pkgdescription}
+\section{Humanities}
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[bibleref] for referencing and indexing Bible verses.
+  \item[classics] to cite classic works sensibly.
+  \item[reledmac] for critical editions and \lpack{reledpar} for parallel texts.
+  \item[ednotes] for critical editions of handwritten manuscripts.
+  \item[edfnotes] for critical editions of printed texts with footnotes.
+  \item[handout] for handouts consisting of textual excerpts.
+  \item[poemscol] for critical editions of poetry.
+  \item[schemata] for topical schemata of the kind sometimes used to illustrate conceptual structure e.g.~in Scholastic thought.
+  \item[verse] for verse without annotations.
+\end{pkgdescription}
+\section{Linguistics}
+% Ref.: \url{www.essex.ac.uk/linguistics/external/clmt/latex4ling}
+\begin{pkgdescription}
+  \item[gb4e] for examples, glosses etc.
+  \item[expex] for enhanced examples, glosses etc.
+  \item[leipzig] for standard and custom glossing abbreviations.
+  \item[ot-tableau] for optimality-theoretic tableaux.
+  \item[qtree] for syntactic trees without \lpack{tikz}.
+  \item[forest] for enhanced \lpack{tikz}-based syntactic trees.
+  \item[stmaryrd] for semantics brackets.
+  \item[tikz-dependency] for \lpack{tikz}-based dependency graphs.
+  \item[tipa] for IPA fonts. But consider Xe\LaTeX{} or Lua\LaTeX.
+\end{pkgdescription}
+\section{Logic}\label{sec:logic}
+Ref.: \url{www.latexforlogicians.net}
+\begin{pkgdescription}
+  \item[algorithms] for algorithms.
+  \item[gene-logic] for better spacing of maths symbols.
+  \item[bussproofs] for natural deduction/Gentzen sequent proofs.
+  \item[prftree] a newer alternative to \lpack{bussproofs}.
+  \item[lplfitch] for ‘Fitch’-style proofs.
+  \item[logicproof] for ‘Fitch’-style proofs with boxed sub-proofs.
+  \item[natded] for Jaśkowski-/Kalish-Montague-style proofs.
+  \item[qtree] for proof trees without \lpack{tikz}.
+  \item[prooftrees] for enhanced \lpack{forest}/\lpack{tikz}-based proof trees.
+  \item[tikz-cd] for \lpack{tikz}-based commutative diagrams.
+  \item[tikz-inet] for \lpack{tikz}-based interaction nets.
+  \item[turnstile] for turnstiles of all kinds.
+\end{pkgdescription}
+\section{Physics}\label{sec:phys}
+\emph{See also sections \ref{sec:eng} and \ref{sec:sci}.}
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[feyn] for inline Feynman diagrams.
+  \item[feynmp] or \lpack{feynmf} for Feynman diagrams.
+\end{pkgdescription}
+\section{Sciences}\label{sec:sci}
+% Ref.: \url{}
+\begin{pkgdescription}
+  \item[miller] for Miller indices.
+  \item[siunitx] for SI units.
+\end{pkgdescription}
+\section*{Additional Symbols}\label{sec:symbols}
+\begin{pkgdescription}
+  \item[comprehensive] provides a more-or-less comprehensive list.
+  \item[adforn,adfarrows,adfbullets] for ADF symbol fonts.
+  \item[dictsym] for dictionary symbols.
+  \item[marvosym] for assorted symbols.
+  \item[pifont] for Zapf Dingbats.
+  \item[wasysym] for the symbol font \texttt{wasy}.
+\end{pkgdescription}
+\end{document}

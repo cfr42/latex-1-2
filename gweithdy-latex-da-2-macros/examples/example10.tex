@@ -1,0 +1,51 @@
+\documentclass[oneside]{scrbook}
+
+\usepackage{kantlipsum}% provides \kant[] to produce dummy text
+\usepackage{fancyref}
+\titlehead{Cardiff University\\
+Cardiff}
+\subject{A thesis submitted for the degree of Doctor of Philosophy}
+\title{My Thesis}
+\author{Ann Author}
+\date{June 2015}
+\publishers{Prof.\ My Advisor}
+
+\begin{document}
+\maketitle
+
+\frontmatter
+\tableofcontents
+
+\chapter{Foreword}
+
+This is the foreword.
+It is in an unnumbered chapter.
+
+\mainmatter
+\chapter{Introduction}
+
+This is a sample chapter with a reference to \fref{chap:method}.
+
+\section{Sample Section}\label{sec:sample}
+
+This is a sample section with some dummy text to pad it out.
+\kant[1]
+
+\chapter{Method}\label{chap:method}
+
+This is another chapter with some more dummy text.
+\kant[2]
+This chapter followed \fref{sec:sample}.
+
+\appendix % Switch to appendices
+
+\chapter{A Sample Appendix}\label{apd:sample}
+
+This is an appendix.
+\kant[3]
+
+\chapter{Another Appendix}
+
+This is another appendix with a reference to Appendix~\ref{apd:sample}.
+\kant[4]
+\end{document}

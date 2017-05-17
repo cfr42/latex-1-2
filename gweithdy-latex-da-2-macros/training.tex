@@ -1,0 +1,852 @@
+% BEGIN preamble
+\svnidlong
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-macros/training.tex $}
+{$LastChangedBy: cfrees $}
+{$LastChangedRevision: 6278 $}
+{$LastChangedDate: 2017-04-25 21:56:44 +0100 (Maw, 25 Ebr 2017) $}
+
+\input{config/macros-da.cfg}
+
+\title{\LaTeX{} II: Macros}
+\subtitle{Based in part on materials produced by UK-TUG Volunteers}
+\date{\cymraeg{Chwefror} 2 February 2017}
+
+% END preamble
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\maketitle
+
+\tutornote{Time: 10:05}
+
+\tableofcontents
+
+\mode<presentation>%
+{
+  \begin{frame}{Outline}
+	\tableofcontents
+  \end{frame}
+}
+
+\section{Introduction}
+
+\begin{frame}{\LaTeX{}: Key features}
+
+  \begin{itemize}
+	\item \TeX{} is a typesetting application.
+	\item \TeX{} uses \emph{primitives} to determine how to put text on a page.
+	\item \LaTeX{} is  a \emph{format} built on top of \TeX{}.
+	\item \LaTeX{} can be used for everything from a one page letter to a 1000~page textbook.
+	\item By separating input from output, reusing material becomes much easier.
+	\item By separating \emph{content} from \emph{formatting}, we can create flexible, consistent documents which are easier to maintain and modify.
+	\item We are using the \emph{engine} pdf\TeX{}.
+	Xe\TeX{} and Lua\TeX{} are modern alternatives.
+  \end{itemize}
+
+\end{frame}
+
+\overleaf
+
+\section{Logical structure}\tutornote{10:15}
+
+\begin{frame}[fragile]{Logical mark up}
+
+  We are familiar with the importance of using \emph{logical} mark up.
+
+  For example,
+  \begin{itemize}
+	\item \cs{title}\marg{\meta{title}}, \cs{author}\marg{\meta{author}} \& \cs{maketitle}
+	\item \cs{section}\oarg{\meta{short title}}\marg{\meta{title}} \& \cs{subparagraph}\oarg{\meta{short title}}\marg{\meta{title}}
+	\item \cs{emph}\marg{\meta{text}}
+	\item \cs{label}\marg{\meta{key}} \& \cs{ref}\marg{\meta{key}}
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Why use logical mark up?}
+  Logical mark up is \emph{semantic}.
+
+  It reflects a functional role within the document.
+  For example,
+  \begin{itemize}
+	\item \cs{title}\marg{\meta{title}} indicates that \meta{title} is the title of the document.
+	\item \cs{section}\oarg{\meta{short title}}\marg{\meta{title}} tells \LaTeX{} to begin a new section with the title \meta{title} and optionally specifies a shortened title, \meta{short title} as well.
+	\item \cs{ref}\marg{\meta{key}} is a reference to a particular place in the text.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Why extend logical mark up?}
+  \begin{block}{Example}
+	\begin{verbatim}
+	  \section{A section about food additives}\label{wombles}
+	  ...
+	  As argued in section \ref{wombles}.
+	\end{verbatim}
+  \end{block}
+  This will work but it is not ideal.
+  \begin{itemize}
+    \item Our choice of ‘wombles’ is arbitrary.
+	It would be better to use an appropriate label e.g.~‘food-additives’ or ‘fadd’.
+	\item Having to write out ‘section’ is non-ideal.
+	\begin{itemize}
+	  \item We must remember that \cs{label}\marg{wombles} is a section rather than something else.
+	  \item If we want to indicate that a reference is to a section using ‘\S’ or ‘[Tt]opic’, we have to locate and modify every occurrence.
+	\end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Extending logical mark up with packages}
+  Packages extend \LaTeX{} in various ways and serve many purposes.
+
+  One purpose is the \emph{extend logical mark up}.
+\end{frame}
+\begin{frame}{\pkg{fancyref}: More logical cross-referencing}
+  \alert<1>{\pkg{fancyref}} enhances \LaTeX's commands for cross-referencing.
+
+  The syntax follows this pattern:
+  \begin{semiverbatim}
+    \cs{label}\marg{\alert<2>{\meta{prefix}:}\meta{key}} \& \alert<1>{\cs{fref}}\marg{\alert<2>{\meta{prefix}:}\meta{key}}
+  \end{semiverbatim}
+  \pkg{fancyref} provides:
+  \begin{itemize}
+    \item a set of pre-defined \alert<2>{\meta{prefix}} values;
+    \item an extensible interface i.e.~you can customise the effects, modify the \alert<2>{\meta{prefix}} values and define entirely new categories of cross-reference.
+  \end{itemize}
+  This is particularly useful in large projects such as books, dissertations and theses.
+  \alert<3>{\pkg{cleveref}} is another option.
+\end{frame}
+
+\begin{frame}[fragile,plain]
+\begin{block}{Example input}
+  \begin{verbatim}
+	\usepackage{fancyref}
+	...
+	\section{A section about food additives}\label{sec:fadd}
+	...
+	\Fref{sec:fadd} raised several concerns about food additives:
+	\begin{enumerate}
+	  \item \label{enum:e-nos}`E numbers'
+	  \item \label{enum:health}Health impact
+	\end{enumerate}
+	\Fref{enum:health} is discussed in \fref{subsec:health}.
+	In \fref{subsec:e-numbers}, we explore so-called E numbers.
+	\subsection{E numbers}\label{subsec:e-numbers}
+	...
+	\subsection{Health impacts}\label{subsec:health}
+  \end{verbatim}
+  \vskip -\baselineskip
+\end{block}
+  Remember: resolving cross-references needs \emph{two} \LaTeX{} runs.
+\end{frame}
+
+\tutornote{Mention \pkg{cleveref}}
+
+\begin{exercise}
+  Try producing the following document.
+  \verbatiminput{examples/example10}
+
+  Experiment with \pkg{fancyref} cross-references to sections, subsections and items in ordered lists.
+
+  What happens if you replace \cs{usepackage}\marg{fancyref} with \cs{usepackage}\oarg{german}\marg{fancyref}?
+  What happens if you use \cs{usepackage}\oarg{english}\marg{fancyref}?
+
+  What happens if you replace \cs{ref}\marg{apd:sample} by \cs{fref}\marg{apd:sample}?
+
+  Try adding the following to your preamble:
+  \begin{verbatim}
+	\fancyrefaddcaptions{english}{%
+	  \newcommand*{\Frefappendixname}{\appendixname}%
+	  \newcommand*{\frefappendixname}{%
+		\MakeLowercase{\Frefappendixname}}}
+	\newcommand*{\fancyrefappendixlabelprefix}{apd}
+	\frefformat{vario}{\fancyrefappendixlabelprefix}{{\frefappendixname}\fancyrefdefaultspacing#1}
+	\Frefformat{vario}{\fancyrefappendixlabelprefix}{{\Frefappendixname}\fancyrefdefaultspacing#1}
+	\frefformat{plain}{\fancyrefappendixlabelprefix}{{\frefappendixname}\fancyrefdefaultspacing#1}
+	\Frefformat{plain}{\fancyrefappendixlabelprefix}{{\Frefappendixname}\fancyrefdefaultspacing#1}
+  \end{verbatim}
+
+  How would you need to modify this if you were using \verb|german|?
+
+  Can you create an ordered list using \cs{label}\marg{issue:\meta{key}} such that \cs{fref}\marg{issue:\meta{key}} produces ‘issue \meta{number}’?
+
+\end{exercise}
+
+\begin{exercise}
+  If time permits, choose a package which interests you from the list provided.
+
+  Find the documentation for the package on \url{ctan.org}.
+
+  Try integrating some simple functionality from the package into your document.
+  Don't forget to add \cs{usepackage}\marg{\meta{package name}} to your preamble!
+\end{exercise}
+
+
+\section{Creating your own macros}\tutornote{10:45}
+
+
+\begin{frame}{Why create your own macros?}
+  \begin{itemize}
+  	\item You want to extend logical mark up further.
+	\begin{itemize}
+	  \item Increase the consistency of formatting.
+	  \item Reduce errors and make debugging easier.
+	  \item Increase flexibility.
+	  \item Decrease typing!
+	\end{itemize}
+	\item You want to do something new.
+	\item You want to do something better.
+	\item You want to do something differently.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}<1-| handout:1-2>{How many macros should you make?}
+  \mode<article>{
+    Standard question:
+    \begin{quotation}
+      How many {packages} should I {load}?
+    \end{quotation}
+
+    {Standard} answer:
+    \begin{quotation}
+      No more than you need and no fewer than you need.
+    \end{quotation}
+  }
+  \alt<2-| handout:2>{Macro}{Standard} question:
+    \begin{quotation}
+      How many \alt<2-| handout:2>{macros}{packages} should I \alt<2-| handout:2>{create}{load}?
+    \end{quotation}
+
+    \alt<2-| handout:2>{Macro}{Standard} answer:
+    \begin{quotation}
+        No more than you need and no fewer than you need.
+    \end{quotation}
+\end{frame}
+
+\begin{frame}{Guidelines for your own macros}{Don't\dots}
+  \begin{block}{Reduce, Reuse, Recycle (Don't do unnecessary work.)}
+	\onslide<+->
+	\lettrine{R}{educe:}
+	  Avoid creating macros you do not need.\newline
+	  Avoid creating macros as short-cuts for standard macros.
+      \begin{itemize}
+        \item[e.g.]  Don't create a command \cs{sn} to save typing \cs{section}.
+      \end{itemize}
+
+	\onslide<+->
+	\lettrine{R}{euse:}
+	  Don't repeat yourself.\newline
+	  Create flexible macros you can use in many contexts.\newline
+	  If you want to use a set of macros in many different documents, make a separate file and load that file in each document.
+
+	\onslide<+->
+	\lettrine{R}{ecycle:}
+	  Avoid creating more macros than you need.\newline
+	  Could one or two macros with different options replace a dozen less flexible ones?
+  \end{block}
+\end{frame}
+
+\begin{frame}{Guidelines for your own macros}{Do\dots}
+  \begin{block}{Logical, Meaningful, Explicable}
+	\onslide<+->
+	\lettrine{L}{ogical:} Do create macros which increase logical mark up.\newline
+	  Macros should make it easier to modify layout and formatting.
+	  \begin{itemize}
+        \item[e.g.]  These slides use \cs{pkg}\marg{\meta{package name}} for package names.
+      \end{itemize}
+
+	\onslide<+->
+	\lettrine{M}{eaningful:} Do use macro names which make their purpose clear.\newline
+	  Forgotten macros should be easy to maintain when rediscovered.
+	  \begin{itemize}
+        \item[e.g.]  \cs{marg}\marg{\meta{mandatory argument}} is used for mandatory arguments.
+      \end{itemize}
+
+	\onslide<+->
+	\lettrine{E}{xplicable:} Do use comments to explain your code.\newline
+	  This should cover usage and implementation.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{What are macros?}
+	‘Macros’ are commands, environments etc.
+
+	You are already familiar with the way \LaTeX{} commands work:
+	\begin{semiverbatim}
+		\cs{noarguments}
+		\cs{argumentrequired}\marg{\meta{mandatory argument}}
+		\cs{argumentoptional}\oarg{\meta{optional argument}}
+		\cs{morecomplex}\oarg{\meta{optional argument}}\marg{\meta{mandatory argument}}
+		  \marg{\meta{mandatory argument}}\dots
+		\cs{starred*}\oarg{\meta{optional arguments}}\marg{\meta{mandatory arguments}}
+	\end{semiverbatim}
+	You are also familiar with \LaTeX{} environments:
+	\begin{semiverbatim}
+		\cs{begin}\marg{\meta{environment}}\oarg{\meta{optional argument}}
+		  \marg{\meta{mandatory argument}}
+		  \dots
+		\cs{end}\marg{\meta{environment}}
+	\end{semiverbatim}
+\end{frame}
+
+\begin{frame}{Creating your own commands}
+
+  \begin{block}{Syntax}
+    \alert<1>{\cs{newcommand*}}\alert<2>{\marg{\cs{\meta{name}}}}\alert<3>{\marg{\meta{replacement text}}}\newline
+    \alert<1>{\cs{newcommand*}}\alert<2>{\marg{\cs{\meta{name}}}}\alert<4>{\oarg{\meta{number}}}%
+    \alert<3>{\marg{\meta{replacement text}}}
+  \end{block}
+
+  \begin{block}{Examples}
+	\cs{newcommand*}\marg{\cs{authorname}}\marg{Joseph Wright} \newline
+	\cs{newcommand*}\marg{\cs{important}}\oarg{1}\marg{\cs{textbf}\marg{\#1}}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Can you think why it might make sense to create a command \cs{authorname} even though \LaTeX{} already provides \cs{author}\marg{\meta{name}}?
+
+  Try creating your own simple commands using \cs{newcommand}.
+  Think of how to create commands using 1, 2 and 3 arguments.
+
+  Define a new command as follows:
+  \begin{verbatim}
+	\newcommand*{\veryimportanttext}[1]{\begin{center}\bfseries #1\end{center}}
+  \end{verbatim}
+
+  Can you use the command to produce the following?
+  \begin{center}
+	\bfseries This is a very important piece of text.
+  \end{center}
+  What about this?
+  \begin{center}
+  	\bfseries This is a very important piece of text.
+
+	This piece of text, however, is even more important.
+  \end{center}
+  What is the difference?
+  Does removing the asterisk from \cs{newcommand*} help?
+\end{exercise}
+
+\tutornote{11:10}
+
+\begin{frame}{Extended syntax}
+
+  \begin{block}{‘Short’ and ‘long’ arguments}
+  	A ‘short’ argument cannot include a paragraph break.\\
+	A ‘long’ argument can include one.
+
+    Use \alert<2>{\cs{newcommand*}} if all arguments must be \alert<2>{short}.\\
+    Use \alert<3>{\cs{newcommand}} if some arguments may be \alert<3>{long}.
+  \end{block}
+
+  \begin{block}{Examples}
+	\cs{newcommand*}\marg{\cs{important}}\oarg{1}\marg{\cs{textbf}\marg{\#1}}\newline
+	\cs{newcommand}\marg{\cs{important}}\oarg{1}\marg{\{\cs{bfseries} \#1\}}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Optional arguments}
+
+  Sometimes, you might want to allow an optional argument.
+
+  \begin{block}{Optional arguments}
+  	\cs{newcommand*}\marg{\cs{\meta{name}}}\oarg{\meta{number}}%
+    \alert<1>{\oarg{\meta{default value of optional argument}}}\marg{\meta{replacement text}}\newline
+  	\cs{newcommand}\marg{\cs{\meta{name}}}\oarg{\meta{number}}%
+    \alert<1>{\oarg{\meta{default value of optional argument}}}\marg{\meta{replacement text}}
+  \end{block}
+
+  If there is an optional argument, it must be the \textbf{first}.
+
+  \begin{block}{Examples}
+	\cs{newcommand*}\marg{\cs{veryimportant}}\oarg{1}\oarg{Attention!}\marg{\cs{textbf}\marg{\#1}}\newline
+	\cs{newcommand*}\marg{\cs{aside}}\oarg{2}\oarg{Note}\marg{\cs{textbf}\marg{\#1: \#2}}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Suppose that you want to be able to say \cs{person}\oarg{\meta{phone}}\marg{\meta{first name}}\marg{\meta{surname}}.
+  You would like this to produce the following output when the optional command is provided:
+  \begin{quotation}
+	\textbf{\meta{surname}}, \meta{first name} \meta{phone}
+  \end{quotation}
+  or otherwise:
+  \begin{quotation}
+	\textbf{\meta{surname}}, \meta{first name}
+  \end{quotation}
+  Can you create a command which behaves as you wish?
+
+  Suppose that you want to change the output of \cs{person} in the second half of your document.
+  This time, you would like the output to be:
+  \begin{quotation}
+	\textbf{\meta{first name}} \meta{surname} \meta{phone}
+  \end{quotation}
+  or:
+  \begin{quotation}
+	\textbf{\meta{first name} \meta{surname}}
+  \end{quotation}
+
+  What happens if you try to use \cs{newcommand*} to make this change?
+
+  What difference does it make if you use \cs{renewcommand*} instead?
+
+  Can you figure out what \cs{providecommand*} does?
+
+  (Check appendix \ref{subsec:commands}.
+  Were you right?)
+\end{exercise}
+
+\tutornote{11:25}
+
+\begin{frame}{Creating your own environments}
+
+  \begin{block}{Syntax}
+	\emph{All arguments must be short:}\smallskip
+
+    \alert<1>{\cs{newenvironment*}}\alert<3>{\marg{\meta{name}}}\alert<5>{\marg{\meta{begin env}}}\alert<6>{\marg{\meta{end env}}}
+
+    \alert<1>{\cs{newenvironment*}}\alert<3>{\marg{\meta{name}}}\alert<4>{\oarg{\meta{number}}\oarg{\meta{default value}}}%
+    \alert<5>{\marg{\meta{begin env}}}\alert<6>{\marg{\meta{end env}}}\medskip
+
+	\noindent\emph{Some argument may be long:}\smallskip
+
+    \alert<2>{\cs{newenvironment}}\alert<3>{\marg{\meta{name}}}\alert<5>{\marg{\meta{begin env}}}\alert<6>{\marg{\meta{end env}}}
+
+    \alert<2>{\cs{newenvironment}}\alert<3>{\marg{\meta{name}}}\alert<4>{\oarg{\meta{number}}\oarg{\meta{default value}}}%
+      \alert<5>{\marg{\meta{begin env}}}\alert<6>{\marg{\meta{end env}}}\\
+  \end{block}
+
+\end{frame}
+\begin{frame}[fragile]
+
+  \begin{block}{Examples}
+	\begin{verbatim}
+	\newenvironment*{inset}{%
+		  \begin{minipage}{.75\textwidth}%
+	}{%
+		  \end{minipage}%
+	}
+	\end{verbatim}
+	\begin{verbatim}
+	\newenvironment*{titledinset}[1]{%
+		  \begin{minipage}{.75\textwidth}%
+		  \textbf{#1}\medskip\par
+	}{%
+		  \end{minipage}%
+	}
+	\end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+	Experiment by creating some simple environments of your own.
+
+	Can you define the environment \env{titledinset} so that the title is centred but the body of the environment is not?
+
+	\LaTeX{} also provides \cs{renewenvironment} and \cs{renewenvironment*} for redefining custom environments.
+
+	Can you create an environment which would be suitable for typesetting acknowledgements in a thesis or dissertation?
+	Use \cs{clearpage} to ensure that your acknowledgements appear on a page of their own.
+	Use \cs{cleardoublepage} to ensure that they appear on a right-hand page of their own in a double-sided document.
+\end{exercise}
+
+\Cref{sec:macros} provides a more detailed overview of the facilities \LaTeXe{} offers for (re)defining macros.
+\Cref{sec:beyond2e} alludes to the wider world beyond.
+
+\tutornote{11:40}
+
+\begin{frame}{Creating your own packages}
+
+  It is convenient to put the commands and environments you create into your own \LaTeX{} package.
+  \begin{itemize}
+  	\item You can reuse the macros in many documents.
+	\item Macro definitions do not distract from content when editing your document.
+	\item Your macros can be easily shared with others.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{‘Style’ files}
+
+  \LaTeX{} packages are provided as ‘style’ files with extension \texttt{.sty}.
+  \begin{block}{Syntax}
+	\begin{verbatim}
+		\NeedsTeXFormat{LaTeX2e}
+		\ProvidesPackage{<name>}% filename without extension .sty
+
+		\RequirePackage{<name>}% load a package like this
+		\RequirePackage[<options>]{<name>}% or like this
+
+		<macro definitions>
+
+		\endinput
+	\end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+	Create a package for the commands and environments you defined earlier.
+	Save it as part of your project in Overleaf and put \cs{usepackage}\marg{\meta{name}} in the preamble of your \texttt{.tex} file, deleting the macro definitions you've transferred to the package.
+	Check that your document still compiles as it should!
+\end{exercise}
+
+\tutornote{12:00: end}
+
+\furtherinfo*[%
+  custom macros:
+  \begin{itemize}
+    \item Appendix \ref{handouts:sec:macros}: summary and extension of today's material on creating custom macros in \LaTeXe.
+    \item Appendix \ref{handouts:sec:beyond2e}: brief overview of custom macro creation with \pkg{xparse}, \LaTeX 3 \& \TeX.
+  \end{itemize}%
+]
+
+\appendix\label{app}
+
+\section<1-| beamer:0>{Creating Macros}\label{sec:macros}
+% BEGIN sec:macros
+
+\LaTeX{} macros for defining custom commands and environments include:
+\begin{itemize}
+  \item \cs{newcommand}
+  \item \cs{newcommand*}
+  \item \cs{renewcommand}
+  \item \cs{renewcommand*}
+  \item \cs{providecommand}
+  \item \cs{providecommand*}
+  \item \cs{newenvironment}
+  \item \cs{newenvironment*}
+  \item \cs{renewenvironment}
+  \item \cs{renewenvironment*}
+\end{itemize}
+It is best to start with these since you should prefer them to \TeX{} macros such as \cs{def}.
+However, sometimes only the \TeX{} macros will work.
+It is easier to understand when and why \cs{def} and friends are needed once you have a good understanding of how the \LaTeX{} macros work.
+
+\subsection{Defining, redefining and providing commands}\label{subsec:commands}
+% BEGIN subsec:commands
+
+This section explains how to define and redefine \emph{commands}.
+Commands defined using the \LaTeXe{} facilities listed above may take
+\begin{itemize}
+  \item no arguments (e.g.~\cs{maketitle});
+  \item one or more mandatory arguments (e.g.~\cs{textbf}\marg{\meta{text}});
+  \item an optional argument (e.g.~\cs{pagebreak}\oarg{\meta{number}});
+  \item an optional argument combined with one or more mandatory arguments (e.g.~\cs{title}\oarg{\meta{short title}}\marg{\meta{title}}).
+\end{itemize}
+The syntax for defining a \emph{new} command is
+\simp{%
+  \cs{newcommand}\marg{\cs{\meta{name}}}\oarg{\meta{n}}\oarg{\meta{default}}\marg{\meta{definition}}%
+}
+where \meta{n} is the total number of arguments and \meta{definition} is the definition of the command.
+If \meta{n} is not specified, \LaTeX{} assumes the command cannot take arguments.
+If \meta{default} is given, the first argument is optional and, if missing, \meta{default} is used.
+The definition of the command may refer to the arguments, if applicable, as \narg, \dots, \narg[9].
+
+For example, this is how \cs{tableofcontents} is defined in \filename{article.cls}:
+
+\begin{verbatim}
+  \newcommand\tableofcontents{%
+    \section*{\contentsname
+      \@mkboth{%
+        \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+    \@starttoc{toc}%
+  }
+\end{verbatim}
+The command takes no arguments, either mandatory or optional, so only the macro name, \cs{tableofcontents} and the definition of the macro are given.
+
+Here is an example with a single, mandatory argument from \filename{ltnews.cls}:
+\begin{verbatim}
+    \newcommand\cs[1]{\texttt{\textbackslash#1}}
+\end{verbatim}
+The \narg{} refers to the first argument.
+
+This is an example from \filename{latex.ltx} defining a new command which takes 2 arguments, one mandatory and one optional.
+\begin{verbatim}
+  \newcommand\qbezier[2][0]{\bezier{#1}#2}
+\end{verbatim}
+\narg{} refers to the first, optional argument and \narg[2] to the second, mandatory argument.
+If the optional argument is not given, the default value of \textt{0} will be used as \narg.
+That is, the following are equivalent:
+\begin{verbatim}
+  \qbezier[0]{...}
+  \qbezier{...}
+\end{verbatim}
+
+
+The number of arguments may not exceed 9 and no more than one optional argument may be specified using \cs{newcommand}.
+All other arguments must be mandatory.
+Moreover, if an optional argument is available, it must be specified first and the syntax of the defined command is always
+\simp{\cs{mycommand}\oarg{\meta{optional}}\marg{\meta{mandatory}}\marg{\meta{mandatory}}\marg{\meta{mandatory}}\textt{\dots}.}
+
+\cs{newcommand} checks for an existing command of the same name and produces an error if it finds one.
+So there is a built-in check to prevent accidentally overwriting an existing command.
+
+\cs{newcommand*} is just like \cs{newcommand} but its arguments cannot contain paragraph breaks.
+
+To \emph{redefine} an existing command, you can use \cs{renewcommand} or \cs{renewcommand*}.
+In this case, \LaTeX{} checks whether or not the command already exists and produces an error if it does not.
+
+If you want to \emph{define a command only if it does not exist already}, you can use \cs{providecommand} or \cs{providecommand*}.
+% END subsec:commands
+
+\subsection{Defining and redefining environments}\label{subsec:env}
+% BEGIN subsec:env
+
+This section explains how to define and redefine \emph{environments}.
+Environments defined using the \LaTeXe{} facilities listed above may take
+\begin{itemize}
+  \item no arguments
+  \simp[e.g.]{\env{document};}
+  \item one or more mandatory arguments
+  \simp[e.g.]{\env{thebibliography}\marg{\meta{widest label}};}
+  \item an optional argument
+  \simp[e.g.]{\env{figure}\oarg{\meta{permitted location specifications}};}
+  \item an optional argument combined with one or more mandatory arguments
+  \simp[e.g.]{\env{minipage}\oarg{\meta{alignment}}\marg{\meta{width}}.}
+\end{itemize}
+The syntax for defining a \emph{new} environment is
+\simp{%
+  \cs{newenvironment}\marg{\meta{env name}}\oarg{\meta{n}}\oarg{\meta{default}}\marg{\meta{begin env}}\marg{\meta{end env}}%
+}
+where \meta{env name} is the name of the new environment, \meta{n} is the number of arguments (0 if not specified) and \meta{default} is the default value of the first argument if the first argument is optional (all arguments are mandatory if this is not specified).
+\meta{begin env} and \meta{end env} specify the code to be executed at the beginning and end of the environment.
+
+This is very like \cs{newcommand}.
+\meta{n} cannot exceed 9, only one argument may be optional and it must be the first argument, and \LaTeX{} will complain if an environment of the same name already exists. \narg,\dots \narg[9] refer to the arguments given to the environment if applicable.
+
+Here is a (complicated!) example from \filename{cuisine.sty} with 3 arguments, all mandatory:
+
+\begin{verbatim}
+  \newenvironment{recipe}[3]{%
+    \stepcounter{r@cipenumber}
+    \let\newstep\m@thodend
+    \let\recipen@wpage\newpage
+    \let\newpage\r@cipen@wpage
+    \let\0\d@grees
+    \let\degrees\d@grees
+    \let\fr\fr@ction
+    \let\ing\ingr@dient
+    \let\ingredient\ingr@dient
+    \let\freeform\fr@eform
+    \n@wpagingfalse%
+    \setlength{\parindent}{0pt}
+    \savebox{\st@pingrbox}[\R@cipeIQUWidth]{}
+    \savebox{\st@pmethodbox}[\R@cipeMethodWidth]{}
+    \ifind@xing
+    \addcontentsline{toc}{subsection}{#1}
+    \fi
+    \r@cipetitle{#1}{#2}{#3}
+    \vskip0.2cm%
+    \p@stingred%
+  }%
+  {%
+    \pr@ingred%
+    \ifnum\value{st@pnumber}=0%  then complain!
+    \PackageWarning{cuisine}{The recipe did not have any steps}%
+    \fi%
+
+    \pagebreak[0]%
+    \medskip%
+    \@endpetrue%
+  }%
+\end{verbatim}
+
+\cs{newenvironment*} is just like \cs{newenvironment} but its arguments cannot contain paragraph breaks.
+
+To redefine an existing environment, use \cs{renewenvironment} or \cs{renewenvironment*}.
+Again, \LaTeX{} will complain in this case if the environment does not already exist.
+% END subsec:env
+
+\subsection{Counting \& measuring}\label{subsec:cntmsr}
+
+% BEGIN subsec:cntmsr
+
+Sometimes you need to count or measure things and \LaTeX{} allows you to create custom counters and lengths for these purposes.
+
+The syntax for defining a new counter is
+\simp{%
+  \cs{newcounter}\marg{\meta{countername}}%
+}
+To set a counter to a given value,
+\simp{%
+  \cs{setcounter}\marg{\meta{countername}}\marg{\meta{integer}}%
+}
+To add to a counter,
+\simp{%
+  \cs{addtocounter}\marg{\meta{countername}}\marg{\meta{integer}}%
+}
+To increment a counter by 1,
+\simp{%
+  \cs{stepcounter}\marg{\meta{countername}}%
+}
+To increment a counter by 1 and enable \cs{label} and \cs{ref} to use the resulting value,
+\simp{%
+  \cs{refstepcounter}\marg{\meta{countername}}%
+}
+
+The syntax for defining a new length is
+\simp{%
+  \cs{newlength}\marg{\cs{\meta{lengthname}}}%
+}
+To set a length to a given dimension,
+\simp{%
+  \cs{setlength}\marg{\meta{lengthname}}\marg{\meta{dimension}}%
+}
+To add to a length,
+\simp{%
+  \cs{addtolength}\marg{\meta{lengthname}}\marg{\meta{dimension}}%
+}
+To set a length to the width, height or depth of something,
+\begin{itemize}
+  \item \cs{settowidth}\marg{\meta{lengthname}}\marg{\meta{something whose width is to be measured}}
+  \item \cs{settoheight}\marg{\meta{lengthname}}\marg{\meta{something whose height is to be measured}}
+  \item \cs{settodepth}\marg{\meta{lengthname}}\marg{\meta{something whose depth is to be measured}}
+\end{itemize}
+
+% END subsec:cntmsr
+
+\subsection{Internal \protect\emph{vs.}\ external}\label{subsec:intext}
+
+% BEGIN subsec:intext
+
+You will sometimes see the following macros in examples:
+\begin{itemize}
+  \item \cs{makeatletter}
+  \item \cs{makeatother}
+\end{itemize}
+Usually, \verb|@| is not permitted in macro names in documents.
+However, it is used extensively in the names of macros defined in classes, packages etc\@.
+In general, \verb|@| marks a macro as an \emph{\bfseries internal} one and not intended to be used by end-users in documents.
+Typically, such macros are more liable to change in future development, because authors may change the internal implementation of a package or class, while keeping the user-interface stable.
+Hence, these should not be redefined willy-nilly: if there is a supported way to do what you need without redefining internals, that should be used instead.
+
+If you do redefine these macros --- or if you use \verb|@| to mark your own macros as internal --- you will need to know the following.
+\begin{itemize}
+  \item In a class (\verb|.cls|) or package {\verb|.sty|} file, \verb|@| may be used freely in macro names.
+  \item In a document (\verb|.tex|), it is necessary to used
+  \begin{verbatim}
+    \makeatletter % allow use of @ in macro names
+    ...
+    \makeatother % return to normal state
+  \end{verbatim}
+  This should generally be avoided in the body of the \env{document}.
+  If you need to use this at all, use in in the preamble, before the \env{document} itself begins.
+\end{itemize}
+
+% END subsec:intext
+
+% END sec:macros
+
+\section<1-| beamer:0>{Beyond \LaTeXe}\label{sec:beyond2e}
+
+% BEGIN sec:beyond2e
+
+When you are comfortable with these methods of customisation, you will find that there are limitations on what you can do.
+At this stage, you will want to take a look at \pkg{xparse} which provides much more powerful and flexible options from the work developing \LaTeX 3.
+For further development, you may wish to look at the underlying \LaTeX 3 syntax, which is really, really nice.
+In particular, it is far more logical and consistent than the syntax used by \TeX{} and even \LaTeX{}.
+But these methods will make more sense once you are familiar with the possibilities offered by the \LaTeXe{} macros.
+
+\subsection[xparse]{\protect\pkg{xparse}}\label{subsec:xparse}
+
+% BEGIN subsec:xparse
+
+The standard \LaTeXe{} facilities for defining and redefining macros support a limited syntax\footnote{%
+  The reality is a little more complicated than this, but for current purposes, the description here is a good enough approximation.%
+}:
+\begin{itemize}
+  \item no possibility to define a starred variant;
+  \item only one optional argument allowed;
+  \item any optional argument must be the first one;
+  \item optional arguments must be given a default value;
+  \item optional arguments must use the \oarg{\meta{value}} syntax;
+  \item mandatory arguments must use the \marg{\meta{value}} syntax.
+\end{itemize}
+\pkg{xparse} removes these limitations, along with a few others.
+For a full description of the macro creation framework provided, see the package's manual.
+These include support for commands, environments, argument testing and argument processing.
+Here, I'm just going to give an illustrative example, together with a subset of the syntax.
+
+\begin{itemize}
+  \item \cs{NewDocumentCommand}\cs{\meta{name}}\marg{\meta{argument specification}}\marg{\meta{definition}}
+\end{itemize}
+\cs{NewDocumentCommand} corresponds to \cs{newcommand}.
+{\tikzset{external/export=false}%
+  \begin{figure}
+    \centering
+    \begin{tikzpicture}[remember picture]
+      \node (spec) [font=\ttfamily] { \dots{} \marg{ \subnode{s}{s} \subnode{o}{o} \subnode{sm}{m} \subnode{O}{O} \subnode{O default}{\marg{1}} \subnode{sum}{+}\subnode{d}{d} \subnode{d delim}{()} \subnode{plus}{+}\subnode{m}{m} } \dots };
+      \begin{scope}[Latex-Circle, shorten <=-1pt]
+        \draw (s.south) [bend left] to +(-10mm,-10mm) node (star) [anchor=east] {optional star};
+        \node (bool) [inner ysep=0pt, anchor=north east] at (star.south east) {(Boolean)};
+        \draw (o.south) [bend left] to  ([yshift=-5mm]bool.south east) node (opt) [anchor=east] {optional argument};
+        \node (no default) [inner ysep=0pt, anchor=north east] at (opt.south east) {(no default)};
+        \draw (sm.south) [bend left] to  ([yshift=-5mm]no default.south east) node (short) [anchor=east] {mandatory argument};
+        \draw (O.south) [bend left] to ([yshift=-5mm]short.south east) node (optional) [anchor=east] {optional argument};
+        \node (default) [inner ysep=0pt, anchor=north east] at (optional.south east) {(with default)};
+        \draw (O default.south) [bend left] to ([yshift=-5mm]default.south east) node [anchor=east] {default value for \texttt{O}};
+        \draw (m.south) [bend right] to +(10mm,-10mm) node (mandatory) [anchor=west] {mandatory argument};
+        \draw (plus.south) [bend right] to ([yshift=-5mm]mandatory.south west) node (long) [anchor=west] {\texttt{m} is ‘long’};
+        \node (pars) [anchor=north west, inner ysep=0pt] at (long.south west) {(can include paragraph breaks)};
+        \draw (d delim.south) [bend right] to ([yshift=-5mm]pars.south west) node (delimiters) [anchor=west] {delimiters for \texttt{d}};
+        \draw (d.south) [bend right] to ([yshift=-5mm]delimiters.south west) node (delimited) [anchor=west] {delimited optional argument};
+        \node (d delims) [anchor=north west, inner ysep=0pt] at (delimited.south west) {(non-standard delimiters)};
+        \draw (sum.south) [bend right] to ([yshift=-5mm]d delims.south west) node (long d) [anchor=west] {\texttt{d} is ‘long’};
+        \node [anchor=north west, inner ysep=0pt] at (long d.south west) {(can include paragraph breaks)};
+      \end{scope}
+      \end{tikzpicture}
+      \caption[An argument specification for an xparse macro-creation command.]{An argument specification for an \pkg{xparse} macro-creation command.}\label{fig:argspec}
+    \end{figure}%
+}
+It will give an error if \cs{\meta{name}} is already defined; otherwise it will define it as instructed.
+However, the \meta{argument specification} provides a lot more flexibility than \cs{newcommand}'s.
+The specification consists of a series of letters, possibly preceded by \verb|+| and possibly followed by additional information.
+An example of an argument specification is shown in \cref{fig:argspec}.
+
+\pkg{xparse} is part of the \LaTeX 3 project, whose aim is to eventually provide the successor to \LaTeXe.
+The package is written using the syntax developed by the project, \pkg{expl3}.
+For details, see \filename{interface3,pdf} (\verb|texdoc interface3|).
+
+% END subsec:xparse
+
+\subsection{\TeX{} macro creation}\label{subsec:tex}
+
+% BEGIN subsec:tex
+
+Finally, you may wish eventually to look at \cs{def} and friends.
+These are \TeX{} commands, as opposed to \LaTeX{} ones.
+
+\textbf{Use these only when you are certain you understand why you need them and what the consequences may be.}
+
+\cs{def}, \cs{gdef}, \cs{xdef}, \cs{let} etc.\ contain \emph{\bfseries no safeguards whatsoever}.
+If you say \cs{def}\cs{value}\marg{24}, then \TeX{} will not query your decision, but your document will almost certainly not come out as you wish!
+
+This is because, unlike \cs{newcommand}, \cs{def} does not check whether a command already exists.
+If it does not exist, it creates it.
+If it does exist, it overwrites it.
+As this example shows, the danger here is not just overwriting macros you explicitly use.
+\TeX{} and \LaTeX{} rely on all sorts of macros behind the scenes and overwriting those can create just as much mayhem as overwriting the ones you use explicitly.
+In fact, these tend to create more chaos because you are that much less likely to realise your mistake.
+If you redefine \cs{section} to print ‘Tiddly Winks’, you'll probably figure this out sooner or later.
+If you redefine \cs{value} to do this, on the other hand, you may have no clue what is happening, especially if you never use \cs{value} directly and have little idea what it does.
+
+\begin{center}
+  \LARGE\textzf{Caveat Emptor \dots}
+\end{center}
+
+% END subsec:tex
+
+% END sec:beyond2e
+
+
+\end{document}

@@ -1,0 +1,19 @@
+\documentclass[british,a5paper,landscape]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[x11names,dvipsnames]{xcolor}
+\usepackage{csquotes,xpatch,geometry,babel,standalone}
+\usepackage[backend=biber,style=authoryear-icomp]{biblatex}
+\addbibresource{myrefs.bib}
+\addbibresource{myrefs-add.bib}
+\usepackage{bookmark}
+\hypersetup{%
+  colorlinks,
+  citecolor=DodgerBlue3,
+  urlcolor=WildStrawberry,
+}
+\pagestyle{empty}
+\begin{document}
+\Textcite{smullyan-unfortunate-dualist-minds-i} makes for puzzling reading.
+
+\input{example12}
+\end{document}

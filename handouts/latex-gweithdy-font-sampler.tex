@@ -1,0 +1,380 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex: { synctex: true }
+%% Copyright 2015 Clea F. Rees
+% \listfiles
+\pdfminorversion=7
+\documentclass[a4paper,welsh,british,12pt]{article}
+\PassOptionsToPackage{B1,LY1,T1}{fontenc}
+\input{config/handouts-da.cfg}
+\svnidlong
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/handouts/latex-gweithdy-font-sampler.tex $}
+{$LastChangedBy: cfrees $}
+{$LastChangedRevision: 5802 $}
+{$LastChangedDate: 2017-01-31 04:26:20 +0000 (Maw, 31 Ion 2017) $}
+% best not to mix \svnid and \svnidlong (or to always typeset time-zone with time? see documentation)
+%	\svnid{$Id: latex-gweithdy-font-sampler.tex 5802 2017-01-31 04:26:20Z cfrees $}
+\usepackage{Acorn, AnnSton, ArtNouv, ArtNouvc, Carrickc, Eichenla, Eileen, EileenBl, Elzevier, GotIn, GoudyIn, Kinigcap, Konanur, Kramer, MorrisIn, Nouveaud, Romantik, Rothdn, Royal, Sanremo, Starburst, Typocaps, Zallman}
+\usepackage{auncial,aurical,pifont,adforn,fontawesome}
+\usepackage[all]{tengwarscript}
+\newcommand{\test}[1][]{% straight from tengfonts.tex
+\vbox{
+  {#1\Ttelco}\TTacute\Tlambe\Ts
+  {#1\Tampa}\TTacute\Tlambe\TTrightcurl\Tthuule\Ts
+  {#1\Tmalta}\TTleftcurl\Toore\Tthuule\TTtwodotsbelow\TTdoubleacute\Tlambe\TTthreedots\Tungwe\TTrightcurl\Ts
+  {#1\Thyarmen}\TTdot\Tando\TTnasalizer\TTdoubleleftcurl\Ts
+  {#1\Tquesse}\TTrightcurl\Tmalta\Taara\TTdot\Ttelco\TTthreedots\Ts
+  {#1\Tformen}\TTacute\Tlambe\TTdot\Tthuule\Ts
+  {#1\Tquesse}\TTthreedots\Toore\Tando\TTdot\Talda\TTrightcurl\Ts
+  {#1\Ttelco}\TTbreve\Ts
+  {#1\Tquesse}\TTdot\Tvala\TTdot\Ts\Tcolon\Ts
+  {#1\Tlambe}\TTthreedots\Ts
+  {#1\Tthuule}\TTdot\Tungwe\TTlefttilde\TTacute\Tnoldo\TTthreedots\Ts
+  {#1\Ttelco}\TTacute\Tnuumen\Thwesta\TTrightcurl\Tanca\TTthreedots\Tando\TTthreedots\Ts
+  {#1\Tando}\TTacute\Tlambe\Ts
+  {#1\Tformen}\Tuure\TTthreedots\Tsilme\Ttinco\TTrightcurl\Ts
+  {#1\Troomen}\Tyanta\TTacute\Ts
+  {#1\Tcalma}\TTdot\Tnuumen\TTrightcurl\Ts
+  {#1\Ttinco}\TTrightcurl\Tquesse\TTthreedots\Tumbar\TTthreedots\Ts
+  {#1\Ttelco}\TTacute\Tlambe\Ts
+  {#1\Troomen}\TTthreedots\Toore\TTrightcurl\Ts
+  {#1\Tsilmenuquerna}\TTthreedots\Tquesse\Tlefthook\TTrightcurl\Tformen\TTdoublerightcurl\Tnuumen\Ts
+  {#1\Tando}\TTacute\Ts
+  {#1\Thyarmen}\TTtwodotsbelow\TTacute\Troomen\TTrightcurl\Ts
+  {#1\Tando}\TTacute\Ttinco\Troomen\Taara\TTthreedots\Trighthook\Ts
+  {#1\Tando}\TTacute\Tlambe\Ts
+  {#1\Tparma}\TTthreedots\Tlambe\TTacute\Tquesse\TTnasalizer\TTacute\Ts\Tcolon\Tcenteredlongtilde
+}}
+\usepackage{xparse,expl3,parskip}
+\geometry{scale=.9,nohead,marginparwidth=0pt,marginparsep=0pt}
+\title{\LaTeX{} Font Sampler}
+\author{Clea F. Rees\hskip 1.5em \faEnvelopeO{} \textpl{ReesC21@cardiff.ac.uk}}
+\fancyhf[cf]{%
+  \footnotesize
+  Weight, shape \& style variations are illustrations only.
+  Sampler is not exhaustive.
+  Fonts may require \texttt{getnonfreefonts-sys}.}
+\ExplSyntaxOn
+\bool_new:N \l_cfr_first_bool
+\NewDocumentCommand \buledeto {}{
+  \bool_set_true:N \l_cfr_first_bool
+}
+\buledeto
+\keys_define:nn { cfr / ffontiau / enw } {
+  encoding .tl_set:N = \l_cfr_encoding_tl,
+  encoding .initial:n = {T1},
+  series .tl_set:N = \l_cfr_series_tl,
+  series .initial:n = {m},
+  shape .tl_set:N = \l_cfr_shape_tl,
+  shape .initial:n = {n},
+}
+\NewDocumentCommand \enwffont { o m m O {} o g g } {%
+  \group_begin:
+  \IfValueT { #1 } {\keys_set:nn { cfr / ffontiau / enw } { #1 }}
+  \normalfont
+  \bool_if:NT \l_cfr_first_bool {\textbullet{}~}
+  \fontencoding{\l_cfr_encoding_tl}
+  \fontfamily{#2}
+  \fontseries{\l_cfr_series_tl}
+  \fontshape{\l_cfr_shape_tl}
+  \selectfont #3~
+  \IfValueTF { #5 }{
+	\keys_set:nn { cfr / ffontiau / enw } { #5 }
+	\IfValueTF { #6 } {
+	  {
+		\fontencoding{\l_cfr_encoding_tl}
+		\fontfamily{#6}
+		\fontseries{\l_cfr_series_tl}
+		\fontshape{\l_cfr_shape_tl}
+		\selectfont
+		\IfValueTF { #7 }{ #7~ }{ #3~ }
+	  }
+	}{
+	  {
+		\fontencoding{\l_cfr_encoding_tl}
+		\fontfamily{#2}
+		\fontseries{\l_cfr_series_tl}
+		\fontshape{\l_cfr_shape_tl}
+		\selectfont
+		\IfValueTF { #7 }{ #7~ }{ #3~ }
+	  }
+	}
+  }{
+	\IfValueT { #6 } {
+	  {
+		\fontfamily{#6}
+		\selectfont
+		\IfValueTF { #7 }{ #7~ }{ #3~ }
+	  }
+	}
+  }
+  \str_if_eq_x:nnF {#4} {} { #4~ }
+  \normalfont\textbullet
+  \group_end:
+  \bool_set_false:N \l_cfr_first_bool}
+\ExplSyntaxOff
+\makeatletter
+\newcommand\rauri{%
+  \renewcommand\auri@slant{Rslant}%
+}
+\makeatother
+\newcounter{myding}
+\begin{document}
+\pdfinfo{%
+  /Title	(LaTeX Font Sampler)
+  /Keywords	(LaTeX, fonts, sampler)}
+\maketitle\thispagestyle{fancy}
+\enwffont{cmr}{Computer Modern Roman}
+\enwffont{cmdh}{Computer Modern Roman Dunhill}
+\enwffont{cmfr}{Computer Modern Fibonacci}
+\enwffont{cmss}{Computer Modern Sans}
+\enwffont{cmtt}{Computer Modern Typewriter}
+\enwffont{cmvtt}{Computer Modern Variable Typewriter}
+\enwffont{cmbr}{Computer Modern Bright}
+\enwffont{ccr}{Concrete}
+\enwffont{clm}{Latin Modern Roman}
+\enwffont{clm}{Medium Upright \textit{Italics} \textui{Upright Italics} \textsl{Oblique} \textsc{Small-Caps} \textsi{Oblique Small-Caps} \textbf{Bold \textit{Italics} \textsl{Oblique}} \textsb{Semi-Bold \textsl{Oblique}}}
+\enwffont{clmd}{Latin Modern Roman Dunhill}
+\enwffont{clmd}{Medium \textsl{Oblique}}
+\enwffont{clms}{Latin Modern Sans}
+\enwffont{clms}{Medium \textsl{Oblique} \textbf{Bold \textsl{Oblique}} {\fontseries{sbc}\selectfont Semi-Bold Condensed \textsl{Oblique}}}
+{\footnotesize
+  \enwffont{clmqs}{Latin Modern Sans Quotation}
+  \enwffont{clmqs}{Medium \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}}
+\enwffont{clmv}{Latin Modern Variable Typewriter}
+\enwffont{clmv}{Medium \textsl{Oblique} \textbf{Bold \textsl{Oblique}} \textlg{Light \textsl{Oblique}}}
+\enwffont{clmt}{Latin Modern Typewriter}
+\enwffont{clmt}{Medium Upright \textit{Italics} \textsl{Oblique} \textsc{Small-Caps} \textsi{Oblique Small-Caps} \textbf{Bold \textsl{Oblique}} \textlg{Light \textsl{Oblique} \textcd{Condensed \textsl{Oblique}}}}
+{\setcounter{myding}{65}%
+  \renewcommand\textbullet{\stepcounter{myding}\ding{\themyding}}%
+\enwffont{uaq}{URW Antiqua T}
+\enwffont[series=l]{pbk}{URW Bookman L}
+\enwffont{ptm}{URW Nimbus Roman}
+\enwffont{ppl}{URW Palladio}
+\enwffont{pnc}{URW Schoolbook L}
+\enwffont{pag}{URW Gothic L}
+\enwffont{phv}{URW Nimbus Sans L}
+\enwffont{pcr}{URW Nimbus Mono L}
+\enwffont{pzc}{URW Chancery L}
+\enwffont{ugq}{URW Grotesk T}
+\enwffont{ugm}{URW GaramondNo8}
+\enwffont{ua1}{URW Arial}
+\enwffont{ulg}{URW LetterGothic}
+\enwffont{uop}{URW Classico}
+\enwffont{zgmx}{URW GaramondNo8 Expert}
+\enwffont{qag}{TeX Gyre Adventor}
+\enwffont{qag}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qbk}{TeX Gyre Bonum}
+\enwffont{qbk}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qcr}{TeX Gyre Cursor}
+\enwffont{qcr}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qcs}{TeX Gyre Schola}
+\enwffont{qcs}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qhv}{TeX Gyre Heros}
+\enwffont{qhv}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qhvc}{TeX Gyre Heros Condensed}
+\enwffont{qhvc}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qpl}{TeX Gyre Pagella}
+\enwffont{qpl}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{qtm}{TeX Gyre Termes}
+\enwffont{qtm}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont[shape=it]{qzc}{TeX Gyre Chorus}
+\enwffont{put}{Utopia}
+\enwffont{Heuristica-TLF}{Heuristica}
+\enwffont{erewhon-OsF}{Erewhon}
+\enwffont{erewhon-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps} \textbf{\textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}}}
+}%
+\enwffont{bch}{Charter BT}% last one in the psnfss group after the end of the group for the bullets to revert properly
+\enwffont{jkp}{KP-Fonts Serif}
+\enwffont{jkpl}{KP-Fonts Serif Light}
+\enwffont{jkpx}{KP-Fonts Serif Extended}
+\enwffont{jkpx}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps} \textlg{Light Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}} Medium {\fontseries{sb}\selectfont Semi-Bold Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}} {\fontseries{sbx}\selectfont Semi-Bold Extended Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}} {\fontseries{b}\selectfont Bold Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}} {\fontseries{bx}\selectfont Bold Extended Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}}}[][shape=sc]{jkpxk}{Large Small-Caps {\fontshape{scsl}\selectfont Oblique} \textlg{Light Large Small-Caps {\fontshape{scsl}\selectfont Oblique}} {\fontseries{sb}\selectfont Semi-Bold Large Small-Caps {\fontshape{scsl}\selectfont Oblique}} {\fontseries{sbx}\selectfont Semi-Bold Extended Large Small-Caps {\fontshape{scsl}\selectfont Oblique}} {\fontseries{b}\selectfont Bold Large Small-Caps {\fontshape{scsl}\selectfont Oblique}} {\fontseries{bx}\selectfont Bold Extended Large Small-Caps {\fontshape{scsl}\selectfont Oblique}}}
+\enwffont{jkp}{tactful sticklers}{jkpos}{tactful sticklers}
+\enwffont{jkpss}{KP-Fonts Sans}
+\enwffont{jkpss}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps} {\fontseries{b}\selectfont Bold  \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}} {\fontseries{bx}\selectfont Bold Extended \textit{Italics} \textsc{Small-Caps} {\fontshape{scsl}\selectfont Oblique Small-Caps}}}[][shape=sc]{jkpssk}{Large Small-Caps {\fontshape{scsl}\selectfont Oblique} {\fontseries{b}\selectfont Large Small-Caps {\fontshape{scsl}\selectfont Oblique}} {\fontseries{bx}\selectfont Large Small-Caps {\fontshape{scsl}\selectfont Oblique}}}
+\enwffont{jkpss}{tactful sticklers}{jkpssos}{tactful sticklers}
+\enwffont{jkptt}{KP-Fonts Typewriter}
+\enwffont{jkptt}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
+\acorn{Acorn} \textbullet{}
+\enwffont{Alegreya-OsF}{Alegreya}
+\enwffont{Alegreya-TLF}{\textsc{Alegreya SC}}
+\enwffont{AlegreyaSans-OsF}{Alegreya Sans}
+\enwffont{AlegreyaSans-OsF}{\textsc{Alegreya Sans SC}}
+\enwffont{AmiciLogo}{AmiciLogo}
+\enwffont{AmiciLogo}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
+\astone{Annston} \textbullet{}
+\enwffont{AnonymousPro}{AnonymousPro}
+\enwffont{antp}{Antykwa Poltawskiego}
+\enwffont{antp}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textlg{Light \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textsb{Semi-Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{antt}{Antykwa Toruńska}
+\enwffont{anttc}{Antykwa Toruńska Condensed}
+\enwffont{anttl}{Antykwa Toruńska Light}
+\enwffont{anttlc}{Antykwa Toruńska Light Condensed}
+\enwffont{antt}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textlg{Light \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textsb{Semi-Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}
+  {\fontseries{c}\selectfont Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textlg{\cdwidth Light Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textsb{\cdwidth Semi-Bold Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} {\fontseries{bc}\selectfont Bold Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}}
+{\setcounter{myding}{26}%
+  \renewcommand\textbullet{%
+	\stepcounter{myding}%
+	\ifnum\value{myding}=41\setcounter{myding}{55}%
+	\else\ifnum\value{myding}=70\setcounter{myding}{3}\fi\fi
+	\adforn{\themyding}}%
+\enwffont{AccanthisADFStdNoThree-LF}{AccanthisNo3}
+\enwffont[encoding=LY1]{ybd}{BerenisADFPro}
+\enwffont[encoding=LY1]{ybd}{Upright \textit{Italics} \textsc{Small-Caps \textit{Italic Small-Caps}} \textbf{Bold \textit{Italics} \textsc{Small-Caps \textit{Italic Small-Caps}}}}
+\enwffont[encoding=LY1]{ybd}{Queenie, actor-spy and often acclaimed sky-stringer, chuckled at slightly shivering otters in fjords.}{ybdw}{Q*ueenie, actor-spy and often acclaimed sky-stringer, chuckled at slightly shivering otters in fjords.}
+\enwffont{ybv}{BaskervaldADF}
+\enwffont{ybv}{Upright \textit{Italics} \textbf{Bold \textit{Italics}} \texteb{Extra-Bold \textit{Italics}}}
+\enwffont{ybv}{Somewhat splendid fjords act last.}{ybvw}{Somewhat splendid fjords act last.}
+\enwffont{yes}{ElectrumADF}{yesw}
+\enwffont{yes}{Upright \textit{Italics} \textsc{Small-Caps} \textsi{Oblique Small-Caps} \textlg{Light  \textit{Italics} \textsc{Small-Caps} \textsi{Oblique Small-Caps}} \textsb{Semi-Bold  \textit{Italics} \textsc{Small-Caps} \textsi{Oblique Small-Caps}} \textbf{Bold  \textit{Italics} \textsc{Small-Caps} \textsi{Oblique Small-Caps}}}
+\enwffont{yes}{Queen Q*ueenie acted despite wistful whistling.}{yesw}{Queen Q*ueenie acted despite wistful whistling.}
+\enwffont{GilliusADF-LF}{GilliusADF}
+\enwffont{GilliusADFNoTwo-LF}{GilliusADFNoTwo}
+\enwffont{yly}{LibrisADF}
+\enwffont{yly}{Upright \textit{Italics} \textbf{Bold \textit{Italics}}}
+\enwffont{yly}{Quietly, Rupert X. Kurtis, a churlish skittish bespectacled clerk, strictly slacks.}{ylyw}{Quietly, Rupert X. Kurtis, a churlish skittish bespectacled clerk, strictly slacks.}
+\enwffont{MintSpirit-LF}{MintSpiritNoTwo}
+\enwffont{yrd}{RomandeADF}{yrdw}
+\enwffont{yrd}{Upright \textit{Italics} \textsc{Small-Caps} \textdb{Demi-Bold  \textit{Italics} \textsc{Small-Caps}}}
+\enwffont{yrd}{Sphinx of black quartz, judge my vow. Querulous sponges act last. \swashstyle Sphinx of black quartz, judge my vow. Querulous sponges act last.}{yrda}{Querulous sponges act last. Q*uerulous s*ponges* act las*t.  \swashstyle Querulous sponges act last. Q*uerulous s*ponges* act las*t.}
+\enwffont{UniversalisADFStd-LF}{Universalis}
+\enwffont{yvt}{VenturisADF}
+\enwffont{yvt}{Upright \textit{Italics} \textsc{Small-Caps} \textsi{Italic Small-Caps} \textbf{Bold \textit{Italics} \textsc{Small-Caps} \textsi{Italic Small-Caps}} \texteb{Extra-Bold \textit{Italics}} \textcd{Condensed \textit{Italics} \textsc{Small-Caps} \textsi{Italic Small-Caps} \textbf{\cdwidth Bold Condensed \textit{Italics} \textsc{Small-Caps} \textsi{Italic Small-Caps}}}}
+\enwffont{yvt}{Kinky Querulous \emph{Rhinos} X-Ray Exultant Risque \emph{Zebras}. \scshape Kinky Querulous \emph{Rhinos} X-Ray Exultant Risque \emph{Zebras}. \upshape\swashstyle Kinky Querulous \emph{Rhinos} X-Ray Exultant Risque \emph{Zebras}. \scshape Kinky Querulous \emph{Rhinos} X-Ray Exultant Risque \emph{Zebras}.}{yvtaw}{\upshape Kinky Querulous \emph{Rhinos} X-Ray Exultant Risque \emph{Zebras}.}
+\enwffont{yv2}{VenturisADF No2}
+\enwffont{yv2}{Upright \textit{Italics} \textmb{Medium-Bold  \textit{Italics}} \textbf{Bold  \textit{Italics}} \texteb{Extra-Bold  \textit{Italics}} \textcd{Condensed  \textit{Italics} \textbf{\cdwidth Bold Condensed \textit{Italics}}}}
+\enwffont{yv1}{VenturisADF Sans}
+\enwffont{yv1}{Upright \textit{Italics} \textlg{Light  \textit{Italics}} \textdb{Demi-Bold  \textit{Italics}} \textbf{Bold  \textit{Italics}} \texteb{Extra-Bold  \textit{Italics}} \textcd{Condensed  \textit{Italics}} \textbf{\textcd{Bold Condensed  \textit{Italics}}} \textep{Extended  \textit{Italics} \textbf{\epwidth Bold Extended  \textit{Italics}}}}
+\enwffont{yv3}{VenturisADF Sans No2}
+\enwffont{yv3}{Upright \textit{Italics} \textbf{Bold  \textit{Italics}} \textcd{Condensed  \textit{Italics}} \textbf{\textcd{Bold Condensed  \textit{Italics}}} \textep{Extended  \textit{Italics} \textbf{\epwidth Bold Extended  \textit{Italics}}}}
+\enwffont{yvtd}{VenturisADF Titling No2}
+\enwffont[shape=ol]{yvtd}{VenturisADF Titling No4}
+\enwffont{yv1d}{VenturisADF  Titling No1}
+\enwffont[series=b]{yv1d}{VenturisADF  Titling No3}
+\enwffont{yvo}{VenturisADF Old}
+\enwffont{yvo}{Upright \textit{Italics} \textbf{Bold  \textit{Italics}}}
+\enwffont{yvo}{dogs \& sticks \textbf{dogs \& sticks d*ogs* \& sticks*}}
+}% last one outside the group for the bullets
+\enwffont{yvod}{VenturisADF Goth Titling}
+\enwffont[encoding=B1]{auncl}{Artificial Uncial fonts}
+\artnouv{ARTNOUV} \textbullet{}
+\artnouvc{ArtnouvC} \textbullet{}
+\enwffont{augie}{Augie}
+\enwffont{AuriocusKalligraphicus}{AuriocusKalligraphicus}
+\enwffont{AuriocusKalligraphicus}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
+\enwffont{fav}{Arev Sans}
+\enwffont{fve}{Bera Serif}
+\enwffont{fvs}{Bera Sans}
+\enwffont{fvm}{Bera Mono}
+\enwffont{sqrc}{Bookhands Square Capitals}
+\carr{CarrickC} \textbullet{}
+\enwffont{DejaVuSerif-TLF}{DejaVuSerif}
+\enwffont{DejaVuSans-TLF}{DejaVuSans}
+\enwffont{DejaVuSansMono-TLF}{DejaVuSansMono}
+\enwffont[series=xl]{pbsi}{BrushScriptX-Italic}
+\enwffont{Cabin-TLF}{Cabin}
+\enwffont{CabinCondensed-TLF}{Cabin Condensed}
+\enwffont{Caladea-TLF}{Caladea}
+\enwffont{fca}{Cantarell}
+\enwffont{Carlito-TLF}{Carlito}
+\enwffont{cmin}{Carolingan Minuscules}
+\enwffont{Cinzel-LF}{Cinzel \textbf{Cinzel} \fontseries{k}\selectfont Cinzel}
+\enwffont{CinzelDecorative-LF}{Cinzel Decorative \textbf{Cinzell Decorative} \fontseries{k}\selectfont Cinzell Decorative}
+\enwffont{ClearSans-LF}{Clear Sans}
+\enwffont{ClearSansLight-LF}{Clear Sans Light}
+\enwffont{ClearSansThin-LF}{Clear Sans Thin}
+\enwffont{fco}{Comfortaa}
+\enwffont{cyklop}{Cyklop}
+\enwffont{dayrom}{DayRoman}
+\enwffont{fdr}{Droid Serif}
+\enwffont{fds}{Droid Sans}
+% \enwffont{fdm}{Droid Mono}% ddim yn gweithio
+\enwffont{EBGaramond-OsF}{EB Garamond}[{\fontfamily{EBGaramondInitials-TLF}\selectfont G}aramond Initials][shape=sw]{EBGaramond-OsF}
+\enwffont{EBGaramond-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italic Small-Caps}}
+\enwffont{EBGaramond-OsF}{\textit{A Bad Dodger Gave Klingon Paul Quiet Reason to Strike Torrid Vanquished Wombles Zealously.} {\fontshape{sw}\selectfont A Bad Dodger Gave Klingon Paul Quiet Reason to Strike Torrid Vanquished Wombles Zealously.}}
+\eichen{Eichenla} \textbullet{}
+\eileen{Eileen} \textbullet{}
+\eileenbl{Eileen Black Letter} \textbullet{}
+\elz{Elzevier} \textbullet{}
+\enwffont{fbb-LF}{fbb}
+\enwffont{fbb-LF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}
+\enwffont{FiraSans-TLF}{Fira}
+\enwffont{foekfont}{FOEKFONT}
+\enwffont{frc}{French Cursive}
+\enwffont{gentium}{Gentium}
+\enwffont{gentium}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics}}}
+\gotin{GOT INITIALS} \textbullet{}
+\goudyin{GOUDY INITIALS} \textbullet{}
+\enwffont{artemisia}{GFS Artemisia}
+\enwffont{bodoni}{GFS Bodoni}
+\enwffont{udidot}{GFS Didot}
+\enwffont{neohellenic}{GFS Neohellenic}
+\enwffont{zi4}{Inconsolata}
+\enwffont{iwona}{Iwona}
+\enwffont{iwonac}{Iwona Condensed}
+\enwffont{iwonal}{Iwona Light}
+\enwffont{iwonalc}{Iwona Light Condensed}
+\enwffont{JanaSkrivana}{JanaSkrivana}
+\enwffont{JanaSkrivana}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
+\kinig{Kinig Cap} \textbullet{}
+\konanur{Konanur} \textbullet{}
+\kramer{KRAMER kramer} \textbullet{}
+\enwffont{kurier}{Kurier}
+\enwffont{kurierc}{Kurier Condensed}
+\enwffont{kurierl}{Kurier Light}
+\enwffont{kurierlc}{Kurier Light Condensed}
+\enwffont{fla}{Lato}
+\enwffont{LibreBaskerville-TLF}{Libre Baskerville}
+\enwffont{LibreCaslonText-TLF}{Libre Caslon}
+\enwffont{LinuxLibertineT-OsF}{Linux Libertine Roman}
+\enwffont{LinuxLibertineDisplayT-OsF}{Linux Libertine Display}
+\enwffont{LinuxLibertineInitialsT-OsF}{LINUX LIBERTINE INITIALS}
+\enwffont{LinuxBiolinumT-OsF}{Linux Biolinum}
+\enwffont{LinuxLibertineMonoT-TLF}{Linux Libertine Mono}
+\enwffont{LobsterTwo-LF}{Lobster Two}
+\enwffont{LukasSvatba}{LukasSvatba}
+\enwffont{LukasSvatba}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
+\enwffont{ul9}{Luxi Mono}
+\enwffont{Merriweather-OsF}{Merriweather}
+\enwffont{MerriweatherSans-TLF}{Merriweather Sans}
+\morrisin{Morris Initials} \textbullet{}
+\enwffont{nanummj}{nanummj}
+\enwffont{nanumgt}{nanumgt}
+\nouvd{Nouveaud} \textbullet{}
+\enwffont{fos}{OpenSans}
+\enwffont{Overlock-LF}{Overlock}
+\enwffont{OverlockSC-LF}{Overlock SC}
+\enwffont{PlayfairDisplay-OsF}{Playfair Display}
+\enwffont{PlayfairDisplay-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \fontseries{k}\selectfont Black \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}
+\enwffont{PTSerif-TLF}{PT Serif}
+\enwffont{PTSerifCaption-TLF}{PT Serif Caption}
+\enwffont{PTSans-TLF}{PT Sans}
+\enwffont{PTSansNarrow-TLF}{PT Sans Narrow}
+\enwffont{PTSansCaption-TLF}{PT Sans Caption}
+\enwffont{PTMono-TLF}{PT Mono}
+\enwffont{Quattrocento-TLF}{Quattrocento}
+\enwffont{QuattrocentoSans-TLF}{Quattrocento Sans}
+\enwffont{Raleway-TLF}{Raleway}
+\enwffont{Roboto-LF}{Roboto}
+\enwffont{RobotoCondensed-LF}{Roboto Condensed}
+\enwffont{RobotoSlab-LF}{Roboto Slab}
+\romantik{Romantik} \textbullet{}
+\roth{ROTH DN roth dn} \textbullet{}
+\royal{ROYAL} \textbullet{}
+\sanremo{San Remo} \textbullet{}
+\enwffont{SourceCodePro-TLF}{SourceCodePro}
+\enwffont{SourceSansPro-TLF}{SourceSansPro}
+\starburst{Star Burst} \textbullet{}
+\enwffont{stix}{STIX}
+\enwffont{trjn}{TRAJAN}
+\typocap{Typocaps} \textbullet{}
+\enwffont{yfrak}{Yannis Fraktur}
+\zall{Zallman} \textbullet{}
+
+{\centering
+\begin{minipage}{.6\textwidth}
+\tengwarannataritalic\test
+\end{minipage}\par
+}
+
+\end{document}

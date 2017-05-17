@@ -1,0 +1,19 @@
+\documentclass[british,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes,xpatch,geometry,babel}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{biblatex-examples.bib}
+
+\begin{document}
+This document cites a miscellany of sources \autocite[e.g.][]{aristotle:poetics,%
+aristotle:anima,aristotle:rhetoric} designed to illustrate what Biblatex/Biber
+can do \autocite{cicero,companion}.
+
+% This will add **everything** in the database to the bibliography,
+% whether it has been cited or not.
+% Normally, you do NOT want to use this!
+\nocite{*}
+
+\printbibliography
+
+\end{document}

@@ -1,0 +1,26 @@
+\documentclass[british,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[x11names,dvipsnames]{xcolor}
+\usepackage{csquotes,xpatch,geometry,babel,standalone}
+\usepackage[backend=biber,style=authoryear-icomp]{biblatex}
+\addbibresource{myrefs.bib}
+\usepackage{bookmark}
+\hypersetup{%
+  colorlinks,
+  citecolor=DodgerBlue3,
+  urlcolor=WildStrawberry,
+}
+
+\begin{document}
+Main matter with citations such as \textcite{lamport94}.
+
+In \citetitle{nagel-death}, \citeauthor{nagel-death} argues,
+\emph{contra} Lucretius, that our own deaths \emph{are}
+typically bad for us \autocite*{nagel-death}.
+
+Note that the article by Smith et al.\ will not be included in the list of
+references, because it is not cited.
+
+\printbibliography
+
+\end{document}

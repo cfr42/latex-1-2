@@ -1,0 +1,542 @@
+% BEGIN preamble
+\svnidlong
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-beamer/training.tex $}
+{$LastChangedBy: cfrees $}
+{$LastChangedRevision: 6279 $}
+{$LastChangedDate: 2017-04-26 14:10:38 +0100 (Mer, 26 Ebr 2017) $}
+
+\input{config/macros-da.cfg}
+
+\title{\LaTeX{} II: Beamer}
+\subtitle{Based in part on materials produced by UK-TUG Volunteers}
+\date{\cymraeg{Ebrill} 26 April 2017}
+
+\mode<presentation>
+{
+  \newcolumntype{q}{l@{\hskip 2.5pt}}
+}
+\mode<article>
+{
+  \newcolumntype{q}{l}
+}
+
+% END preamble
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\maketitle
+
+\tutornote{Time: 10:00}
+
+\tableofcontents
+
+\mode<presentation>%
+{
+  \begin{frame}{Outline}
+	\tableofcontents
+  \end{frame}
+}
+
+% Topics covered will include:
+%
+% Q presentations --- Beamer
+
+\section{Introduction}
+
+\begin{frame}{\LaTeX{}: Key features}
+
+  \begin{itemize}
+	\item \TeX{} is a typesetting application.
+	\item \TeX{} uses \emph{primitives} to determine how to put text on a page.
+	\item \LaTeX{} is  a \emph{format} built on top of \TeX{}.
+	\item \LaTeX{} can be used for everything from a one page letter to a 1000~page textbook.
+	\item By separating input from output, reusing material becomes much easier.
+	\item By separating \emph{content} from \emph{formatting}, we can create flexible, consistent documents which are easier to maintain and modify.
+	\item We are using the \emph{engine} pdf\TeX{}.
+	Xe\TeX{} and Lua\TeX{} are modern alternatives.
+  \end{itemize}
+
+\end{frame}
+
+\mode<all>
+\overleaf
+\mode*
+
+\section{Beamer Presentations}\tutornote{10:15}
+
+\begin{frame}{\LaTeX{} presentations}
+
+  Various packages support the creation of presentations e.g.~slides, posters etc.
+
+  \pkg{beamer} is probably the most popular.
+
+\end{frame}
+
+\begin{frame}{Beamer: An overview}
+
+  \begin{block}{Selected features}
+	\pkg{beamer} provides a dedicated class, \cls{beamer}.
+	\begin{itemize}
+	  \item One file to produce presentation, handouts, notes and article.
+	  \item ‘Overlay’ specifications for incremental uncovering of content.
+	  \item Mark up for organising, structuring and formatting the presentation.
+	  \item By changing the theme, you can change the style of your whole presentation.
+	  \item Highly customisable using \LaTeX{} macros.
+	\end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile,plain]
+	\begin{semiverbatim}
+		\\documentclass\{\alert<2>{beamer}\}
+		\alert<3>{\\mode<presentation>}
+		\\title\{Great Stuff\}
+		\\author\{Me\}
+		\\date\{11 June, 2015\}
+		\\begin\{document\}
+		\alert<4>{\\begin\{frame\}}
+		  \alert<5>{\\titlepage}
+		\alert<4>{\\end\{frame\}}
+		\\begin\{frame\}
+		  \alert<7>{\\frametitle\{Outline\}}
+		  \alert<6>{\\tableofcontents}
+		\\end\{frame\}
+		\\section\{First Section\}
+		\\begin\{frame\}\alert<7>{\{Frame Title\}}
+		  Content of frame.
+		  \alert<8>{\\pause} More content.
+		\\end\{frame\}
+		\\end\{document\}
+	\end{semiverbatim}
+\end{frame}
+
+\begin{exercise}
+  Create a simple presentation using \pkg{beamer} with a title page, table of contents and one or two sections.
+
+  A single \emph{frame} can contain multiple \emph{slides}.
+
+  When you use \cs{pause}, an additional slide is added to the current frame.
+
+  Try adding the following list to a frame of your presentation:
+  \begin{verbatim}
+	\begin{itemize}[<+-| alert@+>]
+		\item first
+		\item second
+		\item third
+	\end{itemize}
+  \end{verbatim}
+
+  What does \cs{alt}\meta{2}\marg{text}\marg{different text} do?
+
+  By adding \cs{usetheme}\marg{\meta{theme name}} to your preamble, you can change how your presentation looks.
+  Try experimenting with some of these themes: \textt{EastLansing}, \textt{Berkeley} and \texttt{Copenhagen}.
+
+  Adding \cs{usecolortheme}\marg{\meta{theme name}} allows you to customise the colours.
+  Experiment with some of these: \texttt{albatross}, \texttt{crane} and \texttt{dove}.
+
+\end{exercise}
+
+\section{Beamer Themes}\tutornote{11:00}
+
+\begin{frame}{Beamer Themes}
+  Beamer customisation is based on the concept of \alert<1>{\textbf{themes}}.
+
+  There are 5 kinds of theme:
+  \begin{description}
+    \item<1-| alert@2>[presentation] affects all aspects of the presentation's appearance;
+    \item<1-| alert@3>[color] determines the colours used in the presentation;
+    \item<1-| alert@4>[font] determines the fonts used in the presentation;
+    \item<1-| alert@5>[inner] affects the appearance of non-colour, non-font aspects of the ‘inside’ of frames e.g.~format of labels in list environments, contents, theorems etc.;
+    \item<1-| alert@6>[outer] affects the appearance of non-colour, non-font aspects of the ‘outside’ of frames e.g.~headlines, footlines, side bars, logos, frame titles etc.
+  \end{description}
+
+\end{frame}
+
+\begin{frame}{Specifying Themes}
+  The \alert<1>{order} in which themes are specified matters.
+
+  If a presentation theme is almost what you want, but you don't like the colours, for example, specify the presentation theme \textbf{before} the colour theme, so that the latter overrides the former's colours.
+  \bigskip
+  \onslide<2->
+
+  \centering
+  \makebox[0pt]{%
+    \begin{tabular}{ql}
+      \toprule
+      \textbf{Type} & \textbf{Command}\\
+      \midrule
+      \alert<2>{presentation} & \alert<2>{\cs{usetheme}\oarg{\meta{options}}\marg{\meta{theme name list}}}\\
+      \alert<3>{color} & \alert<3>{\cs{usecolortheme}\oarg{\meta{options}}\marg{\meta{color theme name list}}}\\
+      \alert<4>{font} & \alert<4>{\cs{usefonttheme}\oarg{\meta{options}}\marg{\meta{font theme name}}}\\
+      \alert<5>{inner} & \alert<5>{\cs{useinnertheme}\oarg{\meta{options}}\marg{\meta{inner theme name}}}\\
+      \alert<6>{outer} & \alert<6>{\cs{useoutertheme}\oarg{\meta{options}}\marg{\meta{outer theme name}}}\\
+      \bottomrule
+    \end{tabular}
+  }
+
+\end{frame}
+
+\begin{exercise}
+  Use the list of built-in themes included in appendix \ref{sec:builtin-themes} to experiment with the effects of installing different kinds and combinations of themes.
+\end{exercise}
+
+\section{Beamer Templates}\label{sec:templates}\tutornote{11:20}
+
+% BEGIN sec:templates
+
+\begin{frame}[fragile]{Beamer Templates}
+  Fine-grained customisation can be achieved by directly modifying Beamer \alert<1>{\textbf{templates}}.
+
+  \onslide<2->
+  Here's an example from the manual (168),
+  \begin{semiverbatim}
+    \alert<6,7>{\\setbeamercolor}\alert<6,8,12>{\{frametitle\}}\alert<6>{\{fg=red\}}
+    \alert<9,10>{\\setbeamerfont}\alert<9,11,12>{\{frametitle\}}\alert<9>{\{series=\bfseries\}}
+    \alert<2>{\\setbeamertemplate}\alert<3,12>{\{frametitle\}}
+    \alert<4>{\{
+      \\begin\{centering\}
+        \alert<5>{\\insertframetitle}\\par
+      \\end\{centering\}
+    \}}
+  \end{semiverbatim}
+\end{frame}
+
+\begin{frame}{Inheritance}
+  Templates are organised \alert<2>{\textbf{hierarchically}}.
+
+  By default, child templates inherit attributes from their parent.
+
+  \begin{block}<2->{Templates: Sample Inheritance}
+    \centering
+    \begin{forest}
+      for tree={
+        font=\ttfamily,
+      },
+      where level=1{
+        forked edge,
+        for tree={
+          grow'=0,
+          folder,
+        },
+      }{}
+      [items
+        [itemize items
+          [itemize item]
+          [itemize subitem]
+          [itemize subsubitem]
+        ]
+        [, phantom, calign with current]
+        [enumerate items
+          [enumerate item]
+          [enumerate subitem]
+          [enumerate subsubitem]
+        ]
+      ]
+    \end{forest}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Try modifying the appearance of frames' titles following the pattern of the example above.
+
+  What happens to nested \verb|itemize| and \verb|enumerate| environments if you add
+  \begin{verbatim}
+    \setbeamertemplate{items}[ball]
+  \end{verbatim}
+  to your preamble?
+  Generally, you will want to make changes to templates \textbf{after} loading any themes you wish to use, since the latter may otherwise override the former.
+\end{exercise}
+
+% END sec:templates
+
+\section{Beamer Colours}\label{sec:colours}\tutornote{11:40}
+
+% BEGIN sec:colours
+
+\begin{frame}{Beamer Colours}
+  Beamer uses \pkg{xcolor} for colour.
+
+  However, it builds a specialised framework on top of the facilities \pkg{xcolor} provides.
+
+  Modifying Beamer's colours directly (rather than using a theme) requires you to use Beamer's framework.
+
+  \onslide<2->
+  The colour of any item in a Beamer presentation has a \alert<2>{\textbf{Beamer-color}}.
+
+  \onslide<3->
+  A Beamer-color has two parts:
+  \begin{enumerate}
+    \item<3-| alert@3> \texttt{fg}, foreground;
+    \item<3-| alert@4> \texttt{bg}, background.
+  \end{enumerate}
+
+  \onslide<5->
+  Like templates, these colours \alert<5>{\textbf{inherit}} attributes from parent colours.
+  \begin{itemize}
+    \item[e.g.] Changing the Beamer-color \texttt{structure} will alter many Beamer-colors, used by many objects in your presentation.
+  \end{itemize}
+
+\end{frame}
+
+\begin{exercise}
+Try adding the following (adapted from the manual, 186) to your preamble.
+\begin{verbatim}
+\setbeamercolor{structure}{fg=magenta!25!blue,bg=}
+\setbeamercolor{item}{use={structure,normal text},fg=structure.fg!50!normal text.fg}
+\end{verbatim}
+If you want to use a Beamer-color directly, you can do so. What effect does adding
+\begin{verbatim}
+{\usebeamercolor[fg]{alerted text} test text}
+\end{verbatim}
+to the contents of a \textt{frame} have?
+\end{exercise}
+
+
+% END sec:colours
+
+
+\mode<all>
+\furtherinfo*[%
+  Beamer:
+  \begin{itemize}
+    \item Beamer's manual: \url{mirrors.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf}.
+    \item Appendix \ref{handouts:sec:simple}: a simple example to use as a base case.
+    \item Appendix \ref{handouts:sec:builtin-themes}: lists of built-in themes for customisation.
+    \item Appendix \ref{handouts:sec:overlay-macros}: creating custom overlay-aware commands and environments.
+  \end{itemize}%
+]
+\mode*
+
+\begin{frame}<0| article:1->{Beamer's Manual}
+  \url{mirrors.ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf}
+  \begin{itemize}
+    \item All the gory details of Beamer's themes, colours, fonts, overlays, templates, environments, commands and options.
+    \item Includes examples of recommended workflows for various scenarios, including the generation of supplementary materials and best practice for presentation design.
+    \item Complete with colour illustrations.
+  \end{itemize}
+\end{frame}
+
+
+\clearpage
+\appendix
+
+\section<1-| beamer:0>{A Simple Example}\label{sec:simple}
+% BEGIN sec:simple
+\verbatiminput{examples/example13}
+\begin{center}
+  \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example13}}
+  \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example13}}
+  \fbox{\includegraphics[page=3,width=.3\linewidth]{examples/example13}}\par
+  \fbox{\includegraphics[page=4,width=.3\linewidth]{examples/example13}}
+  \fbox{\includegraphics[page=5,width=.3\linewidth]{examples/example13}}
+  \fbox{\includegraphics[page=6,width=.3\linewidth]{examples/example13}}
+\end{center}
+
+% END sec:simple
+
+\section<1-| beamer:0>{Built-In Themes}\label{sec:builtin-themes}
+% BEGIN sec:builtin-themes
+
+\subsection{Presentation Themes}\label{subsec:presentation-themes}
+
+These themes typically specify a combination of a \texttt{color}, \texttt{font}, \textt{inner} and \texttt{outer} theme.
+
+% BEGIN subsec:presentation-themes
+\ttfamily
+\begin{multicols}{4}\raggedcolumns
+\begin{itemize}
+  \item default
+  \item boxes
+  \item AnnArbor
+  \item Antibes
+  \item Bergen
+  \item Berkeley
+  \item Berlin
+  \item Boadilla
+  \item CambridgeUS
+  \item Copenhagen
+  \item Darmstadt
+  \item Dresden
+  \item EastLansing
+  \item Frankfurt
+  \item Goettingen
+  \item Hannover
+  \item Ilmenau
+  \item JuanLesPins
+  \item Luebeck
+  \item Madrid
+  \item Malmoe
+  \item Marburg
+  \item Montpellier
+  \item PaloAlto
+  \item Pittsburgh
+  \item Rochester
+  \item Singapore
+  \item Szeged
+  \item Warsaw
+\end{itemize}
+\end{multicols}
+\normalfont
+Most of these themes will have an immediate and dramatic effect on the appearance of your presentation.
+However, \textt{boxes} is a little different from the others.
+By default, it looks just like the \texttt{default} theme.
+However, it adds two commands allowing you to create boxes in the headline and footline of slides.
+The boxes are typeset in the order in which they are added and will be automatically adjusted to be of equal size.
+\begin{itemize}
+  \item \cs{addheadbox}\marg{\meta{beamer color}}\marg{\meta{box template}}
+  \item \cs{addfootbox}\marg{\meta{beamer color}}\marg{\meta{box template}}
+\end{itemize}
+For example, suppose we add the following to the preamble of the example above.
+\begin{verbatim}
+\usetheme{boxes}
+\addheadbox{structure}{First Box}
+\addheadbox{section in head/foot}{Page \thepage}
+\addfootbox{subsection in head/foot}{First Box}
+\addfootbox{alerted}{Second Box}
+\addfootbox{subsection in head/foot}{Third Box}
+\end{verbatim}
+\begin{center}
+  \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example14}}
+  \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example14}}
+  \fbox{\includegraphics[page=3,width=.3\linewidth]{examples/example14}}\par
+  \fbox{\includegraphics[page=4,width=.3\linewidth]{examples/example14}}
+  \fbox{\includegraphics[page=5,width=.3\linewidth]{examples/example14}}
+  \fbox{\includegraphics[page=6,width=.3\linewidth]{examples/example14}}
+\end{center}
+
+% END subsec:presentation-themes
+
+\subsection{Color Themes}\label{subsec:color-themes}
+
+% BEGIN subsec:color-themes
+\ttfamily
+\begin{multicols}{4}\raggedcolumns
+\begin{itemize}
+  \item albatross
+  \item beaver
+  \item beetle
+  \item crane
+  \item default
+  \item dolphin
+  \item dove
+  \item fly
+  \item lily
+  \item monarca
+  \item orchid
+  \item rose
+  \item seagull
+  \item seahorse
+  \item sidebartab
+  \item spruce
+  \item structure
+  \item whale
+  \item wolverine
+\end{itemize}
+\end{multicols}
+\normalfont
+% END subsec:color-themes
+
+\subsection{Font Themes}\label{subsec:font-themes}
+
+% BEGIN subsec:font-themes
+\ttfamily
+\begin{multicols}{4}\raggedcolumns
+\begin{itemize}
+  \item default
+  \item professionalfonts
+  \item serif
+  \item structurebold
+  \item structureitalicserif
+  \item structuresmallcapsserif
+\end{itemize}
+\end{multicols}
+\normalfont
+% END subsec:font-themes
+
+\subsection{Inner Themes}\label{subsec:inner-themes}
+
+% BEGIN subsec:inner-themes
+\ttfamily
+\begin{multicols}{4}\raggedcolumns
+\begin{itemize}
+ \item circles
+  \item default
+  \item inmargin
+  \item rectangles
+  \item rounded
+\end{itemize}
+\end{multicols}
+\normalfont
+% END subsec:inner-themes
+
+\subsection{Outer Themes}\label{subsec:outer-themes}
+
+% BEGIN subsec:outer-themes
+\ttfamily
+\begin{multicols}{4}\raggedcolumns
+\begin{itemize}
+  \item default
+  \item infolines
+  \item miniframes
+  \item shadow
+  \item sidebar
+  \item smoothbars
+  \item smoothtree
+  \item split
+  \item tree
+\end{itemize}
+\end{multicols}
+\normalfont
+% END subsec:outer-themes
+
+% END sec:builtin-themes
+
+\section<1-| beamer:0>{Creating Overlay-Aware Macros}\label{sec:overlay-macros}
+% BEGIN sec:overlay-macros
+
+Beamer extends the facilities of \cs{newcommand}, \cs{renewcommand}, \cs{newenvironment} and \cs{renewenvironment} (covered in \LaTeX{} II: Macros) to enable you to create your own overlay-aware macros.
+\medskip
+\par
+\noindent
+\cs{newcommand}{<>}\marg{\meta{new command name}}\oarg{\meta{argument number}}\oarg{\meta{default optional value}}\marg{\meta{definition}}
+\par
+\noindent
+\cs{renewcommand}{<>}\marg{\meta{existing command name}}\oarg{\meta{argument number}}\oarg{\meta{default optional value}}
+\marg{\meta{redefinition}}
+\par
+\noindent
+\cs{newenvironment}{<>}\marg{\meta{new environment name}}\oarg{\meta{argument number}}\oarg{\meta{default optional value}}\marg{\meta{begin code}}\marg{\meta{end code}}
+\par
+\noindent
+\cs{renewenvironment}{<>}\marg{\meta{existing environment name}}\oarg{\meta{argument number}}
+\oarg{\meta{default optional value}}\marg{\meta{begin code}}\marg{\meta{end code}}
+\medskip
+\par
+\noindent
+The \meta{definition}, \meta{redefinition}, \meta{begin code} and \meta{end code} may use the place-holders \texttt{\#1},\dots,\texttt{\#n} where \texttt{n} is 1+\meta{argument number}.
+\texttt{\#n} is then the optional overlay specification.
+
+For example,
+\begin{verbatim}
+  \newcommand<>{\sometimesbold}[1]{{\only#2{\bfseries}{#1}}}
+  \sometimesbold<2>{Bold on the second slide.}
+\end{verbatim}
+will use bold only on the second slide.
+
+\verbatiminput{examples/example15}
+\begin{center}
+  \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example15}}
+  \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example15}}
+\end{center}
+
+
+% END sec:overlay-macros
+
+
+\end{document}

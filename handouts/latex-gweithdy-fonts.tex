@@ -1,0 +1,259 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex: { synctex: true }
+%% Copyright 2015 Clea F. Rees
+% \listfiles
+\pdfminorversion=7
+\documentclass[a4paper,welsh,british,twocolumn]{article}
+\input{config/handouts-da.cfg}
+\svnidlong
+  {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/handouts/latex-gweithdy-fonts.tex $}
+  {$LastChangedBy: cfrees $}
+  {$LastChangedRevision: 5802 $}
+  {$LastChangedDate: 2017-01-31 04:26:20 +0000 (Maw, 31 Ion 2017) $}
+  % best not to mix \svnid and \svnidlong (or to always typeset time-zone with time? see documentation)
+  %	\svnid{$Id: latex-gweithdy-fonts.tex 5802 2017-01-31 04:26:20Z cfrees $}
+\title{\LaTeX{} Font Packages}
+\fancyhf[cf]{%
+  Browse The \LaTeX{} Font Catalogue at \url{www.tug.dk/FontCatalogue/}.
+  CTAN topic at \url{ctan.org/topic/font}.}
+\begin{document}
+\pdfinfo{%
+  /Title	(LaTeX Font Packages)
+  /Keywords	(LaTeX, package, fonts)}
+\maketitle\thispagestyle{fancy}
+\newlist{pkgdescription}{description}{1}
+\setlist[pkgdescription]{font=\bfseries\ttfamily}
+\newcommand*\lpack[1]{\texttt{\bfseries #1}}
+\newlist{fontopts}{description}{1}
+\setlist[fontopts]{format=\bfseries\addcolon}
+\newcommand*\addcolon[1]{#1:}
+\newcommand*\seealso[1]{\emph{See also \emph{#1}.}}
+% \noindent Ref.: \url{www.tug.dk/FontCatalogue/}\medskip\par
+\noindent A ‘complete solution’ provides serif (roman), sans and typewriter text, matching maths, and \LaTeX{} package(s).\medskip\par
+\noindent By default, \TeX{} uses encoding \verb|OT1| which is generally non-ideal.
+\verb|\usepackage[T1]{fontenc}| will usually avoid this.
+\section{Enhanced Computer Modern}\label{sec:cm}
+Computer Modern is \TeX's built-in complete solution.
+\begin{fontopts}
+  \item[Computer Modern Bright] A sans family.
+  \begin{pkgdescription}
+    \item[cmbright] for maths and text.
+	Intended for documents where the default family is sans-serif.
+  \end{pkgdescription}
+  \item[Concrete] A serif family.
+  \begin{pkgdescription}
+    \item[concmath] for maths and text.
+  \end{pkgdescription}
+  \item[Latin Modern] Enhanced versions of \TeX's default Computer Modern from the GUST e-foundry.
+  These packages provide complete solutions.
+  \begin{pkgdescription}
+    \item[lmodern] provides a standard set\-up.
+	\item[cfr-lm] offers enhanced support.
+	Load with \verb|rm=lining|, \verb|sf=lining| and/or \verb|tt={lining,monowidth}| for lining figures and mono-spaced typewriter.
+	The package loads \lpack{nfssext-cfr} which provides commands for accessing the weights, shapes and styles of Latin Modern not supported by \lpack{lmodern}.
+  \end{pkgdescription}
+\end{fontopts}
+\section{PSNFSS \& Alternatives}\label{sec:ps35}
+‘Base 35’ refers to the set of 35 PostScript fonts provided by Level 2 PostScript printers and Ghostscript.
+These are not complete solutions but can be combined to provide them.
+\begin{fontopts}
+  \item[psnfss] supports the ‘Base 35’ and some extras.
+  The \LaTeX{} packages support clones of the PostScript fonts as follows: \lpack{avant} (ITC Avant Garde Gothic), \lpack{bookman} (ITC Bookman with Avant Garde and Courier), \lpack{chancery} (ITC Zapf Chancery(R)), \lpack{charter} (Bitstream Charter), \lpack{courier} (Courier), \lpack{helvet} (Helvetica), \lpack{mathpazo} (Palatino), \lpack{mathptmx} (Times (New) Roman), \lpack{newcent} (New Century Schoolbook with Avant Garde and Courier).
+  \lpack{pifont} supports symbol fonts (e.g.~Symbol, Zapf Dingbats.).
+  See below for further options and alternative support.
+  The package documentation explains the various options for customising and combining these fonts.
+  \item[TeX Gyre (TG) Collection] A remake and extension of the standard PostScript fonts, with \LaTeX{} support, from the GUST e-foundry.
+  The \LaTeX{} packages support clones of PostScript fonts as follows: \lpack{tgadventor} (ITC Avant Garde Gothic), \lpack{tgbonum} (ITC Bookman), \lpack{tgchorus} (ITC Zapf Chancery(R)), \lpack{tgcursor} (Courier), \lpack{tgheros} (Helvetica), \lpack{tgpagella} (Palatino), \lpack{tgtermes} (Times (New) Roman), \lpack{tgschola} (Century Schoolbook).
+  Details at \url{www.gust.org.pl/projects/e-foundry/tex-gyre/}.
+\end{fontopts}
+Here is a partial listing by font:
+\begin{fontopts}
+  \item[Charter BT] Bitstream Charter.
+  \begin{pkgdescription}
+    \item[mathdesign] with option \verb|charter| offers text and maths.
+	\item[XCharter] supports an extension by Michael Sharpe.
+	See documentation for loading options.
+  \end{pkgdescription}
+  \item[Erewhon] An extended version of Heuristica.
+  \begin{pkgdescription}
+    \item[erewhon] with options \verb|proportional,scaled=1.064|.
+	Add \lpack{newtxmath} with \verb|erewhon,vvarbb,bigdelims| for maths.
+  \end{pkgdescription}
+  \item[Heuristica] An extended version of Utopia.
+  \begin{pkgdescription}
+    \item[heuristica] for text.
+	Load \lpack{newtxmath} with options \verb|heuristica,vvarbb,bigdelims| for maths.
+  \end{pkgdescription}
+  \item[Kerkis] An extension of Bookman.
+  \begin{pkgdescription}
+    \item[kerkis] for text.
+	Load \lpack{kmath} \emph{before} \lpack{kerkis} for maths.
+  \end{pkgdescription}
+  \item[URW Nimbus Roman] Times clone.
+  \seealso{New TX}
+  \begin{pkgdescription}
+    \item[mathptmx] provides support for maths and text.
+	Add \lpack{helvet} with option \verb|scaled=.90| and \lpack{courier} for matching sans and typewriter.
+	\item[txfonts] provides a complete solution for maths and text.
+  \end{pkgdescription}
+  \item[URW Palladio] Palatino clone.
+  \seealso{New PX}
+  \begin{pkgdescription}
+    \item[mathpazo] provides text and maths support.
+	Load with option \verb|sc| and add \verb|\linespread{1.05}|.
+	\item[pxfonts] provides a complete solution for maths and text.
+  \end{pkgdescription}
+  \item[URW Schoolbook L] New Century Schoolbook clone.
+  \begin{pkgdescription}
+    \item[fouriernc] supports text and maths.
+  \end{pkgdescription}
+  \item[Utopia] Adobe Utopia.
+  \begin{pkgdescription}
+    \item[fourier] provides support for maths and text.
+	\item[mathdesign] with option \verb|utopia| offers maths and text.
+  \end{pkgdescription}
+\end{fontopts}
+\section{Complete Font Solutions}\label{sec:complete}
+Alternatives to Computer Modern or Latin Modern.
+\begin{fontopts}
+  \item[Kp-Fonts] Inspired by Johannes Kepler.
+  \begin{pkgdescription}
+    \item[kpfonts] supports text and maths with \emph{many} options.
+  \end{pkgdescription}
+  \item[New PX] An update of PX Fonts using TeX Gyre fonts.
+  \begin{pkgdescription}
+    \item[newpxtext,newpxmath] support text and maths.
+  \end{pkgdescription}
+  \item[New TX] An update of TX Fonts using TeX Gyre fonts.
+  \begin{pkgdescription}
+    \item[newtxtext,newtxmath] support text and maths.
+  \end{pkgdescription}
+  \item[PX Fonts] See \lpack{pxfonts} above.
+  \item[TX Fonts] See \lpack{txfonts} above.
+\end{fontopts}
+\section{Individual Font Families}\label{sec:ind}
+Complete solutions rely on judicious combinations.
+\begin{fontopts}
+  \item[Alegreya] Serif, sans and small-caps.
+  \begin{pkgdescription}
+    \item[Alegreya,AlegreyaSans] for text.
+  \end{pkgdescription}
+  \item[Antykwa Poltawskiego] A serif family in several weights.
+  \begin{pkgdescription}
+    \item[antpolt] for text.
+  \end{pkgdescription}
+  \item[Antykwa Toruńska] A serif family.
+  \begin{pkgdescription}
+    \item[anttor] with option \verb|math| for text and maths.
+	Light and condensed options.
+  \end{pkgdescription}
+  \item[Arkandis] Hirwen Harendal's collection.
+  \LaTeX{} packages: \lpack{accanthis} (Accan\-this No3 serif), \lpack{adfarrows} (Arrows ADF), \lpack{adforn} (Ornements ADF), \lpack{adfbullets} (Bullets ADF), \lpack{berenis} (Berenis ADF Pro serif with custom Welsh support), \lpack{baskervald} (Baskervald ADF serif), \lpack{electrum} (Electrum ADF serif), \lpack{gillius} (Gillius ADF sans), \lpack{gillius2} (Gill\-ius ADF No Two sans), \lpack{libris} (Libris ADF sans), \lpack{mintspirit} (Mint Spirit sans), \lpack{mintspirit2} (Mint Spirit No Two sans), \lpack{romande} (Romande ADF serif), \lpack{universalis} (Universalis sans), \lpack{venturis} (Venturis ADF serif, sans and titling), \lpack{venturis2} (Venturis ADF No2 serif, sans and titling), \lpack{venturisold} (Venturis Old ADF serif and titling).
+  \lpack{Baskervaldx} supports Michael Sharpe's extension of Baskervald ADF.
+  \item[Bitstream Vera] Several derivatives are provided.
+  \begin{pkgdescription}
+    \item[arev] supports Arev Sans with Bera Mono for text and maths.
+	Note this sets both sans and serif to Arev Sans.
+	For Bera Serif, load \lpack{beraserif} \emph{after} \lpack{arev}.
+	\item[bera] supports Bera Serif, Sans and Mono text.
+	Use \lpack{beraserif}, \lpack{berasans} or \lpack{beramono} for single families.
+	\item[dejavu] supports DejaVuSerif DejaVuSans and De\-ja\-Vu\-Sans\-Mono for text.
+	Options include condensed.
+  \end{pkgdescription}
+  \item[BrushScriptX-Italic] Simulated hand-written script.
+  \begin{pkgdescription}
+	\item[pbsi] defines \verb|\bsifamily| and \verb|\textbsi{}|.
+  \end{pkgdescription}
+  \item[Cabin] A humanist font with a condensed variant.
+  \begin{pkgdescription}
+    \item[cabin] installs the font for sans text.
+	Various options.
+  \end{pkgdescription}
+  \item[Droid] Droid Serif, Sans and Sans Mono created for Google.
+  \begin{pkgdescription}
+    \item[droid] supports text.
+	Options and alternate packages.
+  \end{pkgdescription}
+  \item[EB Garamond] One version of Garamond.
+  \begin{pkgdescription}
+    \item[ebgaramond-maths] supports text and limited maths.
+	Load \lpack{newtxmath} with options \verb|cmintegrals| and \verb|cmbraces| \emph{before} \lpack{ebgaramond-maths}.
+  \end{pkgdescription}
+  \item[Fira] A sans-serif family.
+  \begin{pkgdescription}
+    \item[FiraSans] supports sans text.
+  \end{pkgdescription}
+  \item[Gentium] SIL serif family.
+  \begin{pkgdescription}
+	\item[gentium] for the \TeX{} User Group derivative in text.
+  \end{pkgdescription}
+  \item[Greek Font Society] A collection of fonts for Greek.
+  Many support Latin script, making them suitable for Western European languages such as English.
+  \begin{pkgdescription}
+	\item[gfsartemisia] GFS Artemisia Latin and Greek script with \lpack{txfonts} maths.
+	\item[gfsartemisiaeuler] GFS Artemisia Latin and Greek with \lpack{euler} maths.
+	\item[gfsbaskerville] GFS Baskerville Greek script.
+	\item[gfsbodoni] GFS Bodoni Latin and Greek script.
+	\item[gfscomplutum] GFS Complutum Greek script.
+	\item[gfsdidot] GFS Didot Latin and Greek script and maths.
+	\item[gfsneohellenic] GFS Neohellenic Latin and Greek script and maths.
+	\item[gfsporson] GFS Porson Greek script.
+	\item[gfssolomos] GFS Solomos Greek script.
+  \end{pkgdescription}
+  \item[Inconsolata] A typewriter font.
+  \begin{pkgdescription}
+    \item[zi4] installs the font for typewriter text.
+  \end{pkgdescription}
+  \item[Initials] 23 varieties of decorative initials.
+  \begin{pkgdescription}
+	\item[cfr-initials] 23 \LaTeX{} packages e.g.~for use with \lpack{lettrine}.
+  \end{pkgdescription}
+  \item[Iwona] A derivative of Kurier.
+  \begin{pkgdescription}
+    \item[iwona] for text and maths.
+	Light and condensed options.
+	This loads Iwona as the default \emph{serif} family.
+  \end{pkgdescription}
+  \item[Kurier] A ‘two-element sans-serif typeface’.
+  \begin{pkgdescription}
+    \item[kurier] for text and maths.
+	Light and condensed options.
+	This loads Kurier as the default \emph{serif} family.
+  \end{pkgdescription}
+   \item[Libre Baskerville] A serif family by Pablo Impallari.
+  \begin{pkgdescription}
+    \item[librebaskerville] supports text.
+  \end{pkgdescription}
+   \item[Libre Caslon] A serif family by Pablo Impallari.
+  \begin{pkgdescription}
+    \item[librecaslon] supports text.
+  \end{pkgdescription}
+  \item[Linux Libertine \& Linux Biolinum] Libertine Roman, Biolinum and Libertine Mono.
+  \begin{pkgdescription}
+    \item[libertine] provides support for text.
+	Single families may be activated using options or alternate packages.
+  \end{pkgdescription}
+   \item[Lobster Two] A script family by Pablo Impallari.
+  \begin{pkgdescription}
+	\item[LobsterTwo] defines \verb|\LobsterTwo| to activate the script.
+	Load \lpack{LobsterTwo} \emph{before} your main font package, if applicable.
+	Otherwise, if using the default fonts, write \verb|\renewcommand*\rmdefault{cmr}|.
+  \end{pkgdescription}
+  \item[ParaType] PT Serif, PT Sans and PT Mono.
+  \begin{pkgdescription}
+    \item[paratype] provides support for text.
+	The package loads \lpack{PTSerif}, \lpack{PTSans} and \lpack{PTMono} which individually do what you'd expect.
+  \end{pkgdescription}
+  \item[Roboto] ‘A new type family for robots and humans.’
+  \begin{pkgdescription}
+    \item[roboto] supports sans text.
+  \end{pkgdescription}
+  \item[STIX] Comprehensive font project.
+  \begin{pkgdescription}
+    \item[newtxsf] supports sans maths.
+	Intended for documents using matching sans families for body text.
+	\item[stix] supports serif text and maths.
+  \end{pkgdescription}
+\end{fontopts}
+\end{document}

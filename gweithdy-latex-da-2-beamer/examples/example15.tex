@@ -1,0 +1,9 @@
+\documentclass[british]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\newcommand<>{\sometimesbold}[1]{{\only#2{\bfseries}{#1}}}
+\begin{document}
+\begin{frame}
+  \sometimesbold<2>{Bold on the second slide.}
+\end{frame}
+\end{document}

@@ -1,0 +1,412 @@
+% BEGIN preamble
+\svnidlong
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-biblatex/training.tex $}
+{$LastChangedBy: cfrees $}
+{$LastChangedRevision: 6278 $}
+{$LastChangedDate: 2017-04-25 21:56:44 +0100 (Maw, 25 Ebr 2017) $}
+
+\input{config/macros-da.cfg}
+
+\title{\LaTeX{} II: Bibliographies with Biber \& Biblatex}
+\subtitle{Based in part on materials produced by UK-TUG Volunteers}
+\date{\cymraeg{Mawrth} 30 March 2017}
+
+% END preamble
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\maketitle
+
+\tutornote{Time: 10:00}
+
+\tableofcontents
+
+\mode<presentation>%
+{
+  \begin{frame}{Outline}
+    \tableofcontents
+  \end{frame}
+}
+
+% Topics covered will include:
+%
+% Q referencing and bibliographies with Biblatex
+
+\section{Introduction}
+
+\begin{frame}{\LaTeX{}: Key features}
+
+  \begin{itemize}
+    \item \TeX{} is a typesetting application.
+    \item \TeX{} uses \emph{primitives} to determine how to put text on a page.
+    \item \LaTeX{} is  a \emph{format} built on top of \TeX{}.
+    \item \LaTeX{} can be used for everything from a one page letter to a 1000~page textbook.
+    \item By separating input from output, reusing material becomes much easier.
+    \item By separating \emph{content} from \emph{formatting}, we can create flexible, consistent documents which are easier to maintain and modify.
+    \item We are using the \emph{engine} pdf\TeX{}.
+    Xe\TeX{} and Lua\TeX{} are modern alternatives.
+  \end{itemize}
+
+\end{frame}
+
+\overleaf
+
+\section{Biber and Biblatex}\tutornote{Time: 10:15}
+
+\begin{frame}{Creating a bibliography}
+
+  There are 3 common ways to create a bibliography in \LaTeX{}.
+  \begin{itemize}
+    \item Use the \env{thebibliography} environment.
+    \item Use a database of bibliographical entries and \BibTeX{}.
+    \item Use a database of bibliographical entries, \pkg{biblatex} and Biber.
+  \end{itemize}
+
+  The third option is the most flexible.
+  \begin{itemize}
+    \item Support for local and remote databases in different formats.
+    \item Comprehensive support for online and electronic sources (e.g.~JSTOR).
+    \item More logical (semantic) citation mark up.
+    \item Built-in support for multiple bibliographies, multilingual typesetting and sophisticated sorting.
+    \item Powerful and flexible customisation using \LaTeX{} macros.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{Biber and Biblatex}
+
+    \begin{itemize}
+      \item Tell \LaTeX{} you are using Biblatex using \cs{usepackage}\oarg{backend=biber,\meta{other options}}\marg{biblatex}.
+      \item Select citation and bibliography styles by choosing appropriate \meta{options}.
+      \item Bibliography entries are stored in a \emph{database}.
+      \item Most commonly, this is a \emph{\BibTeX{}} database.
+      \item Inform \LaTeX{} about it using \cs{bibliography} or \cs{addbibresource}.
+      \item These are cited using \cs{cite} in the \LaTeX{} file.
+      \item Entries may be cited using an extended mark up.
+      \item Print the bibliography using \cs{printbibliography}.
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Creating a bibliography}{Biblatex basics}
+
+\begin{verbatim}
+  \documentclass{article}
+  \usepackage[utf8]{inputenc}
+  \usepackage{csquotes,xpatch}
+  \usepackage[backend=biber]{biblatex}
+  \addbibresource{example}
+  \begin{document}
+    Some text \cite{key}.
+    \printbibliography
+  \end{document}
+\end{verbatim}
+
+\end{frame}
+
+\begin{frame}{Biblatex workflow}
+
+  \small\mode<article>{\footnotesize}
+  \resizebox{\linewidth}{!}{%
+    \begin{tikzpicture}[thick, >=Latex, font=\sffamily]
+      \begin{scope}[minimum width=1.5cm,minimum height=1.5cm,inner sep=.1em]
+        \path (0,0) node[gweithrediad] (edit) {\shortstack{Edit\\\texttt{.tex}\\File}};
+        \path (0,2) node[gweithrediad] (editbib) {\shortstack{Edit\\\texttt{.bib}\\File}};
+        \path (3.2,1) node[penderfyniad] (errors)
+        {\shortstack{Any\\Errors?}};
+        \path (6.8,1) node[penderfyniad] (bibtexerrors)
+        {\shortstack{Any\\Errors?}};
+        \path (10,1) node[penderfyniad] (errors2)
+        {\shortstack{Any\\Errors?}};
+        \path (12.5,1) node[canlyniad] (pdf) {\shortstack{View\\PDF}};
+      \end{scope}
+      \path (7,4.75) node[gweithrediad] (rmbbl) {Remove \texttt{.bcf} and/or \texttt{.bbl} file};
+      \draw[->] (edit) -- (1,1) -- (errors) node[midway,above]
+      {\shortstack{pdf\LaTeX{}\\\texttt{.tex} file}};
+      \draw (editbib) -- (1,1);
+      \draw[->] (errors) -- ++(0,-2.25) node[midway,left] {Yes}
+      -| (edit) node[pos=0,below,anchor=north east]
+      {Error in document};
+      \draw[->] (errors) -- (bibtexerrors)
+      node[midway,above] {\shortstack{No errors.\\Run Biber}};
+      \draw[->] (bibtexerrors) -- ++(0,-3)
+      node[midway,right] {Yes} -| (edit)
+      node[pos=0,below,anchor=north east]
+      {Misspelt/missing label or bib style};
+      \draw[->] (bibtexerrors) -- ++(0,2.5) node[midway,right]
+      {Yes} -| (editbib) node[pos=0,above,anchor=south east]
+      {Error in bib file};
+      \draw[->] (bibtexerrors) -- (errors2) node[midway,above]
+      {\shortstack{No errors.\\Run pdf\LaTeX{}\\(twice)}};
+      \draw[->] (errors2) |- (rmbbl) node[pos=0.2,right] {Yes};
+      \draw[->] (rmbbl) -| (editbib);
+      \draw[->] (errors2) -- (pdf) node[midway,above] {No};
+    \end{tikzpicture}%
+  }
+
+\end{frame}
+
+\begin{exercise}\label{ex:biblatex-example}\tutornote{Ref.: \cref{sec:samples}.}
+  This exercise is designed to give you a sense of what Biblatex/Biber can do.
+  Rather than creating your own database of bibliography entries, you will use an example database supplied with the \pkg{biblatex} package.
+
+  Create a file called, say, \texttt{example11.tex} that contains the following: \verbatiminput{examples/example11.tex}
+
+  Overleaf should automatically compile your document to include the information from your database.
+  If you were using a terminal or command prompt, you would need to use the following commands:
+  \begin{verbatim}
+    pdflatex example11
+    biber example11
+    pdflatex example11
+    pdflatex example11
+  \end{verbatim}
+
+  There are various options you can pass to the \pkg{biblatex} package that affects the formatting.
+  For example, try changing the options you give Biblatex as follows:
+  \begin{verbatim}
+    \usepackage[style=authoryear-comp,mergedate=basic,isbn=false,url=false,%
+    eprint=true,doi=false,sortcites=true,backend=biber,mincrossrefs=6]{biblatex}
+  \end{verbatim}
+  Try experimenting with some of these options:
+  \begin{itemize}
+    \item \texttt{style=alphabetic},
+    \item \texttt{style=authoryear-comp},
+    \item \texttt{style=numeric},
+    \item \texttt{style=numeric-comp}.
+  \end{itemize}
+  What effect does \texttt{sorting=none} have?
+\end{exercise}
+
+\begin{frame}[fragile]{A \BibTeX{} database}{A basic article}\tutornote{Time 11:00}
+
+\begin{example}\tutornote{\raggedright Comment on other database formats.}
+  \begin{semiverbatim}
+  \alert<2>{@book}\alert<3>{\{}\alert<4>{lamport94}\alert<5>{,}
+    \alert<6>{author}    \alert<7>{= \{}\alert<8>{Leslie Lamport}\alert<7>{\},}
+    \alert<6>{title}     \alert<7>{=
+    \{}\alert<8-9>{\{\\LaTeX\{\}\}}\alert<8>{: A Document Preparation System}\alert<7>{\},}
+    \alert<6>{edition}   \alert<7>{= \{}\alert<8>{2}\alert<7>{\},}
+    \alert<6>{publisher} \alert<7>{= \{}\alert<8>{Addison-{}-Wesley}\alert<7>{\},}
+    \alert<6>{address}   \alert<7>{= \{}\alert<8>{New York}\alert<7>{\},}
+    \alert<6>{date}      \alert<7>{= \{}\alert<8,10>{{1994}}\alert<7>{\},}
+  \alert<3>{\}}
+  \end{semiverbatim}
+\end{example}
+
+\end{frame}
+
+\begin{frame}[fragile]{A \BibTeX{} database}{Multiple authors}
+
+\begin{example}
+  \begin{semiverbatim}
+  @inproceedings\{smith05,
+    author    = \{\alert<4-5>{Smith, Jr, John} \alert<2>{and} \alert<3>{Jane Lucy Doe}
+    \alert<2>{and} \alert<4>{Other, Andrew N.} \alert<2>{and} \alert<4>{de Vere, Jo}\},
+    title     = \{An Example Article\},
+    booktitle = \{Proceedings of the Imaginary Society\},
+    date      = \{\alert<6>{2005-01}\}
+  \}
+  \end{semiverbatim}
+\end{example}
+
+\end{frame}
+
+\begin{frame}{Citations using Biblatex}
+
+  \begin{block}{Textual citations}
+    \vspace*{0.5 em}
+    \begin{tabular}{l@{\ $\Rightarrow$\ }l}
+      \multicolumn{2}{l}{%
+        \alert<1>{\cs{textcite}\oarg{\meta{note}}\marg{\meta{key}}}%
+      } \\[0.5em]
+      \onslide<2->
+      \cs{textcite}\marg{lamport1994} & Lamport (\meta{label}) \\
+      \cs{textcite}\oarg{34}\marg{lamport1994} &
+      Lamport (\meta{label}, p.~34) \\
+    \end{tabular}
+  \end{block}
+
+  \onslide<3->
+  \begin{block}{Parenthetical citations}
+    \vspace*{0.5 em}
+    \begin{tabular}{l@{\ $\Rightarrow$\ }l}
+      \multicolumn{2}{l}{%
+        \alert<3>{\cs{parencite}\oarg{\meta{prenote}}\oarg{\meta{postnote}}%
+        \marg{\meta{key}}%
+      }}  \\[0.5em]
+      \onslide<4->
+      \cs{parencite}\marg{lamport94} & (\meta{label})\\
+      \cs{parencite}\oarg{\textasciitilde34}\marg{lamport94}
+      & (\meta{label}, p.~34)\\
+      \cs{parencite}\oarg{see}\oarg{}\marg{lamport94} & (see \meta{label})
+    \end{tabular}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Citations using Biblatex}\tutornote{Note facilities for custom citation commands.}
+
+  \begin{block}{Citations in footnotes}
+    \alert<1>{\cs{footcite}\oarg{\meta{prenote}}\oarg{\meta{postnote}}%
+        \marg{\meta{key}}}
+  \end{block}
+
+  \onslide<2->
+  \begin{block}{Automatic formatting}
+    \alert<2>{\cs{autocite}\oarg{\meta{prenote}}\oarg{\meta{postnote}}%
+        \marg{\meta{key}}}
+  \end{block}
+
+\end{frame}
+
+
+\begin{exercise}\label{ex:database}
+  Create a file called \texttt{myrefs.bib} that contains the following: \verbatiminput{examples/myrefs.bib}
+
+  Then create a file called, say, \texttt{example12.tex} that contains the following: \verbatiminput{examples/example12.tex}
+
+  Try adding the following to \texttt{myrefs.bib}:
+  \verbatiminput{examples/myrefs-add.bib}
+
+  Now add \verb|\Textcite{smullyan-unfortunate-dualist-minds-i}| to \texttt{example12.tex}.
+  What gets added to the list of references?
+
+\end{exercise}
+
+\furtherinfo*[%
+  Biblatex/Biber:
+  \begin{itemize}
+    \item Appendix \ref{handouts:sec:samples}: sample output for exercises \ref{handouts:ex:biblatex-example} and \ref{handouts:ex:database}.
+    \item Appendix \ref{handouts:sec:pellach}: a very selective introduction to a small part of the additional functionality provided by Biblatex/Biber.
+  \end{itemize}%
+]
+
+\appendix\label{app}
+\section<1-| beamer:0>{Sample Output}\label{sec:samples}
+% BEGIN sec:samples
+
+This appendix includes sample output for the code in \cref{ex:biblatex-example,ex:database}.
+
+For \cref{ex:biblatex-example} output is shown first with just \texttt{backend=biber} (the default) and then with the options \texttt{style=authoryear-comp, mergedate=basic, isbn=false, url=false, eprint=true, doi=false, sortcites=true, backend=biber, mincrossrefs=6}.
+
+Likewise, output for \cref{ex:database} is shown first with the initial references and then with the suggested additions.
+
+\includepdf{examples/example11-1}
+\includepdf{examples/example11-2}
+{\centering
+  \fbox{\includegraphics[width=.95\textwidth,height=.95\textheight,keepaspectratio]{examples/example12-1}}\par
+  \fbox{\includegraphics[width=.95\textwidth,height=.95\textheight,keepaspectratio]{examples/example12-2}}\par
+}
+
+% END sec:samples
+
+\section<1-| beamer:0>{Further Exploration}\label{sec:pellach}
+% BEGIN sec:pellach
+
+\subsection{Electronic Resources}\label{subsec:eres}
+% BEGIN subsec:eres
+
+As seen in the exercises, Biblatex provides support for electronic resources in a variety of ways.
+Most simply, it can include a URL or DOI.
+However, these are often long and unwieldy, cluttering bibliographies with long strings of awkward characters.
+Moreover, many kinds of electronic resource have an identifier of some kind, which uniquely locates the source according to a systematic schema.
+
+JSTOR provides identifiers of this kind.
+As shown in the entry \verb|nagel-death|, Biblatex can use JSTOR's identifier if specified.
+Nagel's paper is located at \url{http://www.jstor.org/stable/2214297}.
+\texttt{2214297} identifies the source uniquely.
+Biblatex knows about JSTOR, so including the lines
+\begin{verbatim}
+  eprint = {2214297},
+  eprinttype = {jstor},
+\end{verbatim}
+in the entry enables Biblatex to typeset the identifier.
+If \pkg{hyperref} is loaded, this identifier will be linked to the relevant URL automatically.
+Hence, there is actually no need to include the URL explicitly in the entry.
+
+This is extremely useful: identifiers can be used to automatically link to the relevant locations on the web, without the need to include the URL in either the database or the typeset bibliography.
+
+However, this only works if an \texttt{eprinttype} is known to Biblatex.
+Inevitably, Biblatex has rather limited knowledge of electronic resources.
+By default, it knows about only \texttt{arXiv} (\textt{arxiv}), \textsc{jstor} (\texttt{jstor}), PubMed (\texttt{pubmed}), \textsc{hdl} (\texttt{hdl}) and Google Books (\texttt{googlebooks}).
+
+The easiest way to configure support for custom resource types is to add suitable definitions to a personal \textt{biblatex.cfg}.
+This file should be located in your personal \textsc{texmf} tree, in sub-directory \texttt{tex/latex/config/}.
+
+On a Unix-type system you can create the directory like this:
+\begin{verbatim}
+mkdir -p $(kpsewhich -var TEXMFHOME)/tex/latex/config
+\end{verbatim}
+Then create a file with the following content and save it as \texttt{biblatex.cfg} in that directory.
+\begin{verbatim}
+\ProvidesFile{biblatex.cfg}
+
+% add support for Project Gutenberg identifiers
+\DeclareFieldFormat{eprint:gutenberg}{%
+  Project\space Gutenberg\space ebook\addcolon\space
+  \ifhyperref
+  {\href{http://www.gutenberg.org/ebooks/#1}{\nolinkurl{#1}}}
+  {\nolinkurl{#1}}}
+\DeclareFieldAlias{eprint:GUTENBERG}{eprint:gutenberg}
+
+\endinput
+\end{verbatim}
+Further details, including ways to accommodate more complex cases, can be found in Biblatex's manual.
+
+% END subsec:eres
+
+\subsection{Multiple Bibliographies}\label{subsec:multibib}
+% BEGIN subsec:multibib
+
+Biblatex/Biber supports multiple bibliographies in a single document, subject to certain limitations.
+Two basic environments are provided to accommodate split bibliographies.
+The first is \env{refsection} and the second is \env{refsegment}.
+
+The two commonest cases are probably the need to provide a separate bibliography in each section of a document and the need to split a bibliography according to some characteristic of the entries such as primary \emph{vs.}\ secondary sources.
+
+If you want a bibliography per chapter or section or other document division, add the option
+\begin{semiverbatim}
+  refsection=\meta{division}
+\end{semiverbatim}
+\meta{division} may be one of \texttt{part}, \texttt{chapter}, \texttt{section} or \texttt{subsection}.
+Then use \cs{printbibliography} in each part, chapter, section or subsection to produce a bibliography specific to that division or the document.
+
+If you want to print out all the bibliographies together at the end of the document, use \cs{bibbysection} to loop over them all one-by-one.
+
+\env{refsection} makes the labels in your bibliography local to the relevant part of the document.
+So, if you use numeric labels, for example, reference \texttt{19} may refer to a text by Aristotle in chapter 1 and a play by Goethe in chapter 2.
+
+If you want labels to be unique so that Goethe gets a different label from Aristotle, use the \env{refsegment} environment instead.
+\begin{semiverbatim}
+  refsegment=\meta{division}
+\end{semiverbatim}
+\meta{division} may be one of \texttt{part}, \texttt{chapter}, \texttt{section} or \texttt{subsection}.
+Then use \cs{bibbysegment} at the end of the document to print all segments' bibliographies one-by-one.
+
+Further details, options and usage examples are included in \pkg{biblatex}'s manual.
+
+% END subsec:multibib
+
+\subsection{Maintenance}\label{subsec:maintain}
+
+% BEGIN subsec:maintain
+
+If you update your \TeX{} distribution, you will probably get errors when you compile a document using Biblatex/Biber.
+This is because the package is actively developed and the current code is often not compatible with the previous code.
+In this case, delete all generated bibliography-related files, especially the \texttt{.bcf}, \texttt{bbl} and \texttt{.blg}.
+Then recompile, rerun Biber and compile again.
+
+If you update your \TeX{} distribution using your distribution's tools, the versions of Biblatex and Biber should be kept automatically in sync.
+Should you for any reason want to try a development version of Biber or Biblatex, note that you \textbf{MUST} use a pair whose versions are designed to work together.
+Biblatex's documentation includes a list of Biber versions required for particular versions of Biblatex.
+You need to ensure that you have a matching pair or you will simply get errors.
+
+% END subsec:maintain
+
+% END sec:pellach
+
+\end{document}

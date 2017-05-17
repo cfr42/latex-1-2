@@ -1,0 +1,88 @@
+$Id: README 6427 2017-05-17 17:04:19Z cfrees $
+
+LaTeX II
+========
+
+Eventually, this project will be part of a larger project compriseing
+both LaTeX I and LaTeX II. For now, the prequel to this project is 
+available on OverLeaf:
+
+	overleaf.com/read/yhcyjnnfmbhk
+
+LaTeX I and II are a series of workshops provided by Cardiff University's 
+Doctoral Academy (previously the University Graduate College). The 
+materials used for the four workshops which make up LaTeX II ['this 
+project'] are provided here. 
+
+LaTeX I and II are a modified and extended version of materials produced 
+by UK TUG volunteers ['original project'] for a course provided for 
+beginning LaTeX users. The materials were adapted for LaTeX I and II by 
+Clea F. Rees.
+
+Both the original work and modifications are 
+licensed under a Creative Commons Attribution-ShareAlike 3.0 Unported 
+License (http://creativecommons.org/licenses/by-sa/3.0/).
+
+The original project is available as a GitHub repository maintained by
+Joseph Wright from https://github.com/uktug/latex-beginners-course/.
+
+LaTeX II includes four workshops:
+1. Macros
+2. Biblatex/Biber
+3. Beamer
+4. Floats ; Plotting Data
+[The second half of the fourth is based on student preferences, so may vary.]
+
+Summary of Changes
+==================
+
++ The file README.markdown from the original project is included as 
+  UK-TUG-README.markdown. 
++ Files required to build the project with make and to produce HTML are
+  omitted from the modified project. However, LaTeX II includes a 
+  **highly experimental** Makefile for possible use on Unix-ish systems. 
++ The modified project uses a set of common configuration files. 
++ The format of slides, handouts and tutor notes have been customised.
+* The handouts originally used US letter paper. This is corrected in the
+* The margin sizes have been increased so that notes for tutors are included
+  modified project.
++ Material on BibTeX is converted into a workshop on Biblatex/Biber. Adaption
+  included preparation of a Biblatex 'cheat sheet', now published on CTAN.
+* Diagrams are redrawn using TikZ.
+* Considerable material has been added for all topics in LaTeX II and
+  appendices have been added to supplement the handouts.
+* The fourth workshop in LaTeX II includes a new section on the use of 
+  pgfplots to plot graphs from external data.
+  in the printable area of the page.
++ Further changes were made where necessary to adapt the materials for local
+  conditions.
+
+Prerequisites
+=============
+
+Either links or copies of the files pgfplotsexample.tex and
+pgfplotsexample.pdf are required to compile the documents for the fourth
+workshop. These are part of the pgfplots package, available from CTAN at 
+
+	http://ctan.org/pkg/pgfplots
+
+To add the files or links, create a sub-directory at
+gweithdy-da-2-pellach/handouts and place the two files or links there.
+
+In a Unix-ish environment with a standard TeX Live installation
+
+    cd <top level of working copy of project>
+    mkdir -p gweithdy-latex-da-2-pellach/handouts
+    pushd gweithdy-latex-da-2-pellach/handouts
+    ln -s $(kpsewhich -var TEXMFDIST)/doc/latex/pgfplots/pgfplotsexample.* ./
+    popd
+
+where <top level of working copy of project> is an appropriate path should 
+do the job.
+
+
+Clea F. Rees
+2017-05-17
+ReesC21 <at> cardiff <dot> ac <dot> uk
+
+vim: set nospell:

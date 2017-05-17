@@ -1,0 +1,15 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex: { synctex: true, shell: true }
+% svn keywords
+%	$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/wrappers/tutornotes.tex $
+%	$LastChangedBy: cfrees $
+%	$LastChangedRevision: 6278 $
+%	$LastChangedDate: 2017-04-25 21:56:44 +0100 (Maw, 25 Ebr 2017) $
+%	$Id: tutornotes.tex 6278 2017-04-25 20:56:44Z cfrees $
+\pdfminorversion=7
+% ----------------------------------------------------------------------
+% Tutor notes are a minor modification to handouts
+% ----------------------------------------------------------------------
+\AtBeginDocument{\renewcommand\tutornote[1]{\marginpar{\raggedright #1}}}
+\input{handouts}
