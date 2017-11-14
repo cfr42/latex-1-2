@@ -1,0 +1,1182 @@
+% BEGIN preamble
+\svnidlong
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-1/training.tex $}
+{$LastChangedBy: cfrees $}
+{$LastChangedRevision: 7129 $}
+{$LastChangedDate: 2017-11-14 19:53:49 +0000 (Maw, 14 Tach 2017) $}
+
+\input{config/macros-da.cfg}
+
+\AtBeginDocument
+{
+  \renewcommand*{\LaTeX}{LaTeX}
+  \renewcommand*{\LaTeXe}{LaTeX2e}
+  \renewcommand*{\TeX}{TeX}
+}
+
+\title{\LaTeX{} I}
+\subtitle{Adapted from materials produced by UK-TUG Volunteers}
+\date{\cymraeg{Tachwedd} 17 November 2017}
+
+% END preamble
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\maketitle
+
+\tutornote{Time: 10:05}
+
+\tableofcontents
+
+\mode<presentation>%
+{
+  \begin{frame}{Outline}
+	\tableofcontents
+  \end{frame}
+}
+
+\section{An overview of \LaTeX{}}
+
+\begin{frame}{\LaTeX{} is a powerful system}
+
+  \begin{itemize}
+	\item \LaTeX{} can be used for everything from a one page letter to a 1000~page textbook.
+	\item Most of \emph{our} examples will be simple.
+	\item Complex documents, for example interactive books and these slides, use the same ideas as we're exploring today.
+	\item By separating input from output, reusing material becomes much easier.
+  \end{itemize}
+
+\end{frame}
+
+\tutornote{Demo documents here}
+
+\begin{frame}{What is \LaTeX{}, and what is \TeX{}?}
+
+  \begin{itemize}
+	\item \TeX{} is a typesetting application.
+	\item \TeX{} uses \emph{primitives} to determine how to put text on a page.
+	\item For most practical purposes, we need a \emph{format} built on top of \TeX{}, for example:
+	\begin{itemize}
+	  \item Plain \TeX{};
+	  \item \LaTeX{};
+	  \item Con\TeX{}t.
+	\end{itemize}
+	\item You can think of \LaTeX{} as an interpreter between you and \TeX{}.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}{\TeX{} \enquote{engines}}
+
+  \begin{block}{pdf\TeX{}}
+	The standard binary program: we'll be using today.
+  \end{block}
+
+  \begin{block}{Xe\TeX{}}
+	A merger of \TeX{} with modern font technology with support for native Unicode input and bidirectional typesetting.
+  \end{block}
+
+  \begin{block}{Lua\TeX{}}
+	Also a modern engine: integrates the Lua scripting into \TeX{}.
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{What do we need to use \LaTeX{}?}
+
+  \begin{itemize}
+	\item A \TeX{} distribution: \TeX{} Live (Windows, Mac, Linux) or MiK\TeX{} (Windows only).
+	\item A text editor, \emph{e.g.}~Notepad, TextEdit, Emacs.
+	\item A PDF viewer, for example Adobe Reader.
+  \end{itemize}
+
+  \pause
+
+  Usually, we use a specialist editor which has
+  \begin{itemize}
+	\item coloured syntax;
+	\item buttons or menus to run \LaTeX{}, \emph{etc.};
+	\item an integrated spell checker.
+  \end{itemize}
+\end{frame}
+
+\tutornote{Time: 10:20}
+
+\section{Getting started}
+
+\begin{frame}{\LaTeX{} is not a word processor}
+
+  \begin{itemize}
+	\item \LaTeX{} input is stored as plain text files, usually with the extension \texttt{.tex}.
+	\item \LaTeX{} input files contain both the text of the document and \emph{commands}.
+	\item Commands start with a backslash, so look like this:
+	\cs{example}.
+	\item Writing in \LaTeX{} is therefore a bit like \emph{programming} it to produce the document you want.
+	\item \emph{Logical} mark up is important in \LaTeX{}: we'll use some almost straight away!
+  \end{itemize}
+
+\end{frame}
+
+{
+\begin{frame}{Workflow}
+  \tikzset{external/export=false}
+
+  \noindent\resizebox{\linewidth}{!}{%
+	\begin{tikzpicture}[
+	  my flow,
+	  ]
+	  \path (0,0) node[my block] (edit) {\shortstack{Edit\\\texttt{.tex}\\File}} ;
+	  \onslide<2->
+		\path (3.5,0) node[my diamond] (errors) {\shortstack{Any\\Errors?}};
+		\path [my draw] (edit) -- (errors) node[midway,above=-1em] {\LaTeX{}};
+	  \onslide<3->
+	  \path [my draw] (errors) -- ++(0,-2) node[midway,right=-1em] {Yes} -| (edit);
+	  \onslide<4->
+	  \path (7,0) node[my block] (pdf) {\shortstack{View\\PDF}};
+	  \path [my draw] (errors) -- (pdf) node[midway,above=-1em] {No};
+	  \onslide<5->
+	  \path (10.5,0) node[my diamond] (change) {\shortstack{Any\\Changes?}};
+	  \path [my draw] (pdf) -- (change);
+	  \onslide<6->
+	  \path [my draw] (change) -- ++(0,-2.5) node[midway,right=-1em] {Yes} -| (edit);
+	  \onslide<7->
+	  \path (14,0) node[my block] (done) {Done};
+	  \path [my draw] (change) -- (done) node[midway,above=-1em] {No};
+	\end{tikzpicture}
+  }
+
+\end{frame}
+}
+
+\begin{frame}[fragile]{Spacing}
+
+	\begin{itemize}
+	  \item \LaTeX{} treats multiple spaces as a single space.
+	  \item By default, the space between sentences is slightly larger than the space between words --- can be switched off using \cs{frenchspacing}.
+	  \item The tilde (\verb|~|) is used to create a non-breaking space.
+	  \item New line characters are treated as a space.
+	  \item Paragraph breaks should be indicated by a blank line.
+	  \item \LaTeX{} automatically indents paragraphs, except for the first paragraph after a section heading.
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{A simple document}
+  \begin{block}{Example}
+	\begin{semiverbatim}
+	  \alert<2>{\\documentclass}\alert<2,4>{[a4paper,12pt]}\alert<2-3>{\{article\}}
+	  \alert<5>{\% A comment in the preamble}
+	  \alert<6>{\\begin\{document\}}
+	  \alert<7>{\% This is a comment}
+	  \alert<8>{This is   a simple document\\footnote\{with a footnote\}.}
+	  \alert<8>{This is another sentence in the same paragraph which should}
+	  \alert<8>{make the paragraph more than one line long.}
+
+	  \alert<8>{This is a new paragraph.}
+	  \alert<6>{\\end\{document\}}
+	\end{semiverbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}{Overleaf}
+  Although you will probably want to try out various editors, viewers etc.\ to find the combination which suits you best, we are going to practise today using the online service,
+  \mode<presentation>
+  {%
+    \href{https://www.overleaf.com/}{Overleaf}.
+  }
+  \mode<article>
+  {%
+    Overleaf, at \href{https://www.overleaf.com/}{https://www.overleaf.com/}.
+  }
+
+  You will need to start by signing up for an account.
+
+  Please do this now by opening the site in the browser of your choice and using the ‘Sign Up’ button.
+
+  \mode<article>
+  {
+    If you have no objection, I would appreciate it if you would use \im{\href{https://www.overleaf.com/signup?ref=9f72f613adb5}{https://www.overleaf.com/signup?ref=9f72f613adb5}}
+    as it will increase my storage space.
+    However, you are under absolutely no obligation to do this and I have no objection at all to your not doing so for whatever reason!
+
+    A short introduction to Overleaf is available at \href{https://www.overleaf.com/tutorial}{https://www.overleaf.com/tutorial} in the form of a tutorial.
+  }
+\end{frame}
+
+\tutornote{Show demo document in Overleaf: \texttt{example1.tex}.}
+
+\begin{exercise}
+  Create the above document in Overleaf.
+  While you can use the editor of your choice, start by doing this example in Overleaf.
+  Overleaf will automatically save your file with a \texttt{.tex} extension, for example \texttt{main.tex}.
+  Overleaf will automatically compile your document and show you a preview on the right.
+  To compile your document using:
+  \begin{verbatim}
+	pdflatex main
+  \end{verbatim}
+  click the PDF button at the top of the screen.
+  Overleaf will ask you whether to open the PDF in your PDF viewer or to save a copy.
+
+  Try experimenting with white space: what do multiple spaces and multiple lines do?
+  Also try out using the tilde (\verb"~") for a non-breaking space and \cs{,} for spaces of different widths.
+
+  \LaTeX{} automatically indents new paragraphs: see what the \cs{noindent} macro does to these cases.
+\end{exercise}
+
+\tutornote{Finish exercise at 10:45}
+
+\section{Logical structure}
+
+\begin{frame}[fragile]{Logical mark up}
+
+  \LaTeX{} provides us with logical mark up, as well as the ability to directly set the appearance.
+  \begin{block}{Logical mark up}
+	\alert<2>{\cs{emph}\marg{\meta{text}}}\\
+	\marg{\alert<3>{\cs{large}} \meta{text}}
+  \end{block}
+  \begin{block}{Appearance mark up}
+	\alert<2>{\cs{textit}\marg{\meta{text}}}\\
+	\marg{\alert<3>{\cs{fontsize}\marg{12 pt}\marg{14 pt}\cs{selectfont}} \meta{text}}
+  \end{block}
+  Usually, logical mark up is best when it is available.
+
+\end{frame}
+
+\begin{frame}{Title Page}
+
+  First, you need to give the \enquote{meta-data}:
+  \begin{itemize}
+	\item \cs{title}\marg{\meta{title}}
+	\item \cs{author}\marg{\meta{author(s)}}
+	\item \cs{date}\marg{\meta{date}} (optional)
+  \end{itemize}
+  Then use \cs{maketitle} to display the title page.
+
+\end{frame}
+
+\begin{frame}{Sectioning commands}
+
+  \begin{itemize}
+	\item
+	\alert<4>{\cs{chapter}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}}
+	\item \cs{section}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}
+	\item \cs{subsection}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}
+	\item \cs{subsubsection}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}
+	\item
+	\alert<5>{\cs{paragraph}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}}
+	\item \cs{subparagraph}\alert<2>{\oarg{\meta{short title}}}\alert<3>{\marg{\meta{title}}}
+  \end{itemize}
+
+\end{frame}
+
+\begin{exercise}
+  Try producing the following document.
+  \verbatiminput{examples/example2}
+
+  Experiment with the logical mark up for appearance, for example \cs{emph}, \cs{large}, \cs{Large} and \cs{Huge}. Compare these with the direct changes brought about by \cs{textit} and \cs{textbf}.
+
+  Try changing the format of text for a longer block by trapping the formatting changes within \cs{begingroup} and \cs{endgroup}, for example
+  \begin{verbatim}
+	\begingroup
+	\large
+	\itshape
+	Some text
+
+	A second paragraph
+	\endgroup
+  \end{verbatim}
+
+\end{exercise}
+
+\begin{frame}[fragile,plain]{Lists}
+
+\begin{block}{Order not important}
+  \begin{verbatim}
+	\begin{itemize}
+	  \item This is an unordered list
+	\end{itemize}
+  \end{verbatim}
+\end{block}
+
+\begin{block}{Order important}
+  \begin{verbatim}
+	\begin{enumerate}
+	  \item This one is ordered
+	  \item So this will have number 2!
+	\end{enumerate}
+  \end{verbatim}
+\end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Make some lists, and nest one list inside another.
+  How does the format of the numbers or markers change?
+  You can only go to four levels with standard \LaTeX{}, but more than four nestings tends to be a bad sign anyway!
+\end{exercise}
+
+\tutornote{Finish exercise at 11:30}
+
+\begin{frame}[fragile]{Quoting things}
+  \begin{itemize}
+	\item Single quotes: \textasciigrave\meta{short quote}\textquotesingle.
+	\item Double quotes: \textasciigrave\textasciigrave\meta{short quote}\textquotesingle\textquotesingle.
+	\item Block quotes: \cs{begin}\marg{quotation}\dots\cs{end}\marg{quotation}.
+  \end{itemize}
+\end{frame}
+
+\begin{exercise}
+  Can you produce the following passage?
+  \begin{center}
+	\fbox{\begin{minipage}{.85\linewidth}
+		\normalfont
+		The following passage if from Lewis Carroll's \emph{Alice's Adventures in Wonderland}, which is included in \emph{The Complete Works of Lewis Carroll}, published by The Modern Library: Random House (Pp.~75--76):
+		\begin{quotation}
+		  ‘Come, we shall have some fun now!’ thought Alice.
+		  ‘I'm glad they've begun asking riddles --- I believe I can guess that,’ she added aloud.
+
+		  ‘Do you mean that you think you can find out the answer to it?’ said the March Hare.
+
+		  ‘Exactly so,’ said Alice.
+
+		  ‘Then you should say what you mean,’ the March Hare went on.
+
+		  ‘I do,’ Alice hastily replied; ‘at least --- at least I mean what I say --- that's the same thing, you know.’
+
+		  ‘Not the same thing a bit!’ said the Hatter.
+		  ‘Why, you might just as well say that ‘I see what I eat’ is the same thing as ‘I eat what I see’!’
+
+		  ‘You might just as well say,’ added the March Hare, ‘that ‘I like what I get’ is the same thing as ‘I get what I like’!’
+
+		  ‘You might just as well say,’ added the Dormouse, which seemed to be talking in its sleep, ‘that ‘I breathe when I sleep’ is the same thing as ‘I sleep when I breathe’!’
+		\end{quotation}
+	  \end{minipage}}
+	\end{center}
+  What happens if you replace \env{quotation} with \env{quote} for a block quotation?
+\end{exercise}
+
+\tutornote{Finish exercise at 11:50}
+
+\section{Classes}
+
+\begin{frame}{Document classes}
+
+  The \emph{document class} sets up the general layout of the document.
+  For example:
+  \begin{itemize}
+	\item the format of the headings;
+	\item if the document should have chapters;
+	\item if the title should be on a separate page or above the text on the first page.
+  \end{itemize}
+  They can also add new control sequences.
+
+  \begin{block}{Usage}
+	\cs{documentclass}\oarg{\meta{options}}\marg{\meta{class-name}}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Base classes}
+
+  \begin{description}
+	\item[\cls{article}] for short documents without chapters.
+	\item[\cls{report}] for longer documents with chapters, typically single-sided with an abstract.
+	\item[\cls{book}] for books, typically double-sided with front matter and back matter.
+	\item<2->[\cls{letter}] for correspondence.
+	\item<2->[\cls{slides}] for presentations.
+  \end{description}
+
+\end{frame}
+
+\begin{frame}{Modern classes}
+
+  \begin{description}
+	\item[\cls{KOMA-Script}] \cls{scrartcl}, \cls{scrreprt} and \cls{scrbook} to replace \cls{article}, \cls{report}
+	and \cls{book}, respectively.
+	\item[\cls{memoir}] replaces \cls{book} and \cls{report}.
+	\item[\cls{beamer}] for slides (used to create the material for this workshop).
+  \end{description}
+
+\end{frame}
+
+\begin{frame}[fragile,plain]{KOMA-Script Example}
+
+  \verbatiminput{examples/example3}
+
+\end{frame}
+
+\begin{frame}{Documentation}
+
+  \begin{block}{On your computer (after installing a TeX distribution!)}
+	The \texttt{texdoc} application will show documentation for material you have installed.
+	From the Command Prompt/Terminal
+	\begin{center}
+	  \texttt{texdoc \meta{name}}
+	\end{center}
+  \end{block}
+
+  \begin{block}{Online}
+	Try CTAN:
+	\begin{center}
+	  \texttt{http://ctan.org/pkg/\meta{name}}
+	\end{center}
+	or \texttt{texdoc} online
+	\begin{center}
+	  \texttt{http://texdoc.net/pkg/\meta{name}}
+	\end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Try creating the above document.
+  The KOMA-Script classes have various options that affect the document's appearance.
+  Try experimenting with some of the following: \texttt{chapterprefix}, \texttt{numbers=enddot}, \texttt{numbers=noenddot}, \texttt{headings=small}, \texttt{headings=normal}, \texttt{headings=big}.
+  For example:
+  \begin{verbatim}
+	\documentclass[chapterprefix]{scrreprt}
+  \end{verbatim}
+
+  Also try making simple documents with \textsf{memoir}: see how without any other changes the appearance of the PDF file is altered.
+
+  To add some \enquote{dummy text} to your files as filler, put the line \verb"\usepackage{lipsum}" before \verb"\begin{document}", then put \cs{lipsum} somewhere after \verb"\begin{document}".
+  This will create a number of filler paragraphs.
+  Use this to see what effect the \texttt{twocolumn} class option has on the layouts you see.
+
+  Use \texttt{http://ctan.org/} or \texttt{http://texdoc.net/} to look up the documentation for the classes we are using.
+  Some of these are very long: most of the time you only need a small subset of the commands available!
+\end{exercise}
+
+\section{Cross-referencing}
+
+\begin{frame}[fragile]{Cross-referencing}
+
+  \begin{block}{Example input}
+	\begin{verbatim}
+	  \section{A section}
+	  \label{sec:interesting}
+	  ...
+	  \ref{sec:interesting}
+	\end{verbatim}
+  \end{block}
+
+  \emph{Two} \LaTeX{} runs are needed to get cross-references right.
+
+\end{frame}
+
+\tutornote{Mention \pkg{fancyref}/\pkg{cleveref}}
+
+\begin{exercise}
+  Try producing the following document.
+  \verbatiminput{examples/example4}
+  \tutornote{Finish exercise at 12:45 and go to lunch.}
+
+  Experiment with cross-references to sections, subsections and items in ordered lists.
+  Can you see how it works?
+\end{exercise}
+
+
+\section{More logical structure}\tutornote{Restart at 13:45.}
+
+\begin{frame}[fragile]{Mathematics}
+
+  \begin{itemize}
+	\item Mathematical content is marked up in \LaTeX{} in a logical way.
+	\item You can use \$ \ldots \$ or \cs{(} \ldots \cs{)} to mark up in-line maths.
+	\item For displayed mathematics, use \cs{[} \ldots \cs{]}.
+	\item A lot of spacing is automatic in math mode.
+	\item Maths is an entire area on its own!
+  \end{itemize}
+
+  \begin{block}{Example input}
+	\verb"\( y = 2 \sin \theta^2 \)"
+  \end{block}
+
+  \begin{block}{Example output}
+	\( y = 2 \sin \theta^2 \)
+  \end{block}
+
+\end{frame}
+
+\tutornote{Mention AMS material and Vo{\ss}'s \emph{Math Mode}}
+
+\begin{exercise}
+  Create some simple mathematical content (for example \verb"y = mx + c") and compare the effect of \cs{(} \ldots \cs{)} with \cs{[} \ldots \cs{]}.
+  Can you work out how to get capitalised Greek letters?
+  Can you guess why some Greek do not seem to work?
+
+  Subscripts and superscripts in math mode are created using \verb"_" and \verb"^", respectively.
+  Try these out, and think about why you might use \cs{textsuperscript} rather than \verb"^" in some cases.
+
+\end{exercise}
+
+\tutornote{Finish exercise at 14:15.}
+
+\section{Packages}
+
+\begin{frame}[fragile]{On packages}
+
+  The \LaTeX{} kernel is rather limited: to get around that we load \emph{packages}:
+  \begin{semiverbatim}
+	\cs{usepackage}\oarg{\meta{options}}\marg{\meta{package}}
+  \end{semiverbatim}
+  or
+  \begin{semiverbatim}
+	\cs{usepackage}\texttt{\{\meta{package1},\meta{package2},\ldots\}}
+  \end{semiverbatim}
+  We have already seen the \pkg{lipsum} package!
+
+  \vspace{1 em}
+
+  \uncover<2>{%
+	Documentation for packages is available in exactly the same way as for classes.%
+  }
+
+\end{frame}
+
+\begin{frame}[fragile]{Including external images}
+
+  \begin{itemize}
+	\item Load the \pkg{graphicx} package to include graphics.
+	\item Use \cs{includegraphics} to actually place the image.
+	\item Image formats: \texttt{pdf}, \texttt{png}, \texttt{jpg}.
+	\item Images in \texttt{eps} format \enquote{auto-converted} to \texttt{pdf}.
+	\item File extension should be omitted.
+  \end{itemize}
+
+  \vspace{1 em}
+  \uncover<2>{%
+	Graphics can also be \enquote{drawn} in \LaTeX{} using the Ti\emph{k}Z package:\\ a course in itself!
+  }
+
+\end{frame}
+
+\begin{frame}[fragile]{Options for image inclusion}
+  \cs{includegraphics} uses a \textbf{\alert<3,5-6>{key}\alert<5-6>{-}\alert<4,5-6>{value}} interface for configuration.
+  This means that although it takes only a single optional argument, this argument can itself specify multiple options.
+
+  \uncover<2->{%
+    \begin{semiverbatim}
+      \\includegraphics\alert<2>{[}\alert<3,5>{\meta{key for option 1}}\alert<5>{=}\alert<4-5>{\meta{value for option 1}},
+      \alert<3,6>{\meta{key for option 2}}\alert<6>{=}\alert<4,6>{\meta{value for option 2}}\alert<2>{]}\{myimage\}
+    \end{semiverbatim}
+  }
+
+    \uncover<7->{%
+   These options can be used to change the display of the image in various ways e.g.~by cropping, scaling or rotating the image.}
+
+\end{frame}
+
+
+\tutornote{Perhaps include keyval interface for graphics options}
+
+\section{Floating material}
+
+\begin{frame}[fragile]{Floating figures}
+
+  \begin{block}{A floating figure \dots}
+	\begin{semiverbatim}
+	  \\begin\{figure\}\alert<2>{[htbp]}
+	  \alert<3>{\\centering}
+	  \\includegraphics\{myimage\}
+	  \alert<4>{\\caption\{A Sample Figure\}}
+	  \alert<5>{\\label\{fig:sample\}}
+	  \\end\{figure\}
+	\end{semiverbatim}
+  \end{block}
+
+  \begin{block}<6->{\ldots needs a cross-reference}
+	\begin{semiverbatim}
+	  as is shown in Figure~\alert<6>{\\ref\{fig:sample\}}
+	\end{semiverbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+  Try producing the following document.
+  (Use an image application, such as Paint, to produce a simple picture and save it as \texttt{shapes.png}\footnote{If you don't wish to draw anything, try including the image \texttt{example-image-a}.}.)
+  \verbatiminput{examples/example5}
+  Here are some more class options to try that will affect the list of figures: \texttt{chapteratlists}, \texttt{chapteratlists=0mm}.
+  How do the following sets of key-value options for \cs{includegraphics} affect the image included in the document?
+  \begin{itemize}
+    \item \texttt{width=3cm}
+    \item \texttt{height=1cm,width=3cm}
+    \item \texttt{height=1cm,width=3cm,keepaspectratio}
+    \item \texttt{angle=60,scale=2}
+  \end{itemize}
+\end{exercise}
+
+\begin{frame}{Tables}
+
+  \begin{itemize}
+	\item The floating environment for a table is called \texttt{table}.
+	\item However, the content can be anything!
+	\item Use the \texttt{tabular} environment to make tables.
+	\item Load the \textsf{booktabs} package for rules.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile,plain]{Tables}
+
+  \begin{block}{A simple table}
+	\begin{semiverbatim}
+	  \alert<2>{\\begin\{table\}}
+	  \alert<2>{\\centering}
+	  \alert<2>{\\caption\{A caption\}}
+	  \alert<2>{\\label\{tab:example\}}
+	  \alert<3>{\\begin\{tabular\}}\alert<4>{\{lcr\}}
+	  \alert<5>{\\toprule}
+	  Heading \alert<6>{&} Another one \alert<6>{&} A third \alert<7>{\\\\}
+	  \alert<5>{\\midrule}
+	  a \alert<6>{&} b \alert<6>{&} c \alert<7>{\\\\}
+	  d \alert<6>{&} e \alert<6>{&} f \alert<7>{\\\\}
+	  \alert<8>{\\multicolumn\{3\}\{c\}\{Wide text\}} \alert<7>{\\\\}
+	  \alert<5>{\\bottomrule}
+	  \alert<3>{\\end\{tabular\}}
+	  \alert<2>{\\end\{table\}}
+	\end{semiverbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{exercise}
+
+  Use the simple table example to start experimenting with tables.
+  Try out different alignments using the \texttt{l}, \texttt{c} and \texttt{r} column types.
+  What happens if you have too few items in a table row?
+  How about too many?
+  Experiment with the \cs{multicolumn} command to span across columns.
+
+\end{exercise}
+
+\tutornote{Finish exercise at 15:15.}
+
+\section{Multilingual typesetting}
+
+\begin{frame}{Beyond US English}
+  \TeX{} was originally designed for US English.
+
+  By default, \LaTeX{} assumes your document uses US English.
+
+  It is important to tell \LaTeX{} if this is not the case!
+
+  \begin{itemize}
+    \item \pkg{babel} configures your document for one or more languages.
+    \item \pkg{inputenc} supports different \emph{input} encodings.
+    \begin{itemize}
+      \item \cs{usepackage}\oarg{utf8}\marg{inputenc} enables you to input (many) accented characters directly.
+    \end{itemize}
+    \item \pkg{fontenc} supports different \emph{font} (output) encodings.
+    \begin{itemize}
+      \item \cs{usepackage}\oarg{T1}\marg{fontenc} supports most Western European languages.
+    \end{itemize}
+  \end{itemize}
+
+\end{frame}
+\begin{frame}[fragile]
+
+  \begin{block}{Preamble}
+    \begin{semiverbatim}
+      \cs{documentclass}\alert<1>{\oarg{\meta{language options}}}\marg{\meta{document class}}
+      \alert<1>{\cs{usepackage}\marg{babel}}
+      \alert<2>{\cs{usepackage}\oarg{utf8}\marg{inputenc}}
+      \alert<3>{\cs{usepackage}\oarg{T1}\marg{fontenc}}\% usually what you want
+    \end{semiverbatim}
+  \end{block}
+
+\end{frame}
+\begin{frame}[fragile]
+
+  \begin{block}{Syntax}
+    \begin{semiverbatim}
+      \% switch to \meta{other language} until further notice
+      \alert<1>{\cs{selectlanguage}\marg{\meta{other language}}}
+      \% typeset short \meta{text} in \meta{other language}
+      \alert<2>{\cs{foreignlanguage}\marg{\meta{other language}}\marg{\meta{text}}}
+      \% temporary switch to \meta{other language}
+      \alert<3>{\\begin\marg{otherlanguage}\marg{\meta{other language}}
+        \meta{text}
+      \\end\marg{otherlanguage}}
+    \end{semiverbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \begin{block}{UK English}
+    \begin{semiverbatim}
+      \cs{documentclass}\oarg{\alert{british}}\marg{article}
+      \cs{usepackage}\marg{babel}
+      \% recommended even for English
+      \cs{usepackage}\oarg{utf8}\marg{inputenc}
+      \cs{usepackage}\oarg{T1}\marg{fontenc}
+    \end{semiverbatim}
+  \end{block}
+
+\end{frame}
+\begin{frame}[fragile]
+  \begin{block}{German (Default) and US English}
+    \begin{semiverbatim}
+      \cs{documentclass}\oarg{\alert<1,4>{american}\alert<1>{,}\alert<1,3>{ngerman}}\marg{article}
+      \cs{usepackage}\marg{babel}
+      \cs{usepackage}\oarg{utf8}\marg{inputenc}
+      \cs{usepackage}\oarg{T1}\marg{fontenc}
+    \end{semiverbatim}
+  \end{block}
+  \onslide<2->
+  \begin{block}{US English (Default) and German}
+    \begin{semiverbatim}
+      \cs{documentclass}\oarg{\alert<2,4>{ngerman}\alert<2>{,}\alert<2,3>{american}}\marg{article}
+      \cs{usepackage}\marg{babel}
+      \cs{usepackage}\oarg{utf8}\marg{inputenc}
+      \cs{usepackage}\oarg{T1}\marg{fontenc}
+    \end{semiverbatim}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \begin{block}{UK English (Default) and Welsh}
+    \begin{semiverbatim}
+        \cs{documentclass}\oarg{\alert<1>{welsh,british}}\marg{article}
+        \cs{usepackage}\marg{babel}
+        \cs{usepackage}\oarg{utf8}\marg{inputenc}
+        \% uncomment for older LaTeX for Ŵ ŵ Ŷ ŷ
+        \% \alert<3>{\cs{input}\marg{ix-utf8enc.dfu}}
+        \cs{usepackage}\oarg{T1}\marg{fontenc}
+        \alert<2>{\cs{providecommand}\marg{\cs{cymraeg}}\oarg{1}\marg{\%
+          \cs{foreignlanguage}\marg{welsh}\marg{#1}}}
+    \end{semiverbatim}
+  \end{block}
+\end{frame}
+
+\begin{exercise}
+    Experiment with the effects of different languages.
+    What effect does changing the language have on the output of \cs{today}?
+
+    \textbf{Note that you need to delete generated files after changing language options.}
+    To do this on OverLeaf, choose ‘compile from scratch’.
+\end{exercise}
+
+\tutornote{Finish exercise at 15:45.}
+
+\section{Bibliographies}
+
+\begin{frame}{Creating a bibliography}
+
+  There are 3 common ways to create a bibliography in \LaTeX{}.
+  \begin{itemize}
+	\item Use the \env{thebibliography} environment.
+	\item Use a database of bibliographical entries and \BibTeX{}.
+	\item Use a database of bibliographical entries, \pkg{biblatex} and Biber.
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Creating a bibliography}{The \LaTeX{} basics}
+  To create the bibliography, use \env{thebibliography}:
+  \begin{semiverbatim}
+	\\begin\{thebibliography\}\marg{\meta{sample label}}
+	...
+	\\end\{thebibliography\}
+  \end{semiverbatim}
+  \pause
+  Each entry looks like this:
+  \begin{semiverbatim}
+	\cs{bibitem}\oarg{\meta{label}}\marg{\meta{key}} \meta{entry text}
+  \end{semiverbatim}
+  Citations in the text then use the defined \texttt{key}:
+  \begin{semiverbatim}
+	  Some text \\cite\marg{\meta{key}}.
+  \end{semiverbatim}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{thebibliography}}
+\begin{example}
+\begin{semiverbatim}
+\alert<1>{\\begin\{thebibliography\}\{99\}}
+	\alert<2>{\\bibitem\{lamport\}}\alert<3>{
+	  Leslie Lamport, \\textit\{\\LaTeX\{\}: A Document
+	  Preparation System\}. Second Edition. Addison-Wesley:
+	  Reading, MA. 1994.}
+\alert<1>{\\end\{thebibliography\}}
+\end{semiverbatim}
+\end{example}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{thebibliography}}{A journal article}
+
+\begin{example}
+\begin{semiverbatim}
+\\begin\{thebibliography\}\{99\}
+	\alert<1>{\\bibitem\{smith05\}}\alert<2>{
+	  John Smith, Jr, Jane Lucy Doe, Andrew N.\\ Other and
+	  Jo de Vere, `An imaginary article'. In
+	  \\textit\{Journal of the Imaginary Society\}
+	  XIV(4):45--67. 2005.}
+\\end\{thebibliography\}
+\end{semiverbatim}
+\end{example}
+
+\end{frame}
+
+\begin{frame}[fragile]{Citing the entries}
+  \begin{example}
+	\begin{semiverbatim}
+	  For additional information about \\LaTeX\{\} and \\TeX\{\} see
+	  \\cite\{lamport\} and \\cite\{smith05\}.
+	\end{semiverbatim}
+  \end{example}
+\end{frame}
+
+\section{Long documents}
+
+\begin{frame}{Working with long documents}
+
+  \begin{itemize}
+	\item Long documents are best split into parts.
+	\item \cs{input} places the material loaded \enquote{here}.
+	\item \cs{include} is used for separate chapters:\\ it always starts a new page.
+	\item Using \cs{include} allows you to \cs{includeonly}\\
+	selected chapters.
+	\item Use \cs{includeonly} in the preamble.
+  \end{itemize}
+
+\end{frame}
+
+\section{Page layout}
+
+\begin{frame}[fragile]{Changing the page layout}
+
+  By default, the standard classes use US letter sized paper.
+
+  For consistent A4 layout with standard classes:
+  \begin{semiverbatim}
+    \cs{documentclass}\oarg{\alert{a4paper}}\marg{article}
+    \alert{\cs{usepackage}\marg{geometry}}
+  \end{semiverbatim}
+
+  \begin{itemize}
+    \item Use \cs{geometry} with \cls{article}, \cls{report}, \cls{book} and \cls{letter}.
+    \item \pkg{geometry} is usually best avoided when using classes such as \cls{memoir} or KOMA-Script.
+    \item Use \cs{geometry}\marg{\meta{options}} in the preamble to customise the layout.
+  \end{itemize}
+
+\end{frame}
+
+\begin{exercise}
+
+  Create a master file \verbatiminput{examples/example7.tex} along with the three chapters, each of which can be as simple as
+  \begin{verbatim}
+	\chapter{A demo}
+	\lipsum
+  \end{verbatim}
+  Experiment with this basic structure, and using \cs{includeonly} to use only some of the files.
+
+\end{exercise}
+
+\begin{exercise}
+
+  Working with the document you created in the previous exercise, try adding
+  \begin{verbatim}
+    \geometry{top=10mm,bottom=50mm,left=40mm,right=5mm,showframe}
+  \end{verbatim}
+  before \verb|\begin{document}|.
+  What happens if \verb|a4paper| is changed to \verb|a5paper|?
+
+\end{exercise}
+
+\tutornote{Finish exercise at 16:30.}
+
+\section{Solving problems}
+
+\begin{frame}{Problem solving strategies}
+	\begin{itemize}
+		\item Revert to the last known-good state of your document.
+		  Then reintroduce the changes one-by-one.
+
+		  (Only works if you keep backups, but you do that anyway, right?)
+		\item Comment out code (using \texttt{\%}) until you eliminate the problem.
+		  Then uncomment gradually.
+		\item Take a break!
+		  Staring at non-working code blinds you to the obvious.
+		\item Make the smallest document you can which demonstrates the problem. If that doesn't help, ask.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Describe the symptoms}
+	Be clear about the problem.
+
+	If you are asking online, people only know what you tell them!
+
+	There are different kinds of problems.
+	\begin{itemize}
+		\item Compilation failure.
+		  (No PDF is produced.)
+
+		  What is the error message?
+
+		  What does the \texttt{.log} say?
+		\item PDF compiles but with errors.
+
+		  Which errors?
+		\item No errors but the output is ‘wrong’.
+
+		  What exactly is wrong with it?
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Solution strategies}
+	\begin{itemize}
+		\item Delete ‘generated’ files e.g.\ \texttt{.aux}.
+		\item Check that every \cs{begin}\marg{\meta{environment}} matches an \cs{end}\marg{\meta{environment}}.
+		\item Check that the \textt{\{}s match the \texttt{\}}s.
+		\item Make sure you don't start writing before \cs{begin}\marg{document}.
+	\end{itemize}
+
+\end{frame}
+
+\begin{exercise}
+What's wrong?
+
+\verbatiminput{examples/example8.tex}
+
+\verbatiminput{examples/example9.tex}
+
+Examples are from Werner's answer at \url{http://tex.stackexchange.com/a/33472/}.
+
+\end{exercise}
+
+\tutornote{Finish exercise at 16:50.}
+
+
+\tutornote{Any remaining time for questions/further experimentation.}
+
+\tutornote{Time allowing, simple \textsf{hyperref} demo is good here}
+
+\mode<all>
+\furtherinfo*[%
+  Appendix \ref{handouts:sec:tex-distros}: \TeX{} Distributions.
+  \begin{itemize}
+    \item .
+    \item .
+  \end{itemize}
+  \item Appendix \ref{handouts:sec:}: sample output for exercise \ref{handouts:ex:}.
+  \item Appendix \ref{handouts:sec:}: .
+  \item Appendix \ref{handouts:sec:}: .
+]
+\mode*
+
+\begin{frame}{Source code}
+
+  \begin{center}
+     Code for this project is published on OverLeaf at\bigskip
+
+    \url{overleaf.com/read/yhcyjnnfmbhk}
+  \end{center}
+
+\end{frame}
+
+
+\clearpage
+\appendix
+
+\section<1-| beamer:0>{\TeX{} Distributions}\label{sec:tex-distros}
+% BEGIN sec:tex-distros
+
+For learning \LaTeXe{}, an online compiler works well: you don't have to worry about installation, don't need to find disk space and can start experimenting as soon as you've registered an account.
+
+For more serious usage, however, a local installation of \TeX{} is recommended.
+If you will be handling confidential material, this is \textbf{essential}: \textbf{do not upload private or confidential material to any online service}.
+Local compilation is more flexible, predictable and efficient than an online service.
+Overleaf is \emph{slloooooooooowww}; local compilation is, in contrast, comparatively fast, even on moderately-powered moderately-ancient hardware.
+
+Crucially, a local compilation allows you to avoid updating close to a crucial deadline: \textbf{never update your installation when close to completing a critical project}.
+The exception to this is that it is usually fine to install an entirely new version of your \TeX{} distribution, if you are able to do so alongside your existing one --- in that case, you aren't losing your existing installation and can revert if necessary.
+
+Recall that to install a working \TeX{} configuration, you need three things:
+\begin{enumerate}
+  \item a \TeX{} distribution;
+  \item an editor;
+  \item a document viewer (usually PDF).
+\end{enumerate}
+The critical choice here is the first: it is possible to install as many editors and viewers as your disk space allows, experimenting until you find a suitable combination.
+But it is generally unwise to install multiple \TeX{} distributions, especially if you have relatively little experience with the system.
+Mac OS X and Windows users will find that any distribution comes with an editor.
+However, users are encouraged to try different editors.
+Users of other operating systems will need to install an editor separately.
+Except for Windows, most systems probably include a suitable document viewer already.
+Windows users should note that use of Adobe Reader is problematic, so an alternative viewer is recommended.
+(Adobe Reader is satisfactory on OS X --- the problems are specific to Windows.)
+
+The remainder of this section concentrates on the choice of \TeX{} distribution.
+See \cref{fig:choice-distro} for an overview.
+
+\begin{sidewaysfigure}
+  \begin{forest}
+    flow tree,
+    tikz+={
+      \draw [decorate, decoration={brace, amplitude=10pt}, ultra thick, bcol1] ([yshift=-5pt]!LPuu.east |- current bounding box.south) coordinate (a) -- (current bounding box.west |- a) node [midway, font=\bfseries\sffamily, below, anchor=north, yshift=-10pt, bcol1, label=below:\url{www.tug.org/texlive/}] {\TeX{} Live};
+    }
+    [Which operating system?, to choose
+      [Mac OS X, my choice
+        [Mac\TeX{} (\TeX{} Live for OS X), selection, tier=distro
+          [www.tug.org/mactex/, url]
+        ]
+      ]
+      [Unix-ish, my choice
+        [\TeX{} Live, selection, tier=distro
+          [What matters most?, to choose, for children={my choice, align={@{}b@{}}}
+            [Easy install\\System integration
+              [{Distro's \texttt{texlive} packages\\(Install with e.g.~\texttt{apt}, \texttt{dnf}, \texttt{pacman})}, selection, tier=unx]
+            ]
+            [{Multi-version support (e.g.~2017 + 2018)\\Non-root install \& maintenance possible\\Latest packages, bug fixes \& updates}
+              [Upstream's installer\\\& dummy \texttt{texlive} package(s), selection, tier=unx
+                [www.tug.org/texlive/quickinstall.html, url]
+              ]
+            ]
+          ]
+        ]
+      ]
+      [Windows, my choice
+        [Cross-platform solution desirable?, to choose
+          [Cross-platform, my choice
+            [\TeX{} Live, selection, tier=win distro]
+          ]
+          [Windows only, my choice
+            [On-the-fly package installation needed?, to choose
+              [On-the-fly unneeded, my choice
+                [\TeX{} Live, selection, tier=win distro
+                  [www.tug.org/texlive/windows.html, url, before drawing tree={x/.process={OOw2+d{!u.x}{!uP.x}{(#1+#2)/2}  }}]
+                ]
+              ]
+              [On-the-fly, my choice
+                [Mik\TeX, selection, tier=win distro
+                  [miktex.org, url]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  \end{forest}
+  \caption{Selection of \TeX{} distribution and installation method}\label{fig:choice-distro}
+\end{sidewaysfigure}
+
+
+\subsection<1-| beamer:0>{Windows}
+
+If you are a Windows user, you have two main choices:
+\begin{enumerate}
+  \item Mik\TeX{};
+  \item \TeX{} Live.
+\end{enumerate}
+The first is specifically designed for Windows, allows on-the-fly installation of packages during compilation (so you can install a minimal set of software and pull down additions only if you need them) and is well-maintained, widely used and well-supported.
+The second is cross-platform, well-maintained, very widely used and very well-supported.
+Mik\TeX{} has one or two quirks which \TeX{} Live does not.
+In particular, Mik\TeX{} users sometimes need to update font map files when these are not auto-regenerated upon the installation of new font packages. 
+In addition, Mik\TeX{} includes some packages which are excluded from \TeX{} Live.
+To use these packages on \TeX{} Live, you would need to install them manually.
+However, a set of excluded font packages is supported by an installation script, so this generally applies to non-font packages (which are less tricky to install manually than font packages).
+I have never used Mik\TeX{}, so I cannot really recommend for or against it.
+Online compilation services are pretty much guaranteed to be using \TeX{} Live.
+
+\subsection<1-| beamer:0>{Not Windows}
+
+Use \TeX{} Live.
+
+\subsection<1-| beamer:0>{Installing \TeX{} Live}
+
+Pre-compiled binaries are available for most operating systems.
+Users of very unusual systems might need to compile from source, but if you are using such a system, you are probably used to this and can find instructions at \url{www.tug.org/texlive/build.html}.
+
+\subsubsection<1-| beamer:0>{Mac OS X}
+
+If you are using Mac OS X, you should install the latest version of Mac\TeX{} available for your system.
+Do NOT install using home brew or any similar ports system.
+
+\subsubsection<1-| beamer:0>{Unix-ish (GNU/Linux, FreeBSD etc.)}
+
+[I know that Mac OS X is Unix-ish, too, but it is nonetheless excluded from the set of ‘Unix-ish’ operating systems for current purposes.]
+
+If you are using GNU/Linux, FreeBSD or a similar Unix-ish system, you may choose to install either from upstream or using your operating system distribution's package manager (e.g.~\texttt{pacman}, \texttt{apt}, \texttt{dnf}, \texttt{yum}).
+
+I generally recommend installing from upstream.
+However, there is no doubt that doing so adds an additional layer of complexity to managing your system.
+\textbf{If you install from upstream, you need to install a ‘dummy’ package to satisfy dependencies when installing an editor etc.\ through your system's package manager.}
+This is the most significant disadvantage of using the upstream installer.
+
+The advantage is that it makes managing \TeX{} Live extremely straightforward.
+In general, distro-repackaged versions of \TeX{} Live are fragmented, outdated (often by years) and trickier to navigate.
+Repackaged versions typically include changes which alter the location of configuration files and disable most of the functionality offered by \TeX{} Live's own package manager. 
+(They have to disable most of the package manager's functionality to prevent it from conflicting with the system's primary package manager.
+Only one package manager can sensibly manage the same directories.)
+
+That said, \TeX{} Live relies on system-installed libraries.
+If your system includes different versions and this breaks \TeX{} Live's binaries, that is now your problem.
+If you are using distro-repackaged \TeX{} Live, it is the task of the people doing the packaging to adjust things so that this doesn't happen.
+So, if it breaks, it is somebody else's problem. 
+Whether that helps or not depends on the packagers \dots. 
+Fortunately, this happens rather rarely, tends not to break anything critical and is generally straightforward to resolve.
+The main downside of upstream's installer remains, therefore, the need for a dummy package.
+
+\subsubsection<1-| beamer:0>{Pre-Installation}
+
+Before installing, you should read the installation guide for your system:
+
+\noindent\begin{tabular}{@{}ll@{}}
+  Unix-ish & \url{www.tug.org/texlive/quickinstall.html}\\
+  Windows & \url{www.tug.org/texlive/windows.html}\\
+\end{tabular}
+
+\noindent Complete documentation is available at \url{www.tug.org/texlive/doc.html}.
+
+On Unix-ish systems, I recommend not installing with root privileges.
+Doing so is not necessary and not recommended by upstream.
+\url{tex.stackexchange.com/a/187379/} explains how to create and use a dedicated user account for managing \TeX{} Live on a GNU/Linux system.
+
+Whether you install as root or not, do remember to install a dummy package.
+If you do not do this, you will end up with multiple installations which will not get along at all well together, typically causing mysterious and confusing errors.
+(It is, however, fine to have multiple editions of \TeX{} Live itself installed e.g.~2017, 2018 and 2011.)
+
+\url{tex.stackexchange.com/q/1092} explains ways to install from upstream on Debian-based systems, but is easily adapted to other cases. 
+
+\subsubsection<1-| beamer:0>{Installation}
+
+Assuming you are installing from upstream or are a Windows or OS X user, download as follows:
+
+\noindent\begin{tabular}{@{}ll@{}}
+  Unix-ish  & \url{mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz}\\
+  Mac OS X &  \url{www.tug.org/mactex/}\\
+  Windows & \url{mirror.ctan.org/systems/texlive/tlnet/install-tl-windows.exe}\\
+  & \emph{or} \url{mirror.ctan.org/systems/texlive/tlnet/install-tl.zip}\\
+\end{tabular}
+
+\noindent Aside from Mac\TeX{}, these links will download the net install which will download the software from the internet during installation.
+Unless you are a Mac OS X user, you should use the net installer unless you have very good reason to do otherwise. 
+
+Unless you are very short of disk space, install the ‘full’ scheme.
+Trying to install ‘only want you need’ is a recipe for frustration and a fruitless waste of effort better spent reading your tea leaves. 
+(The second is equally pointless, but provides greater opportunities for creative self-expression.)
+
+\subsubsection<1-| beamer:0>{Post-Installation}
+
+Post-installation, see \url{www.tug.org/texlive/pkginstall.html} for ways to update the software.
+However, note that this is not particularly recommended unless you have a problem and want the latest fixes or wish to ensure you have all the newest bits and bobs.
+In particular, \textbf{do not update close to a critical deadline}.
+If you must update something close to a deadline (e.g.~you need a bug fix), try downloading the fixed package manually and see if just updating the problematic package is enough to solve the problem.
+\emph{After} the deadline, you can delete your manual download and update \TeX{} Live properly.
+
+% END sec:tex-distros
+
+
+\end{document}

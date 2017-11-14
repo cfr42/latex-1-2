@@ -1,6 +1,6 @@
-handouts.pdf
-slides.pdf
-tutornotes.pdf
+handouts*.pdf
+slides*.pdf
+tutornotes*.pdf
 gweithdy-latex-da*/handouts.tex
 gweithdy-latex-da*/slides.tex
 gweithdy-latex-da*/tutornotes.tex
