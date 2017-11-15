@@ -1,18 +1,11 @@
-$Id: README 6427 2017-05-17 17:04:19Z cfrees $
+$Id: README 7131 2017-11-14 23:45:25Z cfrees $
 
-LaTeX II
-========
-
-Eventually, this project will be part of a larger project compriseing
-both LaTeX I and LaTeX II. For now, the prequel to this project is 
-available on OverLeaf:
-
-	overleaf.com/read/yhcyjnnfmbhk
+LaTeX I & II
+============
 
 LaTeX I and II are a series of workshops provided by Cardiff University's 
 Doctoral Academy (previously the University Graduate College). The 
-materials used for the four workshops which make up LaTeX II ['this 
-project'] are provided here. 
+materials used for the workshops ['this project'] are provided here. 
 
 LaTeX I and II are a modified and extended version of materials produced 
 by UK TUG volunteers ['original project'] for a course provided for 
@@ -26,7 +19,11 @@ License (http://creativecommons.org/licenses/by-sa/3.0/).
 The original project is available as a GitHub repository maintained by
 Joseph Wright from https://github.com/uktug/latex-beginners-course/.
 
-LaTeX II includes four workshops:
+LaTeX I consists of a single day-long workshop introducing the fundamentals of
+LaTeX and enabling students to begin producing documents of their own. 
+
+LaTeX II is designed to build on the knowledge and skills gained by completing
+LaTeX I (or equivalent) and includes four workshops:
 1. Macros
 2. Biblatex/Biber
 3. Beamer
@@ -39,21 +36,22 @@ Summary of Changes
 + The file README.markdown from the original project is included as 
   UK-TUG-README.markdown. 
 + Files required to build the project with make and to produce HTML are
-  omitted from the modified project. However, LaTeX II includes a 
+  omitted from the modified project. However, the current project includes a 
   **highly experimental** Makefile for possible use on Unix-ish systems. 
 + The modified project uses a set of common configuration files. 
 + The format of slides, handouts and tutor notes have been customised.
-* The handouts originally used US letter paper. This is corrected in the
-* The margin sizes have been increased so that notes for tutors are included
+* The handouts originally used US letter paper. This is corrected in the 
   modified project.
+* The margin sizes have been increased so that notes for tutors are included
+  in the printable area of the page.
 + Material on BibTeX is converted into a workshop on Biblatex/Biber. Adaption
   included preparation of a Biblatex 'cheat sheet', now published on CTAN.
 * Diagrams are redrawn using TikZ.
 * Considerable material has been added for all topics in LaTeX II and
   appendices have been added to supplement the handouts.
+* An initial appendix for LaTeX I is also included.
 * The fourth workshop in LaTeX II includes a new section on the use of 
   pgfplots to plot graphs from external data.
-  in the printable area of the page.
 + Further changes were made where necessary to adapt the materials for local
   conditions.
 
@@ -82,7 +80,7 @@ do the job.
 
 
 Clea F. Rees
-2017-05-17
+2017-11-14
 ReesC21 <at> cardiff <dot> ac <dot> uk
 
 vim: set nospell:
