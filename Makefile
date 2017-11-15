@@ -1,7 +1,8 @@
-# $Id: Makefile 6426 2017-05-17 16:39:06Z cfrees $
+# $Id: Makefile 7134 2017-11-15 01:02:55Z cfrees $
 SHELL=/bin/sh
 PATH=/usr/local/bin:/usr/local/texlive/bin:/usr/bin
 
+dirintro := gweithdy-latex-da-1
 dirmacros := gweithdy-latex-da-2-macros
 dirbiblatex := gweithdy-latex-da-2-biblatex
 dirbeamer := gweithdy-latex-da-2-beamer
@@ -16,8 +17,9 @@ wrappers := $(dirwrappers)/handouts.tex $(dirwrappers)/slides.tex $(dirwrappers)
 handoutsadd := $(dirhandoutsadd)/latex-gweithdy-font-sampler.pdf $(dirhandoutsadd)/latex-gweithdy-fonts.pdf $(dirhandoutsadd)/latex-gweithdy-packages.pdf
 
 pdfscore := handouts.pdf tutornotes.pdf slides.pdf
-dirscore := $(dirmacros) $(dirbiblatex) $(dirbeamer) $(dirpellach)
+dirscore := $(dirintro) $(dirmacros) $(dirbiblatex) $(dirbeamer) $(dirpellach)
 
+pdfsintro := $(addprefix $(dirintro)/,$(pdfscore))
 pdfsmacros := $(addprefix $(dirmacros)/,$(pdfscore)) $(handoutsadd)
 pdfsbiblatex := $(addprefix $(dirbiblatex)/,$(pdfscore)) 
 pdfsbeamer := $(addprefix $(dirbeamer)/,$(pdfscore)) 
@@ -26,6 +28,11 @@ pdfspellach := $(addprefix $(dirpellach)/,$(pdfscore))
 handouts := $(addsuffix /handouts.pdf,$(dirscore)) $(handoutsadd)
 tutornotes := $(addsuffix /tutornotes.pdf,$(dirscore))
 slides := $(addsuffix /slides.pdf,$(dirscore))
+
+texeeintro := $(addprefix $(dirintro)/examples/,example1.tex example2.tex example3.tex example4.tex example5.tex example6.tex example7.tex example8.tex example9.tex)
+pdfeeintro :=
+bibeeintro := $(addprefix $(dirintro)/examples/,myrefs.bib)
+handsintro := $(addprefix $(dirintro)/handouts/,handouts.pdf winston-latexsheet-a4.pdf carlisle-maths.pdf leaflet.pdf)
 
 texeemacros := $(addprefix $(dirmacros)/examples/,example10.tex)
 pdfeemacros =
@@ -48,17 +55,19 @@ pdfeepellach := $(subst .tex,.pdf,$(texeepellach))
 eepellach := $(texeepellach) $(pdfeepellach) $(dirpellach)/examples/pgfplotsexample.pdf $(dirpellach)/examples/pgfplotsexample.tex
 handspellach := $(addprefix $(dirpellach)/handouts/,handouts.pdf) 
 
-pdfs := $(pdfsmacros) $(pdfsbiblatex) $(pdfsbeamer) $(pdfspellach)
-collhandouts := $(handsmacros) $(handsbiblatex) $(handsbeamer) $(handspellach)
+pdfs := $(pdfsintro) $(pdfsmacros) $(pdfsbiblatex) $(pdfsbeamer) $(pdfspellach)
+collhandouts := $(handsintro) $(handsmacros) $(handsbiblatex) $(handsbeamer) $(handspellach)
 
 # targets (first is default)
 all : $(pdfs)
 .PHONY : all
 gweithdai : $(pdfs) $(collhandouts) 
 .PHONY : gweithdai
+intro : $(pdfsintro) $(handoutsadd) $(handsintro)
+.PHONY : intro
 macros : $(pdfsmacros) $(handoutsadd) $(handsmacros)
 .PHONY : macros
-biblatex : $(pdfsbiblatex) $(handsbiblatex)
+biblatex : $(pdfsbiblatex) $(handoutsadd) $(handsbiblatex)
 .PHONY : biblatex
 beamer : $(pdfsbeamer) $(handsbeamer) 
 .PHONY : beamer
@@ -85,6 +94,9 @@ $(pdfsadd) : $(subst .pdf,.tex,$(pdfsadd)) $(dirhandoutsadd)/config $(config)
 	$(arara-pdf)
 
 # ee
+
+$(dirintro)/ee : $(eeintro) 
+	cd $(dirintro) && touch ee
 
 $(dirmacros)/ee : $(eemacros) 
 	cd $(dirmacros) && touch ee
@@ -151,6 +163,18 @@ $(dirmacros)/handouts/latex-gweithdy-%.pdf : | $(dirhandoutsadd)/latex-gweithdy-
 $(dirmacros)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirmacros)/handouts
 	cd $(dirmacros)/handouts && ln -s ../../handouts/$(notdir $@) ./
+
+$(dirintro)/handouts/carlisle-maths.pdf : | $(dirhandoutsadd)/$(notdir $@)
+	mkdir -p $(dirintro)/handouts
+	cd $(dirintro)/handouts && ln -s ../../handouts/$(notdir $@) ./
+
+$(dirintro)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
+	mkdir -p $(dirintro)/handouts
+	cd $(dirintro)/handouts && ln -s ../../handouts/$(notdir $@) ./
+
+$(dirintro)/handouts/leaflet.pdf : | $(dirhandoutsadd)/$(notdir $@)
+	mkdir -p $(dirintro)/handouts
+	cd $(dirintro)/handouts && ln -s ../../handouts/$(notdir $@) ./
 
 $(dirbiblatex)/handouts/biblatex-cheatsheet.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirbiblatex)/handouts
