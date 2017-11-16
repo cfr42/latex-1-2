@@ -2,8 +2,8 @@
 \svnidlong
 {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-1/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 7135 $}
-{$LastChangedDate: 2017-11-15 01:37:50 +0000 (Mer, 15 Tach 2017) $}
+{$LastChangedRevision: 7139 $}
+{$LastChangedDate: 2017-11-16 18:56:32 +0000 (Iau, 16 Tach 2017) $}
 
 \input{config/macros-da.cfg}
 
@@ -132,12 +132,12 @@
 	  \path (0,0) node[my block] (edit) {\shortstack{Edit\\\texttt{.tex}\\File}} ;
 	  \onslide<2->
 		\path (3.5,0) node[my diamond] (errors) {\shortstack{Any\\Errors?}};
-		\path [my draw] (edit) -- (errors) node[midway,above=-1em] {\LaTeX{}};
+		\path [my draw] (edit) -- (errors) node[midway, above=-.25em, anchor=south] {\LaTeX{}};
 	  \onslide<3->
 	  \path [my draw] (errors) -- ++(0,-2) node[midway,right=-1em] {Yes} -| (edit);
 	  \onslide<4->
 	  \path (7,0) node[my block] (pdf) {\shortstack{View\\PDF}};
-	  \path [my draw] (errors) -- (pdf) node[midway,above=-1em] {No};
+	  \path [my draw] (errors) -- (pdf) node[midway, above=-.25em, anchor=south] {No};
 	  \onslide<5->
 	  \path (10.5,0) node[my diamond] (change) {\shortstack{Any\\Changes?}};
 	  \path [my draw] (pdf) -- (change);
@@ -145,7 +145,7 @@
 	  \path [my draw] (change) -- ++(0,-2.5) node[midway,right=-1em] {Yes} -| (edit);
 	  \onslide<7->
 	  \path (14,0) node[my block] (done) {Done};
-	  \path [my draw] (change) -- (done) node[midway,above=-1em] {No};
+	  \path [my draw] (change) -- (done) node[midway, above=-.25em, anchor=south] {No};
 	\end{tikzpicture}
   }
 
@@ -962,8 +962,9 @@ Examples are from Werner's answer at \url{http://tex.stackexchange.com/a/33472/}
 
 \tutornote{Time allowing, simple \textsf{hyperref} demo is good here}
 
-\mode<all>
-\furtherinfo*[%
+\mode
+<all>
+\furtherinfo[%
   Appendix \ref{handouts:sec:tex-distros}: \TeX{} Distributions.
 ][and on OverLeaf at\bigskip\par\url{overleaf.com/read/yhcyjnnfmbhk}]
 \mode*
@@ -1199,18 +1200,21 @@ In particular, \textbf{do not update close to a critical deadline}.
 If you must update something close to a deadline (e.g.~you need a bug fix), try downloading the fixed package manually and see if just updating the problematic package is enough to solve the problem.
 \emph{After} the deadline, you can delete your manual download and update \TeX{} Live properly.
 
-\begin{frame}{Additional Font Packages}
-  Some additional font packages may be installed using a script provided by the \TeX{} User Group.
-  Download the script from \url{tug.org/fonts/getnonfreefonts/}.
-  \textbf{Do NOT use the \texttt{--user} option!}
-  If you do this by accident, it will initially work fine, but will cause you no end of trouble later on.
-  That is, when you've long forgotten about what you did, things will suddenly go pear-shaped and you will have no idea why.
-  Instead, follow the directions for installing the fonts system-wide. 
-  \begin{verbatim}
-    getnonfreefonts --sys [other arguments]
-  \end{verbatim}
-\end{frame}
+\subsubsection*<1-| beamer:0>{Additional Font Packages}\label{subsubsec:fonts}
+% BEGIN subsubsec:fonts (*)
 
+Some additional font packages may be installed using a script provided by the \TeX{} User Group.
+Download the script from \url{tug.org/fonts/getnonfreefonts/}.
+\textbf{Do NOT use the \texttt{--user} option!}
+If you do this by accident, it will initially work fine, but will cause you no end of trouble later on.
+That is, when you've long forgotten about what you did, things will suddenly go pear-shaped and you will have no idea why.
+Instead, follow the directions for installing the fonts system-wide. 
+\begin{verbatim}
+  getnonfreefonts --sys [other arguments]
+\end{verbatim}
+
+% END subsubsec:fonts (*)
+  
 % END subsubsec:post
 
 % END sec:tex-distros
