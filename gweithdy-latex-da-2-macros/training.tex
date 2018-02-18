@@ -1,15 +1,15 @@
 % BEGIN preamble
 \svnidlong
-{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-macros/training.tex $}
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-macros/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 6278 $}
-{$LastChangedDate: 2017-04-25 21:56:44 +0100 (Maw, 25 Ebr 2017) $}
+{$LastChangedRevision: 7388 $}
+{$LastChangedDate: 2018-02-18 23:16:23 +0000 (Sul, 18 Chw 2018) $}
 
 \input{config/macros-da.cfg}
 
 \title{\LaTeX{} II: Macros}
 \subtitle{Based in part on materials produced by UK-TUG Volunteers}
-\date{\cymraeg{Chwefror} 2 February 2017}
+\date{\cymraeg{Chwefror} 21 February 2018}
 
 % END preamble
 
@@ -816,6 +816,31 @@ An example of an argument specification is shown in \cref{fig:argspec}.
 \pkg{xparse} is part of the \LaTeX 3 project, whose aim is to eventually provide the successor to \LaTeXe.
 The package is written using the syntax developed by the project, \pkg{expl3}.
 For details, see \filename{interface3,pdf} (\verb|texdoc interface3|).
+Note, in particular, the importance of \pkg{expl3}'s recommendations for naming macros.
+This makes code written in this syntax much more readable, consistent and predictable than anything offered by \LaTeXe{} or \TeX{} itself.
+If you wish to use the support provided by \pkg{expl3}, then you should familiarise yourself with these guidelines and name your own macros accordingly.
+In particular, the syntax distinguishes between \emph{functions} and \emph{variables/constants}.
+\begin{itemize}
+  \item Variable/constant names take the form \verb|\|\meta{l\textbar g\textbar c}\verb|_|\meta{prefix}\verb|_|\meta{name}\verb|_|\meta{type}.
+  \verb|l| indicates a \emph{local} variable, \verb|g| a global variable and \verb|c| a constant.
+  \meta{prefix} is a distinctive string used for macros provided by a particular package or class.
+  This is designed to help reduce the potential for the name conflicts which plague \LaTeXe.
+  \meta{name} should be a descriptive name which indicates what the variable or constant is for.
+  \meta{type} indicates the type of value the variable/constant holds.
+  For example, \verb|\l_alexmacros_chapter_title_tl| might be used to hold the current value of the chapter title in a package \pkg{alexmacros}.
+  A chapter title will be a sequence of tokens, hence, \verb|tl| which is the standard suffix indicating a \emph{token list}.
+  Other suffixes indicate other kinds of values e.g.~\verb|bool| for Booleans, \verb|dim| for dimensions, \verb|int| for integers and so on.
+  \item Function names take the form \verb|\|\meta{prefix}\verb|_|\meta{name}\verb|:|\meta{argument specification}.
+  For example, \verb|\alexmacros_chapter_abstract:n| might be a function used to typeset a chapter abstract in \pkg{alexmacros}.
+  The \verb|n| after the colon shows that this function takes one argument in curly brackets.
+  In \pkg{expl3}'s world, the functions' names tell you how many arguments they take, if any, and which kind of thing each argument should be. 
+  These are, of course, intended to be used in class and package code rather than in regular documents.
+  To allow the use of \verb|\alexmacros_chapter_abstract:n| in a document, you would use \pkg{xparse} to provide a document-level wrapper.
+\begin{verbatim}
+\NewDocumentCommand\alexabstract { +m }{\alexmacros_chapter_abstract:n {#1}}
+\end{verbatim}
+\end{itemize}
+Again, for further information, consult \LaTeX 3's documentation: the above is just to give you a sense of what the syntax looks like.
 
 % END subsec:xparse
 
@@ -825,9 +850,11 @@ For details, see \filename{interface3,pdf} (\verb|texdoc interface3|).
 
 Finally, you may wish eventually to look at \cs{def} and friends.
 These are \TeX{} commands, as opposed to \LaTeX{} ones.
+If possible, consider using the \LaTeX 3 syntax supported by \pkg{expl3}.
+This support is not yet complete, so there are still some things which you can only do using the lower-level \TeX{} macros.
+But if \LaTeX 3 supports what you need, \pkg{expl3} allows you to write code which is safer, more consistent and easier to read.
 
-\textbf{Use these only when you are certain you understand why you need them and what the consequences may be.}
-
+\textbf{Use \TeX{} macros directly only when you are certain you understand why you need them and what the consequences may be.}
 \cs{def}, \cs{gdef}, \cs{xdef}, \cs{let} etc.\ contain \emph{\bfseries no safeguards whatsoever}.
 If you say \cs{def}\cs{value}\marg{24}, then \TeX{} will not query your decision, but your document will almost certainly not come out as you wish!
 
