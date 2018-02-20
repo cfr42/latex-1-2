@@ -2,8 +2,8 @@
 \svnidlong
 {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-macros/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 7388 $}
-{$LastChangedDate: 2018-02-18 23:16:23 +0000 (Sul, 18 Chw 2018) $}
+{$LastChangedRevision: 7395 $}
+{$LastChangedDate: 2018-02-20 17:36:07 +0000 (Maw, 20 Chw 2018) $}
 
 \input{config/macros-da.cfg}
 
@@ -502,6 +502,9 @@
 
 \tutornote{12:00: end}
 
+\mode
+<all>
+
 \furtherinfo*[%
   custom macros:
   \begin{itemize}
@@ -509,6 +512,8 @@
     \item Appendix \ref{handouts:sec:beyond2e}: brief overview of custom macro creation with \pkg{xparse}, \LaTeX 3 \& \TeX.
   \end{itemize}%
 ]
+\mode
+<article>
 
 \appendix\label{app}
 
@@ -605,14 +610,22 @@ If you want to \emph{define a command only if it does not exist already}, you ca
 This section explains how to define and redefine \emph{environments}.
 Environments defined using the \LaTeXe{} facilities listed above may take
 \begin{itemize}
-  \item no arguments
-  \simp[e.g.]{\env{document};}
-  \item one or more mandatory arguments
-  \simp[e.g.]{\env{thebibliography}\marg{\meta{widest label}};}
-  \item an optional argument
-  \simp[e.g.]{\env{figure}\oarg{\meta{permitted location specifications}};}
-  \item an optional argument combined with one or more mandatory arguments
-  \simp[e.g.]{\env{minipage}\oarg{\meta{alignment}}\marg{\meta{width}}.}
+  \item no arguments e.g.~\env{document}
+  \begin{semiverbatim}
+    \cs{begin}\marg{document} \dots{} \cs{end}\marg{document}
+  \end{semiverbatim}
+  \item one or more mandatory arguments e.g.~\env{thebibliography}
+  \begin{semiverbatim}
+    \cs{begin}\marg{thebibliography}\marg{\meta{widest label}} \dots{} \cs{end}\marg{thebibliography}
+  \end{semiverbatim}
+  \item an optional argument e.g.~\env{figure}
+  \begin{semiverbatim}
+    \cs{begin}\marg{figure}\oarg{\meta{permitted location specifications}} \dots{} \cs{end}\marg{figure}
+  \end{semiverbatim}
+  \item an optional argument combined with one or more mandatory arguments e.g.~\env{minipage}
+  \begin{semiverbatim}
+    \cs{begin}\marg{minipage}\oarg{\meta{alignment}}\marg{\meta{width}} \dots{} \cs{end}\marg{minipage}
+  \end{semiverbatim}
 \end{itemize}
 The syntax for defining a \emph{new} environment is
 \simp{%
@@ -875,5 +888,6 @@ If you redefine \cs{value} to do this, on the other hand, you may have no clue w
 
 % END sec:beyond2e
 
+\mode*
 
 \end{document}
