@@ -2,8 +2,8 @@
 \svnidlong
 {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-biblatex/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 7424 $}
-{$LastChangedDate: 2018-03-09 00:17:21 +0000 (Gwe, 09 Maw 2018) $}
+{$LastChangedRevision: 7425 $}
+{$LastChangedDate: 2018-03-09 18:48:30 +0000 (Gwe, 09 Maw 2018) $}
 
 \input{config/macros-da.cfg}
 
@@ -56,6 +56,8 @@
 \overleaf
 
 \section{Biber and Biblatex}\tutornote{Time: 10:15}
+
+\subsection{Using an existing database}\label{subsec:use-bib}
 
 \begin{frame}{Creating a bibliography}
 
@@ -181,6 +183,8 @@
   What effect does \texttt{sorting=none} have?
 \end{exercise}
 
+\subsection{Creating your own database}\label{subsec:database}
+
 \begin{frame}[fragile]{A \BibTeX{} database}{A basic article}\tutornote{Time 11:00}
 
 \begin{example}\tutornote{\raggedright Comment on other database formats.}
@@ -214,6 +218,8 @@
 \end{example}
 
 \end{frame}
+
+\subsection{Biblatex's enhanced citation commands}\label{subsec:cite-biblatex}
 
 \begin{frame}{Citations using Biblatex}
 
@@ -277,6 +283,9 @@
 
 \end{exercise}
 
+\mode
+<all>
+
 \furtherinfo*[%
   Biblatex/Biber:
   \begin{itemize}
@@ -284,6 +293,10 @@
     \item Appendix \ref{handouts:sec:pellach}: a very selective introduction to a small part of the additional functionality provided by Biblatex/Biber.
   \end{itemize}%
 ]
+
+\mode
+<article>
+
 
 \appendix\label{app}
 \section<1-| beamer:0>{Sample Output}\label{sec:samples}
