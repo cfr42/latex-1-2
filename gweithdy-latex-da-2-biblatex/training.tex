@@ -2,8 +2,8 @@
 \svnidlong
 {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-biblatex/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 7425 $}
-{$LastChangedDate: 2018-03-09 18:48:30 +0000 (Gwe, 09 Maw 2018) $}
+{$LastChangedRevision: 7436 $}
+{$LastChangedDate: 2018-03-20 13:20:23 +0000 (Maw, 20 Maw 2018) $}
 
 \input{config/macros-da.cfg}
 
@@ -101,7 +101,7 @@
   \usepackage[utf8]{inputenc}
   \usepackage{csquotes,xpatch}
   \usepackage[backend=biber]{biblatex}
-  \addbibresource{example}
+  \addbibresource{example.bib}
   \begin{document}
     Some text \cite{key}.
     \printbibliography
@@ -118,32 +118,19 @@
       \begin{scope}[minimum width=1.5cm,minimum height=1.5cm,inner sep=.1em]
         \path (0,0) node[gweithrediad] (edit) {\shortstack{Edit\\\texttt{.tex}\\File}};
         \path (0,2) node[gweithrediad] (editbib) {\shortstack{Edit\\\texttt{.bib}\\File}};
-        \path (3.2,1) node[penderfyniad] (errors)
-        {\shortstack{Any\\Errors?}};
-        \path (6.8,1) node[penderfyniad] (bibtexerrors)
-        {\shortstack{Any\\Errors?}};
-        \path (10,1) node[penderfyniad] (errors2)
-        {\shortstack{Any\\Errors?}};
+        \path (3.2,1) node[penderfyniad] (errors) {\shortstack{Any\\Errors?}};
+        \path (6.8,1) node[penderfyniad] (bibtexerrors) {\shortstack{Any\\Errors?}};
+        \path (10,1) node[penderfyniad] (errors2) {\shortstack{Any\\Errors?}};
         \path (12.5,1) node[canlyniad] (pdf) {\shortstack{View\\PDF}};
       \end{scope}
       \path (7,4.75) node[gweithrediad] (rmbbl) {Remove \texttt{.bcf} and/or \texttt{.bbl} file};
-      \draw[->] (edit) -- (1,1) -- (errors) node[midway,above]
-      {\shortstack{pdf\LaTeX{}\\\texttt{.tex} file}};
+      \draw[->] (edit) -- (1,1) -- (errors) node[midway,above] {\shortstack{pdf\LaTeX{}\\\texttt{.tex} file}};
       \draw (editbib) -- (1,1);
-      \draw[->] (errors) -- ++(0,-2.25) node[midway,left] {Yes}
-      -| (edit) node[pos=0,below,anchor=north east]
-      {Error in document};
-      \draw[->] (errors) -- (bibtexerrors)
-      node[midway,above] {\shortstack{No errors.\\Run Biber}};
-      \draw[->] (bibtexerrors) -- ++(0,-3)
-      node[midway,right] {Yes} -| (edit)
-      node[pos=0,below,anchor=north east]
-      {Misspelt/missing label or bib style};
-      \draw[->] (bibtexerrors) -- ++(0,2.5) node[midway,right]
-      {Yes} -| (editbib) node[pos=0,above,anchor=south east]
-      {Error in bib file};
-      \draw[->] (bibtexerrors) -- (errors2) node[midway,above]
-      {\shortstack{No errors.\\Run pdf\LaTeX{}\\(twice)}};
+      \draw[->] (errors) -- ++(0,-2.25) node[midway,left] {Yes} -| (edit) node[pos=0,below,anchor=north east] {Error in document};
+      \draw[->] (errors) -- (bibtexerrors) node[midway,above] {\shortstack{No errors.\\Run Biber}};
+      \draw[->] (bibtexerrors) -- ++(0,-3) node[midway,right] {Yes} -| (edit) node[pos=0,below,anchor=north east] {Misspelt/missing label or bib style};
+      \draw[->] (bibtexerrors) -- ++(0,2.5) node[midway,right] {Yes} -| (editbib) node[pos=0,above,anchor=south east] {Error in bib file};
+      \draw[->] (bibtexerrors) -- (errors2) node[midway,above] {\shortstack{No errors.\\Run pdf\LaTeX{}\\(twice)}};
       \draw[->] (errors2) |- (rmbbl) node[pos=0.2,right] {Yes};
       \draw[->] (rmbbl) -| (editbib);
       \draw[->] (errors2) -- (pdf) node[midway,above] {No};
@@ -166,8 +153,13 @@
     pdflatex example11
     pdflatex example11
   \end{verbatim}
+  Note that the comment sign \verb|%| following \verb|aristotle:poetics,| is there to comment the new line, which would otherwise add a space to the list of tokens \TeX{} parses.
+  This is followed by a new line (entered using the enter or return key).
+  The reason for this approach is that a single line would run off the paper and you wouldn't be able to read the source.
+  When entering the code you can \emph{either} remove both the \verb|%| and the new line, so that you have \verb|aristotle:poetics,aristotle:anima| \emph{or} ensure that you insert a new line character after the \verb|%|.
+  \smallskip
 
-  There are various options you can pass to the \pkg{biblatex} package that affects the formatting.
+  There are various options you can pass to the \pkg{biblatex} package that affect the formatting.
   For example, try changing the options you give Biblatex as follows:
   \begin{verbatim}
     \usepackage[style=authoryear-comp,mergedate=basic,isbn=false,url=false,%
@@ -274,6 +266,9 @@
   Create a file called \texttt{myrefs.bib} that contains the following: \verbatiminput{examples/myrefs.bib}
 
   Then create a file called, say, \texttt{example12.tex} that contains the following: \verbatiminput{examples/example12.tex}
+  
+  Note that some values lack curly brackets around them.
+  It would also be fine to use curly brackets here, but can you think why it might be OK to omit them in these cases?
 
   Try adding the following to \texttt{myrefs.bib}:
   \verbatiminput{examples/myrefs-add.bib}
