@@ -1,15 +1,15 @@
 % BEGIN preamble
 \svnidlong
-{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-beamer/training.tex $}
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-beamer/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 6279 $}
-{$LastChangedDate: 2017-04-26 14:10:38 +0100 (Mer, 26 Ebr 2017) $}
+{$LastChangedRevision: 7490 $}
+{$LastChangedDate: 2018-04-24 14:48:48 +0100 (Maw, 24 Ebr 2018) $}
 
 \input{config/macros-da.cfg}
 
 \title{\LaTeX{} II: Beamer}
 \subtitle{Based in part on materials produced by UK-TUG Volunteers}
-\date{\cymraeg{Ebrill} 26 April 2017}
+\date{\cymraeg{Ebrill} 26 April 2018}
 
 \mode<presentation>
 {
@@ -301,7 +301,9 @@ to the contents of a \textt{frame} have?
 % END sec:colours
 
 
-\mode<all>
+\mode
+<all>
+
 \furtherinfo*[%
   Beamer:
   \begin{itemize}
@@ -322,22 +324,27 @@ to the contents of a \textt{frame} have?
   \end{itemize}
 \end{frame}
 
+\mode
+<article>
 
-\clearpage
+% \clearpage
+\vfill
 \appendix
 
-\section<1-| beamer:0>{A Simple Example}\label{sec:simple}
+\section<1-| beamer:0>[A Simple Example]{A Simple Example\texorpdfstring{\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-beamer/examples/example13.tex}}}{}}\label{sec:simple}
 % BEGIN sec:simple
 \verbatiminput{examples/example13}
-\begin{center}
+\begin{figure}
+  \centering
   \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example13}}
   \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example13}}
   \fbox{\includegraphics[page=3,width=.3\linewidth]{examples/example13}}\par
   \fbox{\includegraphics[page=4,width=.3\linewidth]{examples/example13}}
   \fbox{\includegraphics[page=5,width=.3\linewidth]{examples/example13}}
   \fbox{\includegraphics[page=6,width=.3\linewidth]{examples/example13}}
-\end{center}
-
+  \caption{A simple example (\cref{sec:simple}) typeset.}\label{fig:simple}
+\end{figure}
+The expected output is shown in \cref{fig:simple}.
 % END sec:simple
 
 \section<1-| beamer:0>{Built-In Themes}\label{sec:builtin-themes}
@@ -392,7 +399,7 @@ The boxes are typeset in the order in which they are added and will be automatic
   \item \cs{addheadbox}\marg{\meta{beamer color}}\marg{\meta{box template}}
   \item \cs{addfootbox}\marg{\meta{beamer color}}\marg{\meta{box template}}
 \end{itemize}
-For example, suppose we add the following to the preamble of the example above.
+For example, suppose we add the following to the preamble of the example above\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-beamer/examples/example14.tex}}.
 \begin{verbatim}
 \usetheme{boxes}
 \addheadbox{structure}{First Box}
@@ -401,14 +408,17 @@ For example, suppose we add the following to the preamble of the example above.
 \addfootbox{alerted}{Second Box}
 \addfootbox{subsection in head/foot}{Third Box}
 \end{verbatim}
-\begin{center}
+\begin{figure}
+  \centering
   \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example14}}
   \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example14}}
   \fbox{\includegraphics[page=3,width=.3\linewidth]{examples/example14}}\par
   \fbox{\includegraphics[page=4,width=.3\linewidth]{examples/example14}}
   \fbox{\includegraphics[page=5,width=.3\linewidth]{examples/example14}}
   \fbox{\includegraphics[page=6,width=.3\linewidth]{examples/example14}}
-\end{center}
+  \caption{Adding structure to the simple example in \ref{sec:simple} using a bundled theme.}\label{fig:theme-boxes}
+\end{figure}
+These additions add various structural elements to slides, as shown in \cref{fig:theme-boxes}.
 
 % END subsec:presentation-themes
 
@@ -446,7 +456,7 @@ For example, suppose we add the following to the preamble of the example above.
 
 % BEGIN subsec:font-themes
 \ttfamily
-\begin{multicols}{4}\raggedcolumns
+\begin{multicols}{2}\raggedcolumns
 \begin{itemize}
   \item default
   \item professionalfonts
@@ -522,7 +532,7 @@ Beamer extends the facilities of \cs{newcommand}, \cs{renewcommand}, \cs{newenvi
 The \meta{definition}, \meta{redefinition}, \meta{begin code} and \meta{end code} may use the place-holders \texttt{\#1},\dots,\texttt{\#n} where \texttt{n} is 1+\meta{argument number}.
 \texttt{\#n} is then the optional overlay specification.
 
-For example,
+For example\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-beamer/examples/example15.tex}},
 \begin{verbatim}
   \newcommand<>{\sometimesbold}[1]{{\only#2{\bfseries}{#1}}}
   \sometimesbold<2>{Bold on the second slide.}
@@ -530,11 +540,13 @@ For example,
 will use bold only on the second slide.
 
 \verbatiminput{examples/example15}
-\begin{center}
+\begin{figure}
+  \centering
   \fbox{\includegraphics[page=1,width=.3\linewidth]{examples/example15}}
   \fbox{\includegraphics[page=2,width=.3\linewidth]{examples/example15}}
-\end{center}
-
+  \caption{Effect of the custom overlay-aware macro defined in \cref{sec:overlay-macros}.}\label{fig:overlay-macros}
+\end{figure}
+The result is shown in \cref{fig:overlay-macros}.
 
 % END sec:overlay-macros
 
