@@ -1,0 +1,46 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex
+\documentclass[tikz,border=10pt,multi]{standalone}
+\usetikzlibrary{shadows,arrows.meta,shapes.arrows}
+\begin{document}
+\newcounter{timer}%
+\setcounter{timer}{0}%
+\tikzset{
+  timer/.pic={
+	\stepcounter{timer}
+	\begin{scope}[scale=2.5]
+	  \fill [fill=white, drop shadow] (0,0) circle (1);
+	  \foreach \i [count=\j from 0] in {90,67.5,...,-247.5}
+	  {
+		\ifnum\j>#1
+		  \draw (\i:1.2) node (timer\thetimer-\j) {\j} (\i:1) -- (\i:0.7) ;
+		\else
+		  \pgfmathsetmacro\modon{int(16+\j)}
+		  \ifnum\j=#1
+			\fill [gray] (\i:1) arc (\i:\i-22.5:1) -- (\i-22.5:.7) arc (\i-22.5:\i:.7) -- cycle;
+			\draw (\i:1.2) node (timer\thetimer-\j) {\modon/\j} (\i:1) -- (\i:0.7) ;
+		  \else
+			\draw (\i:1.2) node (timer\thetimer-\j) {\modon} (\i:1) -- (\i:0.7) ;
+		  \fi
+		\fi
+	  }
+	  \draw [thick] (0,0) circle (1) circle (.7);
+	  \draw [-{Triangle[]}, draw=cyan!75!blue!75, line width=1mm] (0,0) -- (90-#1*22.5-11.25:.71);
+	\end{scope}
+  },
+  tick/.pic={
+	\node (tick\thetimer) [shape=single arrow, fill=yellow!50!orange!50, draw=yellow!50!orange, pic actions, transform shape, drop shadow] {Tick!};
+	\coordinate (tick\thetimer-tip) at (tick\thetimer.east);
+  }
+}%
+\begin{tikzpicture}[font=\sffamily,semithick]
+  \pic  {timer=0};
+  \path (timer1-4.east) ++(1,0) pic {tick} (tick1.east) ++(3.5,0) pic {timer=1};
+\end{tikzpicture}
+\setcounter{timer}{0}%
+\begin{tikzpicture}[font=\sffamily,semithick]
+  \pic  {timer=0};
+  \path (timer1-4.east) ++(1,0) pic {tick} (tick1-tip) ++(3.5,0) pic {timer=1} (timer2-8.south) ++(0,-1) pic [rotate=-90] {tick} (tick2-tip) ++(0,-3.5) pic {timer=11} (timer3-12.west) ++(-1,0) pic [rotate=-180] {tick} (tick3-tip) ++(-3.5,0) pic {timer=14};
+\end{tikzpicture}
+\end{document}

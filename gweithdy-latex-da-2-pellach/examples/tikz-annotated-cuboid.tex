@@ -1,0 +1,59 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex
+\pdfminorversion=7
+\documentclass[border=5pt, multi, tikz]{standalone}
+\usetikzlibrary{quotes,arrows.meta}
+\begin{document}
+\tikzset{
+  annotated cuboid/.pic={
+	\tikzset{%
+	  every edge quotes/.append style={midway, auto},
+	  /cuboid/.cd,
+	  #1
+	}
+	\draw [every edge/.append style={pic actions, densely dashed, opacity=.5}, pic actions]
+	(0,0,0) coordinate (o) -- ++(-\cubescale*\cubex,0,0) coordinate (a) -- ++(0,-\cubescale*\cubey,0) coordinate (b) edge coordinate [pos=1] (g) ++(0,0,-\cubescale*\cubez)  -- ++(\cubescale*\cubex,0,0) coordinate (c) -- cycle
+	(o) -- ++(0,0,-\cubescale*\cubez) coordinate (d) -- ++(0,-\cubescale*\cubey,0) coordinate (e) edge (g) -- (c) -- cycle
+	(o) -- (a) -- ++(0,0,-\cubescale*\cubez) coordinate (f) edge (g) -- (d) -- cycle;
+	\path [every edge/.append style={pic actions, |-|}]
+	(b) +(0,-5pt) coordinate (b1) edge ["\cubex \cubeunits"'] (b1 -| c)
+	(b) +(-5pt,0) coordinate (b2) edge ["\cubey \cubeunits"] (b2 |- a)
+	(c) +(3.5pt,-3.5pt) coordinate (c2) edge ["\cubez \cubeunits"'] ([xshift=3.5pt,yshift=-3.5pt]e)
+	;
+  },
+  /cuboid/.search also={/tikz},
+  /cuboid/.cd,
+  width/.store in=\cubex,
+  height/.store in=\cubey,
+  depth/.store in=\cubez,
+  units/.store in=\cubeunits,
+  scale/.store in=\cubescale,
+  width=10,
+  height=10,
+  depth=10,
+  units=cm,
+  scale=.1,
+}%
+\begin{tikzpicture}[every edge quotes/.append style={auto, text=blue}]
+  \pgfmathsetmacro{\cubex}{5}
+  \pgfmathsetmacro{\cubey}{1}
+  \pgfmathsetmacro{\cubez}{3}
+  \draw [draw=blue, every edge/.append style={draw=blue, densely dashed, opacity=.5}, fill=magenta]
+	(0,0,0) coordinate (o) -- ++(-\cubex,0,0) coordinate (a) -- ++(0,-\cubey,0) coordinate (b) edge coordinate [pos=1] (g) ++(0,0,-\cubez)  -- ++(\cubex,0,0) coordinate (c) -- cycle
+	(o) -- ++(0,0,-\cubez) coordinate (d) -- ++(0,-\cubey,0) coordinate (e) edge (g) -- (c) -- cycle
+	(o) -- (a) -- ++(0,0,-\cubez) coordinate (f) edge (g) -- (d) -- cycle;
+  \path [every edge/.append style={draw=blue, |-|}]
+	(b) +(0,-5pt) coordinate (b1) edge ["30cm"'] (b1 -| c)
+	(b) +(-5pt,0) coordinate (b2) edge ["5cm"] (b2 |- a)
+	(c) +(3.5pt,-3.5pt) coordinate (c2) edge ["10cm"'] ([xshift=3.5pt,yshift=-3.5pt]e)
+	;
+\end{tikzpicture}
+\begin{tikzpicture}
+  \pic {annotated cuboid};
+  \pic [fill=magenta, text=blue, draw=blue] at (5,0) {annotated cuboid={width=30, height=5, depth=10}};
+  \pic [fill=green, text=green!50!black, draw=green!25!black] at (5,-2) {annotated cuboid={width=6, height=20, depth=15, units=mm}};
+  \pic at (1,-3) {annotated cuboid={width=150, height=200, depth=250, scale=.01, units=m}};
+  \pic [fill=cyan, text=blue!75!cyan, draw=blue!75!cyan] at (-3,-2) {annotated cuboid={width=15, height=18, depth=13.5, units=}};
+\end{tikzpicture}
+\end{document}

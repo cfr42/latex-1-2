@@ -1,18 +1,25 @@
 % BEGIN preamble
 \svnidlong
-{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdy-latex-da-2-pellach/training.tex $}
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-pellach/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 6411 $}
-{$LastChangedDate: 2017-05-16 14:28:51 +0100 (Maw, 16 Mai 2017) $}
+{$LastChangedRevision: 7522 $}
+{$LastChangedDate: 2018-05-04 14:35:24 +0100 (Gwe, 04 Mai 2018) $}
 
 \usepackage[citestyle=authoryear-comp,bibstyle=authoryear,mergedate=basic,isbn=false,url=true,sortcites=true,backend=biber,mincrossrefs=6]{biblatex}
 \bibliography{training}
 
 \input{config/macros-da.cfg}
 
+\mode<article>
+{
+  \usetikzlibrary{quotes,automata,positioning,bending,shadows,shapes.arrows}
+  \usepackage{tikz-cd}
+}
+
+
 \title{\LaTeX{} II: Floats, Tips \& Tricks}
 \subtitle{Based in part on materials produced by UK-TUG Volunteers}
-\date{\cymraeg{Mai} 15 May 2017}
+\date{\cymraeg{Mai} 8 May 2018}
 
 % END preamble
 
@@ -112,7 +119,7 @@
 \begin{exercise}
   \label{ex:floatmanagement}%
   If you have a document with a number of floats, sections etc., you may wish to experiment with that.
-  Otherwise, the following example, available at \url{https://www.overleaf.com/read/mnfzhffpzmck}, may make a useful starting point.
+  Otherwise, the following example, available at \url{https://www.overleaf.com/read/mnfzhffpzmck} or \url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/example16.tex}, may make a useful starting point.
   \verbatiminput{examples/example16}
 
   How well does \LaTeX{} do in placing the floats ‘sensibly’?
@@ -137,7 +144,7 @@
   What happens to the numbering of figures after the non-floating one?
 \end{exercise}
 
-\section{Handling Data}\tutornote{11:00}
+\section{Drawing \& Plotting}\tutornote{11:00}
 
 \begin{frame}{Cautions}
   \begin{itemize}
@@ -160,10 +167,10 @@
     Use \LaTeX{} with \pgf{} to draw the results.
     \item Consider using \verb|mysql| etc.\ to handle large data sets.
     Use \LaTeX{} with \pkg{datatool} to typeset the results of queries etc.
+    \item Use \Tikz{} and \pgfplots{} \pkg{external} libraries and/or \pkg{standalone} when using \TeX{} to draw or plot.
   \end{itemize}
 \end{frame}
-
-\begin{frame}[fragile]{Plots}
+\begin{frame}[fragile]{Pictures \& Plots}
   \begin{itemize}
     \item \pgf{} is a drawing package for \TeX{} with a \LaTeX{} interface.
     \item \Tikz{} is a front-end for \pgf{}.
@@ -173,8 +180,76 @@
   \end{itemize}
 \end{frame}
 
+\subsection{Drawing}
+
+\begin{frame}[fragile]{Diagrams}{A Simple \Tikz{} Picture}
+  \begin{columns}
+    \begin{column}{.75\linewidth}
+\begin{semiverbatim}
+\\documentclass\{standalone\}
+\alert<1>{\\usepackage\{tikz\}}
+\\begin\{document\}
+\alert<2>{\\begin\{tikzpicture\}}
+\alert<3>{\\path [fill=gray, draw=darkgray] 
+  (0,0) -{}- (1,1) arc (45:0:1) -{}- cycle;}
+\alert<2>{\\end\{tikzpicture\}}
+\\end\{document\}
+\end{semiverbatim}
+    \end{column}%
+    \begin{column}{.25\linewidth}
+      \begin{tikzpicture}
+    \path [fill=gray, draw=darkgray] (0,0) -- (1,1) arc (45:0:1) -- cycle;
+  \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+\begin{frame}<1-| article:0>[fragile,plain]%{Another Simple(-ish) \Tikz{} Picture}
+   \begin{columns}
+    \begin{column}{.75\linewidth}
+\begin{semiverbatim}
+\\begin\{tikzpicture\}[line width=.5pt]
+  \\shade [draw=blue!50!cyan!75!black, line width=.5pt, 
+  double distance=.25pt, double=blue!50!cyan!50!white, 
+  inner color=blue!50!cyan!25!white, outer 
+  color=blue!50!cyan!75!black, opacity=1, draw opacity=1] 
+  (0,0) circle (1.425);
+  \\begin\{scope\}[blend mode=screen, opacity=.5]
+    \\clip (0,0) circle (1.415);
+    \\foreach \\k [count=\\c, evaluate=\\c as 
+    \\f using \{\\c*100/7\}] in 
+    \{0,2.5,5,...,12.5\}
+    \{\\begin\{scope\}[rotate=\\k]
+        \\foreach \\j in \{0,15,30\}
+        \{\\scoped[rotate=\\j]\{\\draw [blue!\\f!green] \\foreach 
+          \\i in \{0,45,...,315\} \{ (\\i:1) circle (1) \};\} \}
+      \\end\{scope\} \}
+  \\end\{scope\}
+\\end\{tikzpicture\}
+\end{semiverbatim}
+    \end{column}
+    \begin{column}{.25\linewidth}
+      \vspace*{2\baselineskip}
+      \includegraphics{examples/tikz-siml}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+Another still simplish \Tikz{} picture demonstrates the use of \verb|\foreach| loops to construct pictures with patterned elements\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/tikz-siml.tex}} (\cref{fig:tikz-siml}):
+\begin{figure}
+  \centering
+  \input{examples/tikz-siml}
+  \caption{Output from \textt{tikz-siml.tex}.}\label{fig:tikz-siml}
+\end{figure}
+\verbatiminput{examples/tikz-siml}
+
+
+
+
+
+\subsection{Handling Data}
+
 \begin{frame}[fragile]{\texttt{pgfplotsexample.tex}}
-  The handout includes a copy of \texttt{pgfplotsexample.tex}
+  The handout includes a copy of \texttt{pgfplotsexample.tex}\only<0| handout:1>{\footnote{\url{http://mirrors.ctan.org/graphics/pgf/contrib/pgfplots/doc/pgfplotsexample.tex}}}
   \begin{semiverbatim}
     \\usepackage\{pgfplots\}
     \\pgfplotsset\{compat=1.8\}
@@ -218,18 +293,7 @@
 
 \end{frame}
 
-\begin{verbatim}
-dof L2  Lmax    maxlevel
-5   8.31160034e-02  1.80007647e-01  2
-17  2.54685628e-02  3.75580565e-02  3
-49  7.40715288e-03  1.49212716e-02  4
-129 2.10192154e-03  4.23330523e-03  5
-321 5.87352989e-04  1.30668515e-03  6
-769 1.62269942e-04  3.88658098e-04  7
-1793    4.44248889e-05  1.12651668e-04  8
-4097    1.20714122e-05  3.20339285e-05  9
-9217    3.26101452e-06  8.97617707e-06  10
-\end{verbatim}
+\verbatiminput{examples/datafile.dat}
 
 \begin{exercise}
   Try creating some plots with \cs{addplot} \texttt{coordinates}.
@@ -254,7 +318,7 @@ dof L2  Lmax    maxlevel
 \mode*
 
 
-\clearpage
+% \clearpage
 \appendix
 
 
@@ -289,7 +353,9 @@ dof L2  Lmax    maxlevel
 % BEGIN subsec:samples-floats
 This appendix includes sample output for the code in \cref{ex:floatmanagement}.
 
-The output of the original code is shown first, followed by that obtained when \cs{usepackage}\oarg{section}\marg{placeins} is added to the preamble.
+The output of the original code is shown first\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/example16.tex}}.
+
+This is followed by the result when \cs{usepackage}\oarg{section}\marg{placeins} is added to the preamble\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/example16-mod.tex}}.
 \includepdf{examples/example16}
 \includepdf{examples/example16-mod}
 % END subsec:samples-floats
@@ -310,7 +376,7 @@ Output from the plot in \cref{sec:fn} is included later in \cref{fig:sin}.
 % BEGIN sec:fn
 
 This appendix illustrates how to plot a function using \pgfplots.
-\Cref{fig:sin} shows sample output from the code listing.
+\Cref{fig:sin} shows sample output from the code listing\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/pgfplots-sin.tex}}.
 
 \verbatiminput{examples/pgfplots-sin}
 \begin{figure}
@@ -319,6 +385,23 @@ This appendix illustrates how to plot a function using \pgfplots.
   \caption{$\sin$ function, plotted with \protect\pgfplots.}\label{fig:sin}
 \end{figure}
 % END sec:fn
+
+\section<1-| beamer:0>{Drawing Diagrams}\label{sec:dd}
+% BEGIN sec:dd
+
+\Tikz{} can do an impressive amount, even when it is not the most efficient tool for the job.
+This appendix includes a few of the more basic examples, but be aware that if your project needs ducks, nuns or snow persons, you will find others have already addressed your need in the form of third-party packages and libraries.
+Syntactic trees, circuit diagrams, lattices, knots and improved  curves may be designed for less seriously minded users, but could nonetheless brighten up your day.
+
+\foreach \i in {tikz-annotated-cuboid,tikz-automata-finite-state-transducer,tikz-ticking-timers,tikz-cd-eg,tikz-shaded-delaunay-pattern} {%
+  \begin{figure}
+    \centering
+    \input{examples/\i}
+    \caption{\url{github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/\i.tex}}
+  \end{figure}
+}
+
+% END sec:dd
 
 \section<1-| beamer:0>{Diagram and Plot Resources}\label{sec:dpr}
 % BEGIN sec:dpr

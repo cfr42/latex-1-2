@@ -1,0 +1,54 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex: { synctex: true }
+\pdfminorversion=7
+% answer to http://tex.stackexchange.com/questions/314918/generate-coloured-fancy-delaunay-patterns-in-tikz, modifying code by Mark Wibrow at http://tex.stackexchange.com/a/260652/
+\documentclass[tikz,border=10pt,multi,rgb]{standalone}
+\begin{document}
+% xcolor manual: 34
+\definecolorseries{colours}{hsb}{grad}[hsb]{.575,1,1}{.987,-.234,0}%
+\resetcolorseries[12]{colours}%
+\tikzset{%
+  set my colour/.code={%
+    \colorlet{mycolour}{colours!!+},
+  },
+  my colour/.style={%
+    set my colour,
+    bottom color=mycolour,
+    top color=mycolour!50,
+    fill opacity=.5,
+  },
+}%
+\begin{tikzpicture}
+  \foreach \i [evaluate={\ii=int(\i-1)}, remember=\i as \ilast] in {0,...,7}{
+    \foreach \j [evaluate={\jj=int(\j-1)}, remember=\j as \jlast] in {0,...,7}{
+      \coordinate [shift={(\j,\i)}] (n-\i-\j) at (rand*180:1/4+rnd/8);
+      \ifnum\i>0
+        \path [my colour] (n-\i-\j) -- (n-\ii-\j) -- (n-\ilast-\j) -- cycle;
+      \fi
+      \ifnum\j>0
+        \path [my colour] (n-\i-\j) -- (n-\i-\jj) -- (n-\i-\jlast) -- cycle;
+        \path [my colour] (n-\i-\jlast) -- (n-\i-\jj) -- (n-\i-\j) -- cycle;
+        \ifnum\i>0
+           \path [my colour] (n-\i-\j) -- (n-\i-\jj) -- (n-\ii-\j) -- cycle;
+           \path [my colour] (n-\ilast-\j) -- (n-\ilast-\jj) -- (n-\i-\j) -- cycle;
+          \pgfmathparse{int(rnd>.5)}
+          \ifnum\pgfmathresult=0
+            \path [my colour] (n-\ilast-\jlast) -- (n-\ilast-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\ilast-\j) -- (n-\ilast-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\i-\jlast) -- (n-\i-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\i-\j) -- (n-\i-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\ii-\j) -- (n-\i-\jj) -- (n-\i-\j) -- cycle;
+          \else
+            \path [my colour] (n-\ii-\j) -- (n-\i-\jj) -- (n-\i-\j) -- cycle;
+            \path [my colour] (n-\i-\j) -- (n-\i-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\i-\jlast) -- (n-\i-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\ilast-\j) -- (n-\ilast-\jj) -- (n-\ii-\jj) -- cycle;
+            \path [my colour] (n-\ilast-\jlast) -- (n-\ilast-\jj) -- (n-\ii-\jj) -- cycle;
+          \fi
+        \fi
+      \fi
+    }
+  }
+\end{tikzpicture}
+\end{document}

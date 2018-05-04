@@ -1,0 +1,15 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+% arara: pdflatex
+\documentclass[border=10pt,tikz]{standalone}
+\usepackage{tikz-cd}
+\begin{document}
+{%
+  \tikzset{external/export=false}%
+  \begin{tikzcd}
+    \arrow{r} & C_{n+1} \arrow{dd} \arrow{dr} & & B_n \arrow{dd} \arrow{r} & C_n \arrow{dd} \arrow{dr} & & B_{n-1} \arrow{r} \arrow{dd} & {}\\
+    & & A_n \arrow{ur} \arrow{dr} & & & A_{n-1} \arrow{ur} \arrow{dr} \\
+    \arrow{r} & E_{n+1} \arrow{ur} & &  D_n \arrow{r} & E_n \arrow{ur} & & D_{n-1} \arrow{r} & {}
+  \end{tikzcd}%
+}
+\end{document}
