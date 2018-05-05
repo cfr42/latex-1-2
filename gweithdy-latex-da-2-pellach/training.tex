@@ -2,8 +2,8 @@
 \svnidlong
 {$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/gweithdy-latex-da-2-pellach/training.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 7522 $}
-{$LastChangedDate: 2018-05-04 14:35:24 +0100 (Gwe, 04 Mai 2018) $}
+{$LastChangedRevision: 7528 $}
+{$LastChangedDate: 2018-05-05 00:59:13 +0100 (Sad, 05 Mai 2018) $}
 
 \usepackage[citestyle=authoryear-comp,bibstyle=authoryear,mergedate=basic,isbn=false,url=true,sortcites=true,backend=biber,mincrossrefs=6]{biblatex}
 \bibliography{training}
@@ -99,21 +99,22 @@
 \end{frame}
 
 \begin{frame}{Float control}
-	Floats can be tricky to control because they\dots float\dots.
-
-	You can influence where they end up in various ways.
-	  \begin{itemize}
-		\item Alter the number or size of floats which \LaTeX{} allows in various places.
-		\item Add \texttt{!} to the float specification to ignore those constraints for a particular float.
-		\item Issue \cs{clearpage} to force \LaTeX{} to output any floats in the queue.
-		\item Move a float a bit earlier or later in the text.
-        \item Use package \pkg{placeins} to create \cs{FloatBarrier}s manually or automatically.
-	  \end{itemize}
-
-	If you do not want something to move, however, don't use a float.
-	\begin{itemize}
-	  \item \pkg{capt-of} or \pkg{caption} allow you to use \cs{captionof} for non-floats.
-	\end{itemize}
+  Floats can be tricky to control because they\dots float\dots.
+  
+  You can influence where they end up in various ways.
+  \begin{itemize}
+    \item Alter the number or size of floats which \LaTeX{} allows in various places.
+    \item Add \texttt{!} to the float specification to ignore those constraints for a particular float.
+    \item Issue \cs{clearpage} to force \LaTeX{} to output any floats in the queue.
+    \item Move a float a bit earlier or later in the text.
+    \item Use package \pkg{placeins} to create \cs{FloatBarrier}s manually or automatically.
+  \end{itemize}
+  
+  \onslide<2->
+  If you do not want something to move, however, don't use a float.
+  \begin{itemize}
+    \item \pkg{capt-of} or \pkg{caption} allow you to use \cs{captionof} for non-floats.
+  \end{itemize}
 \end{frame}
 
 \begin{exercise}
@@ -172,11 +173,12 @@
 \end{frame}
 \begin{frame}[fragile]{Pictures \& Plots}
   \begin{itemize}
-    \item \pgf{} is a drawing package for \TeX{} with a \LaTeX{} interface.
-    \item \Tikz{} is a front-end for \pgf{}.
-    \item \tikzpgf{} can be used to plots data directly, can integrate \verb|gnuplot| output and can be used to draw diagrams and illustrations of various kinds.
-    \item \pgfplots{} is a package for drawing plots, based on \tikzpgf{}.
-    \item \pgfplotstable{} is a package provided by \pgfplots{} for constructing tables from data.
+    \item \alert<1>{\pgf{}} is a drawing package for \TeX{} with a \LaTeX{} interface.
+    \item \alert<1>{\Tikz{}} is a front-end for \pgf{}.
+    \item \tikzpgf{} can be used to plot data directly, can integrate \verb|gnuplot| output and can be used to draw diagrams and illustrations of various kinds.
+    \onslide<2->
+    \item \alert{\pgfplots{}} is a package for drawing plots, based on \tikzpgf{}.
+    \item \alert{\pgfplotstable{}} is a package provided by \pgfplots{} for constructing tables from data.
   \end{itemize}
 \end{frame}
 
@@ -215,13 +217,13 @@
   (0,0) circle (1.425);
   \\begin\{scope\}[blend mode=screen, opacity=.5]
     \\clip (0,0) circle (1.415);
-    \\foreach \\k [count=\\c, evaluate=\\c as 
+    \alert{\\foreach \\k} [count=\\c, evaluate=\\c as 
     \\f using \{\\c*100/7\}] in 
     \{0,2.5,5,...,12.5\}
-    \{\\begin\{scope\}[rotate=\\k]
-        \\foreach \\j in \{0,15,30\}
-        \{\\scoped[rotate=\\j]\{\\draw [blue!\\f!green] \\foreach 
-          \\i in \{0,45,...,315\} \{ (\\i:1) circle (1) \};\} \}
+    \{\\begin\{scope\}[rotate=\alert{\\k}]
+      \alert{\\foreach \\j} in \{0,15,30\}
+        \{\\scoped[rotate=\alert{\\j}]\{\\draw [blue!\\f!green] \alert{\\foreach 
+          \\i} in \{0,45,...,315\} \{ (\alert{\\i}:1) circle (1) \};\} \}
       \\end\{scope\} \}
   \\end\{scope\}
 \\end\{tikzpicture\}
@@ -252,8 +254,9 @@ Another still simplish \Tikz{} picture demonstrates the use of \verb|\foreach| l
   The handout includes a copy of \texttt{pgfplotsexample.tex}\only<0| handout:1>{\footnote{\url{http://mirrors.ctan.org/graphics/pgf/contrib/pgfplots/doc/pgfplotsexample.tex}}}
   \begin{semiverbatim}
     \\usepackage\{pgfplots\}
-    \\pgfplotsset\{compat=1.8\}
+    \alert<2>{\\pgfplotsset\{compat=1.8\}}
   \end{semiverbatim}
+  \onslide<2->
   The \verb|compat| setting determines which features are available (and which bug fixes).
 
   Use \verb|newest| for the latest and greatest.
