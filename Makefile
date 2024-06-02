@@ -216,7 +216,7 @@ $(dirpellach)/examples/pgfplotsexample.tex : | $(dirpellach)/examples/
 
 
 # prevent auto removal of targets created only as intermediates 
-.SECONDDARY: %.tex
+.SECONDDARY: %.tex %.pdf
 
 .PHONY : clean
 clean :
