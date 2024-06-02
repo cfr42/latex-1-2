@@ -184,6 +184,8 @@
 
 \subsection{Drawing}
 
+{\tikzset{external/export=false}%
+	\tikzexternaldisable
 \begin{frame}[fragile]{Diagrams}{A Simple \Tikz{} Picture}
   \begin{columns}
     \begin{column}{.75\linewidth}
@@ -235,15 +237,15 @@
     \end{column}
   \end{columns}
 \end{frame}
-
+% do NOT comment end of line above!!
 Another still simplish \Tikz{} picture demonstrates the use of \verb|\foreach| loops to construct pictures with patterned elements\footnote{\url{https://github.com/cfr42/latex-1-2/blob/master/gweithdy-latex-da-2-pellach/examples/tikz-siml.tex}} (\cref{fig:tikz-siml}):
 \begin{figure}
   \centering
   \input{examples/tikz-siml}
   \caption{Output from \textt{tikz-siml.tex}.}\label{fig:tikz-siml}
 \end{figure}
-\verbatiminput{examples/tikz-siml}
-
+\verbatiminput{examples/tikz-siml}%
+}
 
 
 

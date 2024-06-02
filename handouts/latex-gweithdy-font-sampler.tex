@@ -1,19 +1,19 @@
 % !TEX TS-program = pdflatex
 % !TEX encoding = UTF-8 Unicode
 % arara: pdflatex: { synctex: true }
-%% Copyright 2015 Clea F. Rees
+%% Copyright 2024 Clea F. Rees
 % \listfiles
 \pdfminorversion=7
 \documentclass[a4paper,welsh,british,12pt]{article}
 \PassOptionsToPackage{B1,LY1,T1}{fontenc}
 \input{config/handouts-da.cfg}
 \svnidlong
-{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/handouts/latex-gweithdy-font-sampler.tex $}
+{$HeadURL: file:///mnt/between/svn/dysgu/trunk/DoctoralAcademy/gweithdai-latex/handouts/latex-gweithdy-font-sampler.tex $}
 {$LastChangedBy: cfrees $}
-{$LastChangedRevision: 5802 $}
-{$LastChangedDate: 2017-01-31 04:26:20 +0000 (Maw, 31 Ion 2017) $}
+{$LastChangedRevision: 10060 $}
+{$LastChangedDate: 2024-05-16 01:56:21 +0100 (Iau, 16 Mai 2024) $}
 % best not to mix \svnid and \svnidlong (or to always typeset time-zone with time? see documentation)
-%	\svnid{$Id: latex-gweithdy-font-sampler.tex 5802 2017-01-31 04:26:20Z cfrees $}
+%	\svnid{$Id: latex-gweithdy-font-sampler.tex 10060 2024-05-16 00:56:21Z cfrees $}
 \usepackage{Acorn, AnnSton, ArtNouv, ArtNouvc, Carrickc, Eichenla, Eileen, EileenBl, Elzevier, GotIn, GoudyIn, Kinigcap, Konanur, Kramer, MorrisIn, Nouveaud, Romantik, Rothdn, Royal, Sanremo, Starburst, Typocaps, Zallman}
 \usepackage{auncial,aurical,pifont,adforn,fontawesome}
 \usepackage[all]{tengwarscript}
@@ -68,7 +68,9 @@
   shape .tl_set:N = \l_cfr_shape_tl,
   shape .initial:n = {n},
 }
-\NewDocumentCommand \enwffont { o m m O {} o g g } {%
+\NewDocumentCommand \enwffont { o m m O {} o !g !g } {
+  % #1 key-values (uchod) #2 fontfamily #3 testun ee enw #4 pellach
+  % #5 key-values (uchod) #6 fontfamily #7 testun (gwahanol)
   \group_begin:
   \IfValueT { #1 } {\keys_set:nn { cfr / ffontiau / enw } { #1 }}
   \normalfont
@@ -79,36 +81,36 @@
   \fontshape{\l_cfr_shape_tl}
   \selectfont #3~
   \IfValueTF { #5 }{
-	\keys_set:nn { cfr / ffontiau / enw } { #5 }
-	\IfValueTF { #6 } {
-	  {
-		\fontencoding{\l_cfr_encoding_tl}
-		\fontfamily{#6}
-		\fontseries{\l_cfr_series_tl}
-		\fontshape{\l_cfr_shape_tl}
-		\selectfont
-		\IfValueTF { #7 }{ #7~ }{ #3~ }
-	  }
-	}{
-	  {
-		\fontencoding{\l_cfr_encoding_tl}
-		\fontfamily{#2}
-		\fontseries{\l_cfr_series_tl}
-		\fontshape{\l_cfr_shape_tl}
-		\selectfont
-		\IfValueTF { #7 }{ #7~ }{ #3~ }
-	  }
-	}
+    \keys_set:nn { cfr / ffontiau / enw } { #5 }
+    \IfValueTF { #6 } {
+      {
+        \fontencoding{\l_cfr_encoding_tl}
+        \fontfamily{#6}
+        \fontseries{\l_cfr_series_tl}
+        \fontshape{\l_cfr_shape_tl}
+        \selectfont
+        \IfValueTF { #7 }{ #7~ }{ #3~ }
+      }
+    }{
+      {
+        \fontencoding{\l_cfr_encoding_tl}
+        \fontfamily{#2}
+        \fontseries{\l_cfr_series_tl}
+        \fontshape{\l_cfr_shape_tl}
+        \selectfont
+        \IfValueTF { #7 }{ #7~ }{ #3~ }
+      }
+    }
   }{
-	\IfValueT { #6 } {
-	  {
-		\fontfamily{#6}
-		\selectfont
-		\IfValueTF { #7 }{ #7~ }{ #3~ }
-	  }
-	}
+    \IfValueT { #6 } {
+      {
+        \fontfamily{#6}
+        \selectfont
+        \IfValueTF { #7 }{ #7~ }{ #3~ }
+      }
+    }
   }
-  \str_if_eq_x:nnF {#4} {} { #4~ }
+  \str_if_eq:nnF {#4} {} { #4~ }
   \normalfont\textbullet
   \group_end:
   \bool_set_false:N \l_cfr_first_bool}
@@ -214,10 +216,10 @@
   {\fontseries{c}\selectfont Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textlg{\cdwidth Light Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \textsb{\cdwidth Semi-Bold Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} {\fontseries{bc}\selectfont Bold Condensed \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}}}
 {\setcounter{myding}{26}%
   \renewcommand\textbullet{%
-	\stepcounter{myding}%
-	\ifnum\value{myding}=41\setcounter{myding}{55}%
-	\else\ifnum\value{myding}=70\setcounter{myding}{3}\fi\fi
-	\adforn{\themyding}}%
+    \stepcounter{myding}%
+    \ifnum\value{myding}=41\setcounter{myding}{55}%
+    \else\ifnum\value{myding}=70\setcounter{myding}{3}\fi\fi
+    \adforn{\themyding}}%
 \enwffont{AccanthisADFStdNoThree-LF}{AccanthisNo3}
 \enwffont[encoding=LY1]{ybd}{BerenisADFPro}
 \enwffont[encoding=LY1]{ybd}{Upright \textit{Italics} \textsc{Small-Caps \textit{Italic Small-Caps}} \textbf{Bold \textit{Italics} \textsc{Small-Caps \textit{Italic Small-Caps}}}}
@@ -273,22 +275,22 @@
 \enwffont{DejaVuSansMono-TLF}{DejaVuSansMono}
 \enwffont[series=xl]{pbsi}{BrushScriptX-Italic}
 \enwffont{Cabin-TLF}{Cabin}
-\enwffont{CabinCondensed-TLF}{Cabin Condensed}
+\enwffont[series=c]{Cabin-TLF}{Cabin Condensed}
 \enwffont{Caladea-TLF}{Caladea}
-\enwffont{fca}{Cantarell}
-\enwffont{Carlito-TLF}{Carlito}
+\enwffont{cantarell-OsF}{Cantarell}
+\enwffont{Crlt-TLF}{Carlito}
 \enwffont{cmin}{Carolingan Minuscules}
 \enwffont{Cinzel-LF}{Cinzel \textbf{Cinzel} \fontseries{k}\selectfont Cinzel}
 \enwffont{CinzelDecorative-LF}{Cinzel Decorative \textbf{Cinzell Decorative} \fontseries{k}\selectfont Cinzell Decorative}
-\enwffont{ClearSans-LF}{Clear Sans}
-\enwffont{ClearSansLight-LF}{Clear Sans Light}
-\enwffont{ClearSansThin-LF}{Clear Sans Thin}
-\enwffont{fco}{Comfortaa}
+\enwffont{ClearSans-TLF}{Clear Sans}
+\enwffont[series=light]{ClearSans-TLF}{Clear Sans Light}
+\enwffont[series=thin]{ClearSans-TLF}{Clear Sans Thin}
+\enwffont{comfortaa}{Comfortaa}
 \enwffont{cyklop}{Cyklop}
 \enwffont{dayrom}{DayRoman}
-\enwffont{fdr}{Droid Serif}
-\enwffont{fds}{Droid Sans}
-% \enwffont{fdm}{Droid Mono}% ddim yn gweithio
+\enwffont{droidserif}{Droid Serif}% oedd fdr
+\enwffont{droidsans}{Droid Sans}% oedd fds
+\enwffont{droidsansmono}{Droid Mono}% oedd fdm
 \enwffont{EBGaramond-OsF}{EB Garamond}[{\fontfamily{EBGaramondInitials-TLF}\selectfont G}aramond Initials][shape=sw]{EBGaramond-OsF}
 \enwffont{EBGaramond-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italic Small-Caps}}
 \enwffont{EBGaramond-OsF}{\textit{A Bad Dodger Gave Klingon Paul Quiet Reason to Strike Torrid Vanquished Wombles Zealously.} {\fontshape{sw}\selectfont A Bad Dodger Gave Klingon Paul Quiet Reason to Strike Torrid Vanquished Wombles Zealously.}}
@@ -323,41 +325,41 @@
 \enwffont{kurierc}{Kurier Condensed}
 \enwffont{kurierl}{Kurier Light}
 \enwffont{kurierlc}{Kurier Light Condensed}
-\enwffont{fla}{Lato}
-\enwffont{LibreBaskerville-TLF}{Libre Baskerville}
-\enwffont{LibreCaslonText-TLF}{Libre Caslon}
+\enwffont{lato-OsF}{Lato}
+\enwffont{LibreBskvl-LF}{Libre Baskerville}
+\enwffont{LibreCsln-TLF}{Libre Caslon}
 \enwffont{LinuxLibertineT-OsF}{Linux Libertine Roman}
 \enwffont{LinuxLibertineDisplayT-OsF}{Linux Libertine Display}
-\enwffont{LinuxLibertineInitialsT-OsF}{LINUX LIBERTINE INITIALS}
+% \enwffont{LinuxLibertineInitialsT-OsF}{LINUX LIBERTINE INITIALS}% ddim yn gweithio
 \enwffont{LinuxBiolinumT-OsF}{Linux Biolinum}
 \enwffont{LinuxLibertineMonoT-TLF}{Linux Libertine Mono}
-\enwffont{LobsterTwo-LF}{Lobster Two}
+\enwffont{Lbstr-LF}{Lobster Two}
 \enwffont{LukasSvatba}{LukasSvatba}
 \enwffont{LukasSvatba}{Upright \textsl{Oblique} \textbf{Bold \textsl{Oblique}}}
 \enwffont{ul9}{Luxi Mono}
-\enwffont{Merriweather-OsF}{Merriweather}
-\enwffont{MerriweatherSans-TLF}{Merriweather Sans}
+\enwffont{Merriwthr-OsF}{Merriweather}
+\enwffont{MerriwthrSans-TLF}{Merriweather Sans}
 \morrisin{Morris Initials} \textbullet{}
 \enwffont{nanummj}{nanummj}
 \enwffont{nanumgt}{nanumgt}
 \nouvd{Nouveaud} \textbullet{}
-\enwffont{fos}{OpenSans}
-\enwffont{Overlock-LF}{Overlock}
-\enwffont{OverlockSC-LF}{Overlock SC}
-\enwffont{PlayfairDisplay-OsF}{Playfair Display}
-\enwffont{PlayfairDisplay-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \fontseries{k}\selectfont Black \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}
+\enwffont{opensans-TLF}{OpenSans}
+\enwffont{Ovrlck-LF}{Overlock}
+\enwffont{Ovrlck-LF}{\textsc{Overlock SC}}
+\enwffont{PlyfrDisplay-OsF}{Playfair Display}
+\enwffont{PlyfrDisplay-OsF}{Upright \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics} \textbf{Bold \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}} \fontseries{k}\selectfont Black \textit{Italics} \textsc{Small-Caps} {\fontshape{scit}\selectfont Italics}}
 \enwffont{PTSerif-TLF}{PT Serif}
 \enwffont{PTSerifCaption-TLF}{PT Serif Caption}
 \enwffont{PTSans-TLF}{PT Sans}
 \enwffont{PTSansNarrow-TLF}{PT Sans Narrow}
 \enwffont{PTSansCaption-TLF}{PT Sans Caption}
 \enwffont{PTMono-TLF}{PT Mono}
-\enwffont{Quattrocento-TLF}{Quattrocento}
-\enwffont{QuattrocentoSans-TLF}{Quattrocento Sans}
+\enwffont{Quattro-LF}{Quattrocento}
+\enwffont{QuattroSans-LF}{Quattrocento Sans}
 \enwffont{Raleway-TLF}{Raleway}
-\enwffont{Roboto-LF}{Roboto}
-\enwffont{RobotoCondensed-LF}{Roboto Condensed}
-\enwffont{RobotoSlab-LF}{Roboto Slab}
+\enwffont{Roboto-TLF}{Roboto}
+\enwffont[series=c]{Roboto-TLF}{Roboto Condensed}
+\enwffont{RobotoSlab-TLF}{Roboto Slab}
 \romantik{Romantik} \textbullet{}
 \roth{ROTH DN roth dn} \textbullet{}
 \royal{ROYAL} \textbullet{}
@@ -378,3 +380,4 @@
 }
 
 \end{document}
+
