@@ -796,7 +796,6 @@ Here, I'm just going to give an illustrative example, together with a subset of 
   \item \cs{NewDocumentCommand}\cs{\meta{name}}\marg{\meta{argument specification}}\marg{\meta{definition}}
 \end{itemize}
 \cs{NewDocumentCommand} corresponds to \cs{newcommand}.
-{\tikzset{external/export=false}%
   \begin{figure}
     \centering
     \begin{tikzpicture}[remember picture]
@@ -822,7 +821,6 @@ Here, I'm just going to give an illustrative example, together with a subset of 
       \end{tikzpicture}
       \caption[An argument specification for an xparse macro-creation command.]{An argument specification for an \pkg{xparse} macro-creation command.}\label{fig:argspec}
     \end{figure}%
-}
 It will give an error if \cs{\meta{name}} is already defined; otherwise it will define it as instructed.
 However, the \meta{argument specification} provides a lot more flexibility than \cs{newcommand}'s.
 The specification consists of a series of letters, possibly preceded by \verb|+| and possibly followed by additional information.
