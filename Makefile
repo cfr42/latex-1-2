@@ -1,6 +1,7 @@
-# $Id: Makefile 7134 2017-11-15 01:02:55Z cfrees $
+# $Id: Makefile 10070 2024-06-02 14:30:44Z cfrees $
 SHELL=/bin/sh
 PATH=/usr/local/bin:/usr/local/texlive/bin:/usr/bin
+TEXMFHOME=
 
 dirintro := gweithdy-latex-da-1
 dirmacros := gweithdy-latex-da-2-macros
@@ -10,6 +11,9 @@ dirpellach := gweithdy-latex-da-2-pellach
 dirhandoutsadd := handouts
 dirconfig := config
 dirwrappers := wrappers
+
+# do NOT add idx!!
+exts := aux auxlock bbl bcf blg ilg ind lof log lot glg glo gls mw nav out snm run.xml synctex.gz backup bkup toc xdy for aux.copy mw.mw mmz mmz.log acn acr alg ent hd vrb 
 
 config := $(dirconfig)/handouts-da.cfg $(dirconfig)/macros-da.cfg $(dirconfig)/beamer-da.cfg $(dirconfig)/example-overleaf.tex
 wrappers := $(dirwrappers)/handouts.tex $(dirwrappers)/slides.tex $(dirwrappers)/tutornotes.tex
@@ -32,7 +36,7 @@ slides := $(addsuffix /slides.pdf,$(dirscore))
 texeeintro := $(addprefix $(dirintro)/examples/,example1.tex example2.tex example3.tex example4.tex example5.tex example6.tex example7.tex example8.tex example9.tex)
 pdfeeintro :=
 bibeeintro := $(addprefix $(dirintro)/examples/,myrefs.bib)
-handsintro := $(addprefix $(dirintro)/handouts/,handouts.pdf winston-latexsheet-a4.pdf carlisle-maths.pdf leaflet.pdf)
+handsintro := $(addprefix $(dirintro)/handouts/,handouts.pdf winston-latexsheet-a4.pdf carlisle-maths.pdf leaflet.pdf)
 
 texeemacros := $(addprefix $(dirmacros)/examples/,example10.tex)
 pdfeemacros =
@@ -50,8 +54,8 @@ pdfeebeamer := $(subst .tex,.pdf,$(texeebeamer))
 eebeamer := $(texeebeamer) $(pdfeebeamer)
 handsbeamer := $(addprefix $(dirbeamer)/handouts/,handouts.pdf) 
 
-texeepellach := $(addprefix $(dirpellach)/examples/,example16.tex example16-mod.tex pgfplots-sin.tex)
-pdfeepellach := $(subst .tex,.pdf,$(texeepellach))
+pdfeepellach := $(addprefix $(dirpellach)/examples/,example16.pdf example16-mod.pdf pgfplots-sin.pdf tikz-siml.pdf)
+texeepellach := $(subst .pdf,.tex,$(texeepellach)) $(add prefix $(dirpellach)/examples/,tikz-annotated-cuboid.tex tikz-automata-finite-state-transducer.tex tikz-cd-eg.tex tikz-shaded-delaunay-pattern.tex tikz-ticking-timers.tex)
 eepellach := $(texeepellach) $(pdfeepellach) $(dirpellach)/examples/pgfplotsexample.pdf $(dirpellach)/examples/pgfplotsexample.tex
 handspellach := $(addprefix $(dirpellach)/handouts/,handouts.pdf) 
 
@@ -80,17 +84,23 @@ data : $(pdfspellach) $(handspellach)
 
 # function: arara-pdf: run arara and biber, if needed
 define arara-pdf =
-cd $(dir $@) && (i=$(basename $(notdir $@)) ; arara $$i && ((if [ -f "$$i.bcf" ]; then biber $$i; fi) && arara $$i))
+cd $(dir $@) && (i=$(basename $(notdir $@)) ; arara $$i && ((if [ -f "$$i.bcf" ]; then biber $$i; fi) && arara $$i) ; arara $$i)
 endef
 
 # function: ee-pdf: as above, but use pdflatex to keep sources clean
 define ee-pdf =
-cd $(dir $@) && (i=$(basename $(notdir $@)) ; pdflatex $$i && ((if [ -f "$$i.bcf" ]; then biber $$i; fi) && pdflatex $$i))
+cd $(dir $@) && (i=$(basename $(notdir $@)) ; pdflatex $$i && ((if [ -f "$$i.bcf" ]; then biber $$i; fi) && pdflatex $$i) ; pdflatex $$i)
+endef
+
+# function: rm-if: remove if found
+# this is idiotic
+define rm-if =
+(g= ; for i in $(exts) ; do rm $$(find . -path *.$$i) 2> /dev/null || g="$$g $$i" ; done; printf %b "Nothing to do for $$g")
 endef
 
 # $< is the first prerequisite
 
-$(pdfsadd) : $(subst .pdf,.tex,$(pdfsadd)) $(dirhandoutsadd)/config $(config)
+$(dirhandoutsadd)/%.pdf : $(dirhandoutsadd)/%.tex $(dirhandoutsadd)/config $(config)
 	$(arara-pdf)
 
 # ee
@@ -132,7 +142,7 @@ gweithdy-%/slides.tex : | $(wrappers)
 
 # core pdfs (handouts.pdf, slides.pdf, tutornotes.pdf)
 
-gweithdy-%/slides.pdf : wrappers/slides.tex $(config) gweithdy-%/training.tex gweithdy-%/handouts.aux gweithdy-%/ee | gweithdy-%/slides.tex gweithdy-%/config gweithdy-%/ffigurau
+gweithdy-%/slides.pdf : wrappers/slides.tex $(config) gweithdy-%/training.tex gweithdy-%/handouts.aux gweithdy-%/ee | gweithdy-%/slides.tex gweithdy-%/handouts.tex gweithdy-%/config  gweithdy-%/ffigurau
 	$(arara-pdf)
 
 gweithdy-%/handouts.aux : wrappers/handouts.tex gweithdy-%/training.tex $(config) gweithdy-%/ee | gweithdy-%/handouts.tex gweithdy-%/config gweithdy-%/ffigurau
@@ -141,7 +151,7 @@ gweithdy-%/handouts.aux : wrappers/handouts.tex gweithdy-%/training.tex $(config
 gweithdy-%/handouts.pdf : wrappers/handouts.tex $(config) gweithdy-%/training.tex gweithdy-%/ee | gweithdy-%/handouts.tex gweithdy-%/config gweithdy-%/ffigurau
 	$(arara-pdf)
 
-gweithdy-%/tutornotes.pdf : wrappers/tutornotes.tex $(config) gweithdy-%/training.tex gweithdy-%/ee | gweithdy-%/tutornotes.tex gweithdy-%/config gweithdy-%/ffigurau
+gweithdy-%/tutornotes.pdf : wrappers/tutornotes.tex $(config) gweithdy-%/training.tex gweithdy-%/ee | gweithdy-%/tutornotes.tex gweithdy-%/handouts.tex gweithdy-%/config gweithdy-%/ffigurau
 	$(arara-pdf)
 
 # sym link to config
@@ -149,7 +159,7 @@ gweithdy-%/tutornotes.pdf : wrappers/tutornotes.tex $(config) gweithdy-%/trainin
 	cd $(dir $@) && ln -s ../config ./
 
 # for externalisation of diagrams in some workshops
-$(suffix /ffigurau,$(dirscore)) : 
+gweithdy-%/ffigurau : gweithdy-%/ 
 	mkdir -p $(dir $@)/ffigurau
 
 gweithdy-%/handouts/handouts.pdf : | gweithdy-%/handouts.pdf
@@ -160,7 +170,8 @@ $(dirmacros)/handouts/latex-gweithdy-%.pdf : | $(dirhandoutsadd)/latex-gweithdy-
 	mkdir -p $(dirmacros)/handouts
 	cd $(dirmacros)/handouts && ln -s ../../handouts/latex-gweithdy-%.pdf ./
 
-$(dirmacros)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
+# $(dirmacros)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
+$(dirmacros)/handouts/winston-latexsheet.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirmacros)/handouts
 	cd $(dirmacros)/handouts && ln -s ../../handouts/$(notdir $@) ./
 
@@ -168,7 +179,8 @@ $(dirintro)/handouts/carlisle-maths.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirintro)/handouts
 	cd $(dirintro)/handouts && ln -s ../../handouts/$(notdir $@) ./
 
-$(dirintro)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
+# $(dirintro)/handouts/winston-latexsheet-a4.pdf : | $(dirhandoutsadd)/$(notdir $@)
+$(dirintro)/handouts/winston-latexsheet.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirintro)/handouts
 	cd $(dirintro)/handouts && ln -s ../../handouts/$(notdir $@) ./
 
@@ -179,5 +191,36 @@ $(dirintro)/handouts/leaflet.pdf : | $(dirhandoutsadd)/$(notdir $@)
 $(dirbiblatex)/handouts/biblatex-cheatsheet.pdf : | $(dirhandoutsadd)/$(notdir $@)
 	mkdir -p $(dirbiblatex)/handouts
 	cd $(dirbiblatex)/handouts && ln -s ../../handouts/$(notdir $@) ./
+
+# extra handouts
+
+$(dirhandoutsadd)/carlisle-maths.pdf :
+	cd $(dirhandoutsadd) && ln -s  $(shell kpsewhich -var-value=TEXMFHOME)/doc/latex/carlisle-maths/carlisle-maths.pdf ./
+
+$(dirhandoutsadd)/winston-latexsheet.pdf :
+	cd $(dirhandoutsadd) && ln -s  $(shell kpsewhich -var-value=TEXMFDIST)/doc/latex/latexcheat/latexsheet.pdf ./$(notdir $@)
+
+$(dirhandoutsadd)/biblatex-cheatsheet.pdf :
+	cd $(dirhandoutsadd) && ln -s  $(shell kpsewhich -var-value=TEXMFDIST)/doc/latex/biblatex-cheatsheet/biblatex-cheatsheet.pdf ./
+
+$(dirhandoutsadd)/leaflet.pdf :
+	cd $(dirhandoutsadd) && ln -s  $(shell kpsewhich -var-value=TEXMFDIST)/doc/latex/leaflet/leaflet.pdf ./
+
+# extra examples
+
+$(dirpellach)/examples/pgfplotsexample.pdf : | $(dirpellach)/examples/
+	cd $(dirpellach)/examples && ln -s  $(shell kpsewhich -var-value=TEXMFDIST)/doc/latex/pgfplots/pgfplotsexample.pdf ./
+
+$(dirpellach)/examples/pgfplotsexample.tex : | $(dirpellach)/examples/
+	cd $(dirpellach)/examples && ln -s  $(shell kpsewhich -var-value=TEXMFDIST)/doc/latex/pgfplots/pgfplotsexample.tex ./
+
+
+# prevent auto removal of targets created only as intermediates 
+.SECONDDARY: %.tex %.pdf
+
+.PHONY : clean
+clean :
+	$(rm-if)
+
 
 # vim: set nospell:
