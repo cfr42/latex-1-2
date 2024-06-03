@@ -38,7 +38,7 @@ handoutsmost := $(addsuffix /handouts.pdf,$(dirscore))
 handouts := $(handoutsmost) $(handoutsadd)
 tutornotes := $(addsuffix /tutornotes.pdf,$(dirscore))
 slides := $(addsuffix /slides.pdf,$(dirscore))
-codes := $(handoutsmost:.pdf=.tex) $(tutornotes:.pdf=.tex) $(slides:.pdf=.tex) $(addsuffix /training.tex,$dirscore) $(wrappers) $(config)
+codes := $(handoutsmost:.pdf=.tex) $(tutornotes:.pdf=.tex) $(slides:.pdf=.tex) $(addsuffix /training.tex,$(dirscore)) $(wrappers) $(config)
 
 texeeintro := $(addprefix $(dirintro)/examples/,example1.tex example2.tex example3.tex example4.tex example5.tex example6.tex example7.tex example8.tex example9.tex)
 pdfeeintro :=
