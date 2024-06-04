@@ -23,7 +23,7 @@ jobs:
       run: sudo apt-get update
 
     - name: Install dependencies
-      run: sudo apt-get install texlive
+      run: sudo apt-get install texlive arara
 
     - name: Build core documents for all workshops
       run: make most
