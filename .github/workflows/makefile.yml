@@ -23,7 +23,7 @@ jobs:
       run: sudo apt-get update
 
     - name: Install dependencies
-      run: sudo apt-get install texlive texlive-extra-utils biber texlive-fonts-extra
+      run: sudo apt-get install texlive-full
 
     - name: Build core documents for all workshops
       run: make most
