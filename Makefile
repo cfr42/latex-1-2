@@ -1,7 +1,12 @@
 # $Id: Makefile 10070 2024-06-02 14:30:44Z cfrees $
-SHELL=/bin/sh
-PATH=/usr/local/bin:/usr/local/texlive/bin:/usr/bin
-TEXMFHOME=
+# := or ::= simple variables (expanded once like xdef)
+# SHELL and PATH will be in the environment, so exported by default 
+SHELL := /bin/sh
+PATH := $(shell kpsewhich --var-value SELFAUTOLOC):/usr/local/bin:/usr/bin
+# TEXMHOME won't be, so export explicitly
+export TEXMFHOME:=.
+# RHYBUDD!! TEXINPUTS is here only for testing since current packages not in my tree
+export TEXINPUTS:=.:~/tex-cfr/sasozivanovic/memoize/:
 
 dirintro := gweithdy-latex-da-1
 dirmacros := gweithdy-latex-da-2-macros
@@ -29,9 +34,11 @@ pdfsbiblatex := $(addprefix $(dirbiblatex)/,$(pdfscore))
 pdfsbeamer := $(addprefix $(dirbeamer)/,$(pdfscore)) 
 pdfspellach := $(addprefix $(dirpellach)/,$(pdfscore)) 
 
-handouts := $(addsuffix /handouts.pdf,$(dirscore)) $(handoutsadd)
+handoutsmost := $(addsuffix /handouts.pdf,$(dirscore)) 
+handouts := $(handoutsmost) $(handoutsadd)
 tutornotes := $(addsuffix /tutornotes.pdf,$(dirscore))
 slides := $(addsuffix /slides.pdf,$(dirscore))
+codes := $(handoutsmost:.pdf=.tex) $(tutornotes:.pdf=.tex) $(slides:.pdf=.tex) $(addsuffix /training.tex,$(dirscore)) $(wrappers) $(config)
 
 texeeintro := $(addprefix $(dirintro)/examples/,example1.tex example2.tex example3.tex example4.tex example5.tex example6.tex example7.tex example8.tex example9.tex)
 pdfeeintro :=
@@ -63,7 +70,9 @@ pdfs := $(pdfsintro) $(pdfsmacros) $(pdfsbiblatex) $(pdfsbeamer) $(pdfspellach)
 collhandouts := $(handsintro) $(handsmacros) $(handsbiblatex) $(handsbeamer) $(handspellach)
 
 # targets (first is default)
-all : $(pdfs)
+most : $(handoutsmost) $(tutornotes) $(slides) $(codes)
+.PHONY : most
+all : $(pdfs) $(codes)
 .PHONY : all
 gweithdai : $(pdfs) $(collhandouts) 
 .PHONY : gweithdai
@@ -216,7 +225,11 @@ $(dirpellach)/examples/pgfplotsexample.tex : | $(dirpellach)/examples/
 
 
 # prevent auto removal of targets created only as intermediates 
-.SECONDDARY: %.tex %.pdf
+# this isn't right or, at least, it doesn't work
+.SECONDDARY : %.tex %.pdf
+
+# keep config@
+.PRECIOUS : %/config
 
 .PHONY : clean
 clean :

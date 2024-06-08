@@ -123,10 +123,9 @@
 
 {
 \begin{frame}{Workflow}
-  \tikzset{external/export=false}
-
   \noindent\resizebox{\linewidth}{!}{%
 	\begin{tikzpicture}[
+	  /mmz/per overlay,
 	  my flow,
 	  ]
 	  \path (0,0) node[my block] (edit) {\shortstack{Edit\\\texttt{.tex}\\File}} ;
